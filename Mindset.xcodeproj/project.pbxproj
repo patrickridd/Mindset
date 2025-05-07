@@ -3,12 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		214EE62E2BB89237001B72BA /* MindsetApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214EE62D2BB89237001B72BA /* MindsetApp.swift */; };
-		214EE6302BB89237001B72BA /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214EE62F2BB89237001B72BA /* ContentView.swift */; };
 		214EE6322BB89238001B72BA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 214EE6312BB89238001B72BA /* Assets.xcassets */; };
 		214EE6352BB89238001B72BA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 214EE6342BB89238001B72BA /* Preview Assets.xcassets */; };
 		214EE63F2BB89238001B72BA /* MindsetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214EE63E2BB89238001B72BA /* MindsetTests.swift */; };
@@ -36,7 +35,6 @@
 /* Begin PBXFileReference section */
 		214EE62A2BB89237001B72BA /* Mindset.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mindset.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		214EE62D2BB89237001B72BA /* MindsetApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindsetApp.swift; sourceTree = "<group>"; };
-		214EE62F2BB89237001B72BA /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		214EE6312BB89238001B72BA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		214EE6342BB89238001B72BA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		214EE63A2BB89238001B72BA /* MindsetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MindsetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,6 +43,10 @@
 		214EE6482BB89238001B72BA /* MindsetUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindsetUITests.swift; sourceTree = "<group>"; };
 		214EE64A2BB89238001B72BA /* MindsetUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindsetUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		213F271D2DC461190080002F /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		214EE6272BB89237001B72BA /* Frameworks */ = {
@@ -95,7 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				214EE62D2BB89237001B72BA /* MindsetApp.swift */,
-				214EE62F2BB89237001B72BA /* ContentView.swift */,
+				213F271D2DC461190080002F /* Views */,
 				214EE6312BB89238001B72BA /* Assets.xcassets */,
 				214EE6332BB89238001B72BA /* Preview Content */,
 			);
@@ -141,6 +143,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				213F271D2DC461190080002F /* Views */,
 			);
 			name = Mindset;
 			productName = Mindset;
@@ -257,7 +262,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				214EE6302BB89237001B72BA /* ContentView.swift in Sources */,
 				214EE62E2BB89237001B72BA /* MindsetApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
