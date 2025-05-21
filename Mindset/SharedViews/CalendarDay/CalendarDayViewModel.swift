@@ -37,15 +37,17 @@ class CalendarDayViewModel: ObservableObject {
         } else if isBeforeSelectedDate {
             return .gray.opacity(0.15)
         } else {
-            return .purple
+            return .gray
         }
     }
 
     var textColor: Color {
         if isSelectedDay {
             return .white
+        } else if isBeforeSelectedDate {
+            return .black.opacity(0.25)
         } else {
-            return .black
+            return .white
         }
     }
     
