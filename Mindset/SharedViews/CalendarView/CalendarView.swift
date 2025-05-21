@@ -1,11 +1,5 @@
 import SwiftUI
 
-struct CalendarDay: Identifiable {
-    let id = UUID()
-    let date: Date
-    let isCurrentMonth: Bool
-}
-
 struct CalendarView: View {
     
     @ObservedObject private var viewModel = CalendarViewModel()

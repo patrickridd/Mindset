@@ -20,19 +20,13 @@ struct CalendarDayView: View {
                 viewModel.dayTapped()
             }) {
                 ZStack {
-                    if viewModel.isSelectedDay {
-                        Circle()
-                            .fill(Color.orange)
-                            .frame(width: 36, height: 36)
-                    } else if !viewModel.isCalendarDayInCurrentMonth {
-                        Circle()
-                            .fill(Color.gray.opacity(0.15))
-                            .frame(width: 36, height: 36)
-                    }
+                    Circle()
+                        .fill(viewModel.circleColor)
+                        .frame(width: 36, height: 36)
                     Text(viewModel.calendarDayString)
                         .font(.body)
                         .foregroundColor(
-                            viewModel.isSelectedDay ? .white : (viewModel.isCalendarDayInCurrentMonth ? .black : .gray)
+                            viewModel.textColor
                         )
                 }
             }
@@ -43,7 +37,9 @@ struct CalendarDayView: View {
 
 #Preview {
     HStack {
+        CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: CalendarDay.init(date: Date().addingTimeInterval(60*60*24*(-1)), isCurrentMonth: true), parentViewModel: CalendarViewModel()))
         CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: CalendarDay.init(date: Date(), isCurrentMonth: true), parentViewModel: CalendarViewModel()))
-        CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: .init(date: Date().addingTimeInterval(60*60*24), isCurrentMonth: false), parentViewModel: CalendarViewModel()))
+        CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: .init(date: Date().addingTimeInterval(60*60*24), isCurrentMonth: true), parentViewModel: CalendarViewModel()))
+        CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: .init(date: Date().addingTimeInterval(60*60*24*2), isCurrentMonth: true), parentViewModel: CalendarViewModel()))
     }
 }

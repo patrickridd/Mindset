@@ -30,6 +30,25 @@ class CalendarDayViewModel: ObservableObject {
     var calendarDayString: String {
         "\(calendar.component(.day, from: calendarDay.date))"
     }
+
+    var circleColor: Color {
+        if isSelectedDay {
+            return .blue
+        } else if isBeforeSelectedDate {
+            return .gray.opacity(0.15)
+        } else {
+            return .purple
+        }
+    }
+
+    var textColor: Color {
+        if isSelectedDay {
+            return .white
+        } else {
+            return .black
+        }
+    }
+    
     
     func dayTapped() {
         parentViewModel.selectedDate = calendarDay.date
@@ -39,5 +58,13 @@ class CalendarDayViewModel: ObservableObject {
         let date = calendarDay.date
         let weekday = calendar.component(.weekday, from: date)
         return Week.allCases[weekday - 1].abbreviation
+    }
+    
+    var isBeforeSelectedDate: Bool {
+        calendarDay.date < parentViewModel.selectedDate
+    }
+
+    var isAfterSelectedDate: Bool {
+        calendarDay.date > parentViewModel.selectedDate
     }
 }
