@@ -11,9 +11,10 @@ class CalendarDayViewModel: ObservableObject {
 
     private(set) var calendarDay: CalendarDay
     private(set) var parentViewModel: CalendarViewModel
-
+    
+    private let today = Calendar.current.startOfDay(for: Date())
     private let calendar = Calendar.current
-
+    
     init(calendarDay: CalendarDay, parentViewModel: CalendarViewModel) {
         self.calendarDay = calendarDay
         self.parentViewModel = parentViewModel
@@ -32,41 +33,58 @@ class CalendarDayViewModel: ObservableObject {
     }
 
     var circleColor: Color {
-        if isSelectedDay {
-            return .blue
-        } else if isBeforeSelectedDate {
+        if isCalendarDayToday {
+            return .yellow
+        } else if isCalendarDayBeforeToday {
             return .gray.opacity(0.15)
         } else {
-            return .gray
+            return .gray.opacity(0.25)
         }
+    }
+
+    var circleBorderColor: Color {
+        isSelectedDayCalendarDay ? .blue : .clear
+    }
+    
+    var isCalendarDayBeforeToday: Bool {
+        calendar.startOfDay(for: calendarDay.date) < today
+    }
+
+    var isCalendarDayAfterToday: Bool {
+        calendar.startOfDay(for: calendarDay.date) > today
+    }
+
+    var isCalendarDayToday: Bool {
+        calendar.isDate(calendarDay.date, inSameDayAs: Date())
     }
 
     var textColor: Color {
-        if isSelectedDay {
-            return .white
-        } else if isBeforeSelectedDate {
+       if isCalendarDayBeforeToday {
             return .black.opacity(0.25)
         } else {
-            return .white
+            return .black
         }
     }
-    
-    
+
+    var dayOfWeekFontWeight: Font.Weight {
+        isCalendarDayToday ? .bold : .regular
+    }
+
+    var numberTextFontWeight: Font.Weight {
+        isCalendarDayToday ? .medium: .regular
+    }
+
+    var isSelectedDayCalendarDay: Bool {
+        calendar.isDate(calendarDay.date, equalTo: parentViewModel.selectedDate, toGranularity: .day)
+    }
+
+    var dayOfWeek: String {
+        let weekday = calendar.component(.weekday, from: calendarDay.date)
+        return Week.allCases[weekday - 1].abbreviation
+    }
+
     func dayTapped() {
         parentViewModel.selectedDate = calendarDay.date
     }
-    
-    func dayOfWeek() -> String {
-        let date = calendarDay.date
-        let weekday = calendar.component(.weekday, from: date)
-        return Week.allCases[weekday - 1].abbreviation
-    }
-    
-    var isBeforeSelectedDate: Bool {
-        calendarDay.date < parentViewModel.selectedDate
-    }
 
-    var isAfterSelectedDate: Bool {
-        calendarDay.date > parentViewModel.selectedDate
-    }
 }
