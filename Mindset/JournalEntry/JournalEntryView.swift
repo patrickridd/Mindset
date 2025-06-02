@@ -9,18 +9,27 @@ import SwiftUI
 
 struct JournalEntryView: View {
 
-    @StateObject private var viewModel = JournalEntryViewModel()
+    @StateObject private var viewModel = JournalEntryViewModel(journalEntry: GoalsEntry())
 
     var body: some View {
         VStack(spacing: 24) {
             // Title
-            HStack {
-                Text("Journal Entry")
-                    .font(.title)
-                    .fontWeight(.bold)
-                Spacer()
+            VStack {
+                HStack {
+                    Text(viewModel.journalEntry.title)
+                        .font(.title)
+                        .fontWeight(.bold)
+                    Spacer()
+                }
+                // Subtitle
+                HStack {
+                    Text(viewModel.journalEntry.subtitle)
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                    Spacer()
+                }
             }
-            .padding([.top, .leading], 24)
+            .padding([.leading, .trailing, .top], 24)
             
             // Text Input Area
             ZStack(alignment: .topLeading) {
@@ -29,7 +38,7 @@ struct JournalEntryView: View {
                     .background(RoundedRectangle(cornerRadius: 16).fill(Color.white))
                     .frame(height: 180)
                 
-                TextEditor(text: $viewModel.journalText)
+                TextEditor(text: $viewModel.journalEntry.entryText)
                     .padding(12)
                     .frame(height: 180)
                     .background(Color.clear)
@@ -61,7 +70,7 @@ struct JournalEntryView: View {
                 Button(action: {
                     if viewModel.submissionSuccess {
                         // Handle continue action (e.g., clear, dismiss, etc.)
-                        viewModel.journalText = ""
+                        viewModel.journalEntry.entryText = ""
                         viewModel.submissionSuccess = false
                     } else {
                         // Handle check action
@@ -69,7 +78,7 @@ struct JournalEntryView: View {
                     }
                 }) {
                     HStack {
-                        Text(viewModel.submissionSuccess ? "CONTINUE" : "CHECK")
+                        Text(viewModel.buttonText)
                             .font(.headline)
                         if viewModel.submissionSuccess {
                             Image(systemName: "arrow.right.circle")
@@ -78,14 +87,14 @@ struct JournalEntryView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(viewModel.submissionSuccess ? Color.green : (viewModel.journalText.isEmpty ? Color.gray : Color.green))
+                    .background(viewModel.buttonBackgroundColor)
                     .cornerRadius(12)
                 }
-                .disabled(viewModel.journalText.isEmpty && !viewModel.submissionSuccess)
+                .disabled(viewModel.buttonDisabled)
                 .padding(.horizontal)
-                .padding(.bottom, 32)
+                .padding(.bottom, 40)
             }
-            .background(viewModel.submissionSuccess ? Color.green.opacity(0.15): .clear)
+            .background(viewModel.parentButtonBackgroundColor)
 
         }
         .animation(.bouncy, value: viewModel.submissionSuccess)
