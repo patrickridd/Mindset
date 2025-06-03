@@ -12,7 +12,7 @@ struct JournalEntryView: View {
     @StateObject private var viewModel = JournalEntryViewModel(journalEntry: GoalsEntry())
 
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 16) {
             // Title
             VStack {
                 HStack {

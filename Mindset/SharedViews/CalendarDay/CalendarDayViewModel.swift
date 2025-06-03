@@ -11,13 +11,15 @@ class CalendarDayViewModel: ObservableObject {
 
     private(set) var calendarDay: CalendarDay
     private(set) var parentViewModel: CalendarViewModel
-    
+    private(set) var isDayCompleted: Bool
+
     private let today = Calendar.current.startOfDay(for: Date())
     private let calendar = Calendar.current
-    
-    init(calendarDay: CalendarDay, parentViewModel: CalendarViewModel) {
+
+    init(calendarDay: CalendarDay, parentViewModel: CalendarViewModel, isDayCompleted: Bool = false) {
         self.calendarDay = calendarDay
         self.parentViewModel = parentViewModel
+        self.isDayCompleted = isDayCompleted
     }
 
     var isSelectedDay: Bool {
@@ -28,7 +30,7 @@ class CalendarDayViewModel: ObservableObject {
         !calendarDay.isCurrentMonth
     }
 
-    var calendarDayString: String {
+    var calendarDayDigit: String {
         "\(calendar.component(.day, from: calendarDay.date))"
     }
 
@@ -43,7 +45,10 @@ class CalendarDayViewModel: ObservableObject {
     }
 
     var circleBorderColor: Color {
-        isSelectedDayCalendarDay ? .blue : .clear
+        if isDayCompleted {
+            return .green
+        }
+        return isSelectedDayCalendarDay ? .indigo : .clear
     }
     
     var isCalendarDayBeforeToday: Bool {
@@ -58,12 +63,16 @@ class CalendarDayViewModel: ObservableObject {
         calendar.isDate(calendarDay.date, inSameDayAs: Date())
     }
 
-    var textColor: Color {
-       if isCalendarDayBeforeToday {
-            return .black.opacity(0.25)
-        } else {
+    var digitTextColor: Color {
+        if isSelectedDay {
             return .black
+        } else {
+            return .black.opacity(isCalendarDayBeforeToday ? 0.25 : 1)
         }
+    }
+
+    var dayOfWeekTextColor: Color {
+        .black.opacity(isCalendarDayBeforeToday ? 0.25 : 1)
     }
 
     var dayOfWeekFontWeight: Font.Weight {
@@ -71,7 +80,7 @@ class CalendarDayViewModel: ObservableObject {
     }
 
     var numberTextFontWeight: Font.Weight {
-        isCalendarDayToday ? .medium: .regular
+        isCalendarDayToday ? .bold: .regular
     }
 
     var isSelectedDayCalendarDay: Bool {
@@ -81,6 +90,10 @@ class CalendarDayViewModel: ObservableObject {
     var dayOfWeek: String {
         let weekday = calendar.component(.weekday, from: calendarDay.date)
         return Week.allCases[weekday - 1].abbreviation
+    }
+
+    var circleLineWidth: CGFloat {
+        isDayCompleted ? 5 : 3
     }
 
     func dayTapped() {

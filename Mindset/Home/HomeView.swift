@@ -8,15 +8,36 @@
 import SwiftUI
 
 struct HomeView: View {
+    
+    @StateObject private var viewModel = HomeViewModel()
+    
     var body: some View {
         VStack {
             CalendarView()
-            JournalEntryView()
+            Spacer()
+            journalButton
+                .padding(.bottom, 100)
             Spacer()
         }
+        .fullScreenCover(isPresented: $viewModel.presentJournalEntry, content: {
+            JournalEntryView()
+        })
     }
 }
 
 #Preview {
     HomeView()
+}
+
+extension HomeView {
+    
+    var journalButton: some View {
+        Button(action: {
+            viewModel.presentJournalEntry.toggle()
+        }) {
+            Image(systemName: "square.and.pencil.circle")
+                .resizable()
+                .frame(width: 250, height: 250)
+        }
+    }
 }

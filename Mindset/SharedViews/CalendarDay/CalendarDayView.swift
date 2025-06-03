@@ -15,7 +15,7 @@ struct CalendarDayView: View {
         VStack(spacing: 4) {
             Text(viewModel.dayOfWeek)
                 .font(.caption)
-                .foregroundColor(viewModel.textColor)
+                .foregroundColor(viewModel.dayOfWeekTextColor)
                 .fontWeight(viewModel.dayOfWeekFontWeight)
             Button(action: {
                 viewModel.dayTapped()
@@ -23,12 +23,13 @@ struct CalendarDayView: View {
                 ZStack {
                     Circle()
                         .fill(viewModel.circleColor)
-                        .strokeBorder(viewModel.circleBorderColor, lineWidth: 3)
+                        .strokeBorder(viewModel.circleBorderColor, lineWidth: viewModel.circleLineWidth)
                         .frame(width: 36, height: 36)
-                    Text(viewModel.calendarDayString)
+                        
+                    Text(viewModel.calendarDayDigit)
                         .font(.body)
                         .foregroundColor(
-                            viewModel.textColor
+                            viewModel.digitTextColor
                         )
                         .fontWeight(viewModel.numberTextFontWeight)
                 }
