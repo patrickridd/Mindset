@@ -7,9 +7,10 @@
 
 import Foundation
 
-struct AffirmationEntry: JournalEntry {
+struct AffirmationPrompt: JournalPrompt {
     let title: String = "Affirmation"
     let subtitle: String = "Write down 1 affirmation to repeat daily."
     var entryText: String = ""
     var date: Date = Date()
+    var completed: Bool = false
 }

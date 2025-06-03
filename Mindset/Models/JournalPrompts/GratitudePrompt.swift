@@ -7,12 +7,14 @@
 
 import Foundation
 
-struct GratitudeEntry: JournalEntry {
+class GratitudePrompt: JournalPrompt {
+
     let title: String = "Gratitude"
     let subtitle: String = "What are you grateful for today?"
     var date: Date
     var entryText: String
-    
+    var completed: Bool = false
+
     init(date: Date = Date(), entryText: String = "") {
         self.date = date
         self.entryText = entryText

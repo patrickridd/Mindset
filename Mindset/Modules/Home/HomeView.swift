@@ -20,7 +20,7 @@ struct HomeView: View {
             Spacer()
         }
         .fullScreenCover(isPresented: $viewModel.presentJournalEntry, content: {
-            JournalEntryView()
+            JournalEntryFlowView()
         })
     }
 }
@@ -30,7 +30,7 @@ struct HomeView: View {
 }
 
 extension HomeView {
-    
+
     var journalButton: some View {
         Button(action: {
             viewModel.presentJournalEntry.toggle()

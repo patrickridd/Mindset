@@ -7,30 +7,34 @@
 
 import SwiftUI
 
-struct JournalEntryView: View {
+struct JournalPromptView: View {
 
-    @StateObject private var viewModel = JournalEntryViewModel(journalEntry: GoalsEntry())
+    @StateObject private var viewModel: JournalPromptViewModel
 
+    init(viewModel: JournalPromptViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
+    
     var body: some View {
         VStack(spacing: 16) {
             // Title
             VStack {
                 HStack {
-                    Text(viewModel.journalEntry.title)
+                    Text(viewModel.journalPrompt.title)
                         .font(.title)
                         .fontWeight(.bold)
                     Spacer()
                 }
                 // Subtitle
                 HStack {
-                    Text(viewModel.journalEntry.subtitle)
+                    Text(viewModel.journalPrompt.subtitle)
                         .font(.subheadline)
                         .foregroundColor(.gray)
                     Spacer()
                 }
             }
             .padding([.leading, .trailing, .top], 24)
-            
+
             // Text Input Area
             ZStack(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 16)
@@ -38,13 +42,12 @@ struct JournalEntryView: View {
                     .background(RoundedRectangle(cornerRadius: 16).fill(Color.white))
                     .frame(height: 180)
                 
-                TextEditor(text: $viewModel.journalEntry.entryText)
+                TextEditor(text: $viewModel.journalPrompt.entryText)
                     .padding(12)
                     .frame(height: 180)
                     .background(Color.clear)
                     .cornerRadius(16)
                     .disabled(viewModel.submissionSuccess)
-                // Optional: lock editing after submit
             }
             .padding(.horizontal)
             
@@ -68,14 +71,7 @@ struct JournalEntryView: View {
                 }
                 // Button
                 Button(action: {
-                    if viewModel.submissionSuccess {
-                        // Handle continue action (e.g., clear, dismiss, etc.)
-                        viewModel.journalEntry.entryText = ""
-                        viewModel.submissionSuccess = false
-                    } else {
-                        // Handle check action
-                        viewModel.submissionSuccess = true
-                    }
+                    viewModel.submit()
                 }) {
                     HStack {
                         Text(viewModel.buttonText)
@@ -98,11 +94,11 @@ struct JournalEntryView: View {
 
         }
         .animation(.bouncy, value: viewModel.submissionSuccess)
-        .background(Color.gray.opacity(0.15))
+        .background(viewModel.bodyBackgroundColor)
     }
 }
 
 
 #Preview {
-    JournalEntryView()
+    JournalPromptView(viewModel: .init(journalPrompt: GoalPrompt()))
 }

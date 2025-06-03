@@ -7,9 +7,10 @@
 
 import Foundation
 
-struct ReflectionEntry: JournalEntry {
+struct ReflectionPrompt: JournalPrompt {
     let title: String = "Reflection"
     let subtitle: String = "What would make today amazing and what can I do to make it happen?"
     var entryText: String = ""
     var date: Date = Date()
+    var completed: Bool = false
 }
