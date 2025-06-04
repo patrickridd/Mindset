@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct HomeView: CoordinatedView {
     
     @StateObject private var viewModel = HomeViewModel()
     

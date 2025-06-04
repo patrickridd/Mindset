@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct JournalPromptView: View {
+struct JournalPromptView: CoordinatedView {
 
     @StateObject private var viewModel: JournalPromptViewModel
 

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MainTabView: View {
+struct MainTabView: CoordinatedView {
     var body: some View {
         TabView {
             HomeView()

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct JournalEntryFlowView: View {
+struct JournalEntryFlowView: CoordinatedView {
 
     @StateObject var viewModel: JournalEntryFlowViewModel = JournalEntryFlowViewModel()
     @Environment(\.dismiss) var dismiss
