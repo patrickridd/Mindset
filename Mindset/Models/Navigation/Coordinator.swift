@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-class Coordinator: Coordinatable {
+class Coordinator: Coordinated {
     @Published var path: NavigationPath = NavigationPath()
     @Published var sheet: (any CoordinatedView)?
     @Published var fullScreenCover: (any CoordinatedView)?

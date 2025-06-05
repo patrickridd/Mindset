@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-protocol Coordinatable: ObservableObject {
+protocol Coordinated: ObservableObject {
     var path: NavigationPath { get set }
     var sheet: (any CoordinatedView)? { get set }
     var fullScreenCover: (any CoordinatedView)? { get set }
