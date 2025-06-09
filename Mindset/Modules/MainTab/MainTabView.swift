@@ -7,10 +7,13 @@
 
 import SwiftUI
 
-struct MainTabView: CoordinatedView {
+struct MainTabView: View {
+    
+    @EnvironmentObject var coordinator: Coordinator
+
     var body: some View {
         TabView {
-            HomeView()
+            HomeView(viewModel: HomeViewModel(coordinator: coordinator))
                 .tabItem {
                     Label("", systemImage: "house")
                 }

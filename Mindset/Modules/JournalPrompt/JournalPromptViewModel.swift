@@ -8,18 +8,29 @@
 import SwiftUI
 import Combine
 
+@MainActor
 class JournalPromptViewModel: ObservableObject {
-    @Published var journalPrompt: JournalPrompt
-    @Published var submissionSuccess: Bool = false
 
-    init(journalPrompt: JournalPrompt) {
+    @Published var journalPrompt: any Prompt
+    @Published var submissionSuccess: Bool = false
+    @Published var flowCoordinator: any FlowCoordinator
+
+    init(journalPrompt: any Prompt, flowCoordinator: any FlowCoordinator) {
         self.journalPrompt = journalPrompt
+        self.flowCoordinator = flowCoordinator
     }
     
     func submit() {
         guard !journalPrompt.entryText.isEmpty else { return }
+
+        if submissionSuccess {
+            flowCoordinator.next()
+            return
+        }
+
         submissionSuccess = true
         journalPrompt.completed = true
+    
     }
 
     func reset() {

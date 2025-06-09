@@ -9,5 +9,20 @@ import SwiftUI
 
 @MainActor
 class HomeViewModel: ObservableObject {
+
     @Published var presentJournalEntry: Bool = false
+    private let coordinator: any Coordinated
+
+    init(coordinator: any Coordinated) {
+        self.coordinator = coordinator
+    }
+
+    func journalButtonTapped() {
+        coordinator.presentFullScreenCover(.journalEntryView(
+            journalEntry: JournalEntry(
+                journalPrompts: [.gratitude, JournalPrompt.affirmation, .goalSetting]
+            )
+        ))
+    }
+
 }

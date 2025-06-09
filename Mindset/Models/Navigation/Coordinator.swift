@@ -9,18 +9,18 @@ import SwiftUI
 
 class Coordinator: Coordinated {
     @Published var path: NavigationPath = NavigationPath()
-    @Published var sheet: (any CoordinatedView)?
-    @Published var fullScreenCover: (any CoordinatedView)?
+    @Published var sheet: CoordinatedView?
+    @Published var fullScreenCover: CoordinatedView?
     
-    func push(_ screen: any CoordinatedView) {
+    func push(_ screen: CoordinatedView) {
         path.append(screen)
     }
     
-    func presentSheet(_ sheet: any CoordinatedView) {
+    func presentSheet(_ sheet: CoordinatedView) {
         self.sheet = sheet
     }
     
-    func presentFullScreenCover(_ fullScreenCover: any CoordinatedView) {
+    func presentFullScreenCover(_ fullScreenCover: CoordinatedView) {
         self.fullScreenCover = fullScreenCover
     }
     
@@ -39,4 +39,44 @@ class Coordinator: Coordinated {
     func dismissFullScreenOver() {
         fullScreenCover = nil
     }
+
+    // MARK: - Presentation Style Providers
+    @ViewBuilder
+    func build(_ screen: CoordinatedView) -> some View {
+        switch screen {
+        case .homeView:
+            HomeView(viewModel: HomeViewModel(coordinator: self))
+        case .journalPromptView(let prompt):
+            JournalPromptView(viewModel: JournalPromptViewModel(journalPrompt: prompt, flowCoordinator: JournalEntryCoordinator(steps: [prompt])))
+                .environmentObject(JournalEntryCoordinator(steps: [prompt]))
+
+        case .journalEntryView(let journalEntry):
+            JournalEntryFlowView(viewModel: JournalEntryFlowViewModel(coordinator: self, journalEntry: journalEntry))
+                .environmentObject(JournalEntryCoordinator(steps: journalEntry.journalPrompts))
+        }
+    }
+    
+//        @ViewBuilder
+//        func build(_ sheet: CoordinatedView) -> some View {
+//            switch sheet {
+//            case .homeView:
+//                HomeView()
+//            case .journalPromptView:
+//                JournalPromptView()
+//            case .journalEntryView:
+//                JournalEntryFlowView()
+//            }
+//        }
+//        
+//        @ViewBuilder
+//        func build(_ fullScreenCover: CoordinatedView) -> some View {
+//            switch fullScreenCover {
+//            case .homeView:
+//                HomeView()
+//            case .journalPromptView:
+//                JournalPromptView()
+//            case .journalEntryView:
+//                JournalEntryFlowView()
+//            }
+//        }
 }

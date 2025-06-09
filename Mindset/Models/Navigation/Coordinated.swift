@@ -7,17 +7,20 @@
 
 import SwiftUI
 
+@MainActor
 protocol Coordinated: ObservableObject {
     var path: NavigationPath { get set }
-    var sheet: (any CoordinatedView)? { get set }
-    var fullScreenCover: (any CoordinatedView)? { get set }
+    var sheet: CoordinatedView? { get set }
+    var fullScreenCover: CoordinatedView? { get set }
 
-    func push(_ screen: any CoordinatedView)
-    func presentSheet(_ sheet: any CoordinatedView)
-    func presentFullScreenCover(_ fullScreenCover: any CoordinatedView)
+    func push(_ screen: CoordinatedView)
+    func presentSheet(_ sheet: CoordinatedView)
+    func presentFullScreenCover(_ fullScreenCover: CoordinatedView)
     func pop()
     func popToRoot()
     func dismissSheet()
     func dismissFullScreenOver()
+    associatedtype BuiltView: View
+    func build(_ screen: CoordinatedView) -> BuiltView
 }
 

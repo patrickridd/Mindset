@@ -7,9 +7,13 @@
 
 import SwiftUI
 
-struct HomeView: CoordinatedView {
+struct HomeView: View {
     
-    @StateObject private var viewModel = HomeViewModel()
+    @StateObject private var viewModel: HomeViewModel
+    
+    init(viewModel: HomeViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         VStack {
@@ -19,21 +23,18 @@ struct HomeView: CoordinatedView {
                 .padding(.bottom, 100)
             Spacer()
         }
-        .fullScreenCover(isPresented: $viewModel.presentJournalEntry, content: {
-            JournalEntryFlowView()
-        })
     }
 }
 
 #Preview {
-    HomeView()
+    HomeView(viewModel: HomeViewModel(coordinator: Coordinator()))
 }
 
 extension HomeView {
 
     var journalButton: some View {
         Button(action: {
-            viewModel.presentJournalEntry.toggle()
+            viewModel.journalButtonTapped()
         }) {
             Image(systemName: "square.and.pencil.circle")
                 .resizable()

@@ -7,18 +7,18 @@
 
 import Foundation
 
-protocol JournalEntryContent {
+protocol JournalEntryContent: Identifiable {
     var id: UUID { get set }
     var dateCompleted: Date? { get set }
-    var journalPrompts: [JournalPrompt] { get set }
+    var journalPrompts: [any Prompt] { get set }
 }
 
-class JournalEntry: Identifiable, JournalEntryContent {
+class JournalEntry: JournalEntryContent {
     var id: UUID = UUID()
     var dateCompleted: Date? = nil
-    var journalPrompts: [JournalPrompt] = []
+    var journalPrompts: [any Prompt] = []
     
-    init(id: UUID = UUID(), journalPrompts: [JournalPrompt]) {
+    init(id: UUID = UUID(), journalPrompts: [any Prompt]) {
         self.id = id
         self.journalPrompts = journalPrompts
     }

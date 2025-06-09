@@ -7,7 +7,8 @@
 
 import Foundation
 
-protocol JournalPrompt {
+protocol Prompt: CoordinatedFlowStep {
+    var id: String { get }
     var title: String { get }
     var subtitle: String { get }
     var date: Date { get set }

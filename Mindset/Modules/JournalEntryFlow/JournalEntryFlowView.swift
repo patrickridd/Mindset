@@ -7,32 +7,34 @@
 
 import SwiftUI
 
-struct JournalEntryFlowView: CoordinatedView {
+struct JournalEntryFlowView: View {
 
-    @StateObject var viewModel: JournalEntryFlowViewModel = JournalEntryFlowViewModel()
-    @Environment(\.dismiss) var dismiss
+    @StateObject var viewModel: JournalEntryFlowViewModel
+    @EnvironmentObject var flowCoordinator: JournalEntryCoordinator
 
     var body: some View {
         VStack {
            topBarView
                 .padding(.horizontal)
-            NavigationStack {
-                JournalPromptView(viewModel: .init(journalPrompt: viewModel.journalEntry.journalPrompts.first!))
+            NavigationStack(path: $flowCoordinator.path) {
+                EmptyView()
+                    .navigationDestination(for: JournalPrompt.self) { prompt in
+                        flowCoordinator.view(for: prompt)
+                    }
             }
         }
-
     }
 }
 
 #Preview {
-    JournalEntryFlowView()
+    JournalEntryFlowView(viewModel: .init(coordinator: Coordinator(), journalEntry: JournalEntry(journalPrompts: [JournalPrompt.gratitude])))
 }
 
 extension JournalEntryFlowView {
     var topBarView: some View {
         HStack {
             Button {
-                dismiss.callAsFunction()
+                viewModel.closeButtonTapped()
             } label: {
                 Image(systemName: "x.circle.fill")
                     .resizable()
@@ -40,7 +42,7 @@ extension JournalEntryFlowView {
             }
             ProgressBarView(progress: viewModel.journalPromptProgressValue)
             Button {
-                
+
             } label: {
                 Text("😎")
                     .font(.largeTitle)
