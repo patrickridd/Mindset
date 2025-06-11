@@ -12,19 +12,22 @@ class JournalEntryFlowViewModel: ObservableObject {
 
     @Published var journalEntry: any JournalEntryContent
     private let parentCoordinator: any Coordinated
+    private let flowCoordinator: any FlowCoordinator
 
     var journalPrompts: [any Prompt] {
         journalEntry.journalPrompts
     }
 
-    init(coordinator: any Coordinated, journalEntry: any JournalEntryContent) {
+    init(coordinator: any Coordinated, journalEntry: any JournalEntryContent, flowCoordinator: any FlowCoordinator) {
         self.parentCoordinator = coordinator
         self.journalEntry = journalEntry
+        self.flowCoordinator = flowCoordinator
     }
 
     var journalPromptProgressValue: Double {
-        let completedPromptsCount = Double(journalPrompts.filter({$0.completed}).count)
-        return completedPromptsCount/Double(journalPrompts.count)
+        let stepsCompleted = Double(flowCoordinator.stepsCompleted)
+        let totalSteps: Double = Double(flowCoordinator.steps.count)
+        return stepsCompleted/totalSteps
     }
 
     func closeButtonTapped() {

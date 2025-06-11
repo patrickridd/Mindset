@@ -21,13 +21,17 @@ struct JournalEntryFlowView: View {
                     .navigationDestination(for: JournalPrompt.self) { prompt in
                         flowCoordinator.view(for: prompt)
                     }
+                    .navigationDestination(for: PromptCompletionStep.self) { completionStep in
+                        JournalEntryCompletionView(viewModel: .init(completionPrompt: completionStep, flowCoordinator: flowCoordinator))
+                    }
             }
         }
     }
 }
 
 #Preview {
-    JournalEntryFlowView(viewModel: .init(coordinator: Coordinator(), journalEntry: JournalEntry(journalPrompts: [JournalPrompt.gratitude])))
+    JournalEntryFlowView(viewModel: .init(coordinator: Coordinator(), journalEntry: JournalEntry(journalPrompts: [JournalPrompt.gratitude]), flowCoordinator: JournalEntryFlowCoordinator(steps: [], onCompletion: {
+    })))
 }
 
 extension JournalEntryFlowView {

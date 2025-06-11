@@ -12,6 +12,8 @@ class JournalEntryFlowCoordinator: FlowCoordinator {
 
     @Published var path = NavigationPath()
     private(set) var currentIndex = 0
+    @Published private(set) var stepsCompleted: Int = 0
+    
     let steps: [any Prompt]
     var onCompletion: () -> Void
 
@@ -39,16 +41,17 @@ class JournalEntryFlowCoordinator: FlowCoordinator {
             let step = steps[currentIndex]
             path.append(step)
         } else {
-            print("🎉 Journal finished.")
-            onCompletion()
+            path.append(PromptCompletionStep())
         }
     }
 
+    func completeStep() {
+        stepsCompleted += 1
+    }
+
     func view(for step: any Prompt) -> AnyView {
-        if step.id == steps.last?.id {
-            return AnyView(JournalEntryCompletionView(viewModel: .init(completionPrompt: step, flowCoordinator: self)))
-        }
         let journalPromptView = JournalPromptView(viewModel: .init(journalPrompt: step, flowCoordinator: self))
         return AnyView(journalPromptView)
     }
+    
 }

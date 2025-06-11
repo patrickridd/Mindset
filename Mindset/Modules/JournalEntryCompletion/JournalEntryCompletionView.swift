@@ -35,11 +35,11 @@ struct JournalEntryCompletionView: View {
             }
             .padding(.bottom)
         }
-        .padding(.horizontal)
+        .padding([.horizontal, .top])
         .toolbar(.hidden, for: .navigationBar)
     }
 }
 
 #Preview {
-    JournalEntryCompletionView(viewModel: .init(completionPrompt: JournalPrompt.completionJournalPrompt, flowCoordinator: JournalEntryFlowCoordinator(steps: [], onCompletion: {})))
+    JournalEntryCompletionView(viewModel: .init(completionPrompt: PromptCompletionStep(), flowCoordinator: JournalEntryFlowCoordinator(steps: [], onCompletion: {})))
 }

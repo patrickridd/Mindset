@@ -11,9 +11,9 @@ import Foundation
 class JournalEntryCompletionViewModel: ObservableObject {
     
     @Published var flowCoordinator: any FlowCoordinator
-    @Published var completionPrompt: any Prompt
+    @Published var completionPrompt: any CoordinatedFlowCompletionStep
 
-    init(completionPrompt: any Prompt, flowCoordinator: any FlowCoordinator) {
+    init(completionPrompt: any CoordinatedFlowCompletionStep, flowCoordinator: any FlowCoordinator) {
         self.completionPrompt = completionPrompt
         self.flowCoordinator = flowCoordinator
     }

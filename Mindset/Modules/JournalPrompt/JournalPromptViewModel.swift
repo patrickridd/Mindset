@@ -13,9 +13,9 @@ class JournalPromptViewModel: ObservableObject {
 
     @Published var journalPrompt: any Prompt
     @Published var submissionSuccess: Bool = false
-    @Published var flowCoordinator: any FlowCoordinator
+    @Published var flowCoordinator: (any FlowCoordinator)?
 
-    init(journalPrompt: any Prompt, flowCoordinator: any FlowCoordinator) {
+    init(journalPrompt: any Prompt, flowCoordinator: (any FlowCoordinator)?) {
         self.journalPrompt = journalPrompt
         self.flowCoordinator = flowCoordinator
     }
@@ -24,13 +24,13 @@ class JournalPromptViewModel: ObservableObject {
         guard !journalPrompt.entryText.isEmpty else { return }
 
         if submissionSuccess {
-            flowCoordinator.next()
+            flowCoordinator?.next()
             return
         }
 
         submissionSuccess = true
         journalPrompt.completed = true
-    
+        flowCoordinator?.completeStep()
     }
 
     func reset() {

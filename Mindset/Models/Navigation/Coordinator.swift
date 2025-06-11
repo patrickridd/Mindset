@@ -46,42 +46,15 @@ class Coordinator: Coordinated {
         switch screen {
         case .homeView:
             HomeView(viewModel: HomeViewModel(coordinator: self))
-        case .journalPromptView(let prompt):
-            JournalPromptView(viewModel: JournalPromptViewModel(journalPrompt: prompt, flowCoordinator: JournalEntryFlowCoordinator(steps: [prompt], onCompletion: { [weak self] in
-                self?.dismissFullScreenOver()
-            })))
-            .environmentObject(JournalEntryFlowCoordinator(steps: [prompt], onCompletion: { [weak self] in
-                self?.dismissFullScreenOver()
-            }))
-        case .journalEntryView(let journalEntry):
-            JournalEntryFlowView(viewModel: JournalEntryFlowViewModel(coordinator: self, journalEntry: journalEntry))
-                .environmentObject(JournalEntryFlowCoordinator(steps: journalEntry.journalPrompts, onCompletion: { [weak self] in
-                    self?.dismissFullScreenOver()
-                }))
+        case .journalPromptView(let prompt, let flowCoordinator):
+            JournalPromptView(viewModel: JournalPromptViewModel(
+                journalPrompt: prompt,
+                flowCoordinator: flowCoordinator
+            ))
+            .environmentObject(flowCoordinator)
+        case .journalEntryView(let journalEntry, let flowCoordinator):
+            JournalEntryFlowView(viewModel: JournalEntryFlowViewModel(coordinator: self, journalEntry: journalEntry, flowCoordinator: flowCoordinator))
+                .environmentObject(flowCoordinator)
         }
     }
-    
-//        @ViewBuilder
-//        func build(_ sheet: CoordinatedView) -> some View {
-//            switch sheet {
-//            case .homeView:
-//                HomeView()
-//            case .journalPromptView:
-//                JournalPromptView()
-//            case .journalEntryView:
-//                JournalEntryFlowView()
-//            }
-//        }
-//        
-//        @ViewBuilder
-//        func build(_ fullScreenCover: CoordinatedView) -> some View {
-//            switch fullScreenCover {
-//            case .homeView:
-//                HomeView()
-//            case .journalPromptView:
-//                JournalPromptView()
-//            case .journalEntryView:
-//                JournalEntryFlowView()
-//            }
-//        }
 }

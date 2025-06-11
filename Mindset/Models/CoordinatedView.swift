@@ -25,8 +25,8 @@ extension CoordinatableView {
 
 enum CoordinatedView: Hashable, Identifiable {
     case homeView
-    case journalPromptView(journalPrompt: any Prompt)
-    case journalEntryView(journalEntry: JournalEntry)
+    case journalPromptView(journalPrompt: any Prompt, flowCoordinator: JournalEntryFlowCoordinator)
+    case journalEntryView(journalEntry: JournalEntry, flowCoordinator: JournalEntryFlowCoordinator)
     
     public var id: Self { self }
     
@@ -37,9 +37,9 @@ enum CoordinatedView: Hashable, Identifiable {
     // Conform to Equatable
     static func == (lhs: CoordinatedView, rhs: CoordinatedView) -> Bool {
         switch (lhs, rhs) {
-        case (.journalPromptView(journalPrompt: let promptOne), .journalPromptView(journalPrompt: let promptTwo)):
+        case (.journalPromptView(journalPrompt: let promptOne, _), .journalPromptView(journalPrompt: let promptTwo, _)):
             return promptOne.id == promptTwo.id
-        case (.journalEntryView(let journalEntryOne), .journalEntryView(let journalEntryTwo)):
+        case (.journalEntryView(let journalEntryOne, _), .journalEntryView(let journalEntryTwo, _)):
             return journalEntryOne.id == journalEntryTwo.id
         default:
             return true

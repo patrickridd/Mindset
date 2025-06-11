@@ -68,8 +68,4 @@ extension JournalPrompt {
             entryText: ""
         )
     }
-
-    static var completionJournalPrompt: JournalPrompt {
-        .init(title: "You did it! ✅", subtitle: "Way to take time for yourself today 🎉", id: UUID().uuidString, date: Date(), entryText: "")
-    }
 }
