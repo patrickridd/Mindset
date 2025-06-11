@@ -11,8 +11,8 @@ import SwiftUI
 class JournalEntryFlowCoordinator: FlowCoordinator {
 
     @Published var path = NavigationPath()
-    private(set) var currentIndex = 0
     @Published private(set) var stepsCompleted: Int = 0
+    private(set) var currentIndex = 0
     
     let steps: [any Prompt]
     var onCompletion: () -> Void
@@ -24,7 +24,6 @@ class JournalEntryFlowCoordinator: FlowCoordinator {
     }
 
     func start() {
-        currentIndex = 0
         path = NavigationPath()
         if let first = steps.first {
             path.append(first)
@@ -50,8 +49,9 @@ class JournalEntryFlowCoordinator: FlowCoordinator {
     }
 
     func view(for step: any Prompt) -> AnyView {
-        let journalPromptView = JournalPromptView(viewModel: .init(journalPrompt: step, flowCoordinator: self))
-        return AnyView(journalPromptView)
+        AnyView(
+            JournalPromptView(viewModel: .init(journalPrompt: step, flowCoordinator: self))
+        )
     }
     
 }
