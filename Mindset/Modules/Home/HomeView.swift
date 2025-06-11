@@ -16,12 +16,15 @@ struct HomeView: View {
     }
     
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             CalendarView()
-            Spacer()
-            journalButton
-                .padding(.bottom, 100)
-            Spacer()
+            navTitle
+            VStack(spacing: 12) {
+                Spacer()
+                journalButton
+                    .padding(.bottom, 100)
+                Spacer()
+            }
         }
     }
 }
@@ -32,13 +35,28 @@ struct HomeView: View {
 
 extension HomeView {
 
+    var navTitle: some View {
+        Text("Daily Mindset")
+            .font(.title)
+            .fontWeight(.bold)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding([.leading, .top])
+    }
+
+    var buttonTitle: some View {
+        Text("Tap to begin")
+            .font(.subheadline)
+    }
     var journalButton: some View {
         Button(action: {
             viewModel.journalButtonTapped()
         }) {
-            Image(systemName: "square.and.pencil.circle")
-                .resizable()
-                .frame(width: 250, height: 250)
+            VStack {
+                Image(systemName: "square.and.pencil.circle")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                buttonTitle
+            }
         }
     }
 }

@@ -10,11 +10,11 @@ import SwiftUI
 struct JournalEntryFlowView: View {
 
     @StateObject var viewModel: JournalEntryFlowViewModel
-    @EnvironmentObject var flowCoordinator: JournalEntryCoordinator
+    @EnvironmentObject var flowCoordinator: JournalEntryFlowCoordinator
 
     var body: some View {
         VStack {
-           topBarView
+            topBarView
                 .padding(.horizontal)
             NavigationStack(path: $flowCoordinator.path) {
                 EmptyView()

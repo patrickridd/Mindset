@@ -47,12 +47,17 @@ class Coordinator: Coordinated {
         case .homeView:
             HomeView(viewModel: HomeViewModel(coordinator: self))
         case .journalPromptView(let prompt):
-            JournalPromptView(viewModel: JournalPromptViewModel(journalPrompt: prompt, flowCoordinator: JournalEntryCoordinator(steps: [prompt])))
-                .environmentObject(JournalEntryCoordinator(steps: [prompt]))
-
+            JournalPromptView(viewModel: JournalPromptViewModel(journalPrompt: prompt, flowCoordinator: JournalEntryFlowCoordinator(steps: [prompt], onCompletion: { [weak self] in
+                self?.dismissFullScreenOver()
+            })))
+            .environmentObject(JournalEntryFlowCoordinator(steps: [prompt], onCompletion: { [weak self] in
+                self?.dismissFullScreenOver()
+            }))
         case .journalEntryView(let journalEntry):
             JournalEntryFlowView(viewModel: JournalEntryFlowViewModel(coordinator: self, journalEntry: journalEntry))
-                .environmentObject(JournalEntryCoordinator(steps: journalEntry.journalPrompts))
+                .environmentObject(JournalEntryFlowCoordinator(steps: journalEntry.journalPrompts, onCompletion: { [weak self] in
+                    self?.dismissFullScreenOver()
+                }))
         }
     }
     

@@ -98,10 +98,11 @@ struct JournalPromptView: CoordinatableView {
         }
         .animation(.bouncy, value: viewModel.submissionSuccess)
         .background(viewModel.bodyBackgroundColor)
+        .toolbar(.hidden, for: .navigationBar)
     }
 }
 
 
 #Preview {
-    JournalPromptView(viewModel: .init(journalPrompt: JournalPrompt.goalSetting, flowCoordinator: JournalEntryCoordinator(steps: [])))
+    JournalPromptView(viewModel: .init(journalPrompt: JournalPrompt.goalSetting, flowCoordinator: JournalEntryFlowCoordinator(steps: [], onCompletion: {})))
 }

@@ -20,7 +20,7 @@ class HomeViewModel: ObservableObject {
     func journalButtonTapped() {
         coordinator.presentFullScreenCover(.journalEntryView(
             journalEntry: JournalEntry(
-                journalPrompts: [.gratitude, JournalPrompt.affirmation, .goalSetting]
+                journalPrompts: [.gratitude, JournalPrompt.affirmation, .goalSetting, .completionJournalPrompt]
             )
         ))
     }
