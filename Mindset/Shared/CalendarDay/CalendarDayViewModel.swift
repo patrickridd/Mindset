@@ -35,7 +35,7 @@ class CalendarDayViewModel: ObservableObject {
 
     var circleColor: Color {
         if isCalendarDayToday {
-            return .yellow
+            return .orange
         } else if isCalendarDayBeforeToday {
             return .gray.opacity(0.15)
         } else {

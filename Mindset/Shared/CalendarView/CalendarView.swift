@@ -2,7 +2,11 @@ import SwiftUI
 
 struct CalendarView: View {
     
-    @ObservedObject private var viewModel = CalendarViewModel()
+    @ObservedObject private var viewModel: CalendarViewModel
+
+    init(viewModel: CalendarViewModel = CalendarViewModel()) {
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         VStack(spacing: 8) {
@@ -44,15 +48,19 @@ struct CalendarView: View {
 }
 
 #Preview {
-//    CalendarView(viewModel: CalendarViewModel())
+    CalendarView()
 }
 
 extension CalendarView {
 
     var monthTextView: some View {
         Text(viewModel.monthString)
-            .font(.headline)
-            .foregroundColor(.black)
+            .font(.subheadline)
+            .fontWeight(.semibold)
+            .foregroundColor(.orange)
+            .multilineTextAlignment(.leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.leading)
     }
 
 }

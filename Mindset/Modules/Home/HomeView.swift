@@ -16,9 +16,9 @@ struct HomeView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            CalendarView()
+        VStack(spacing: 8) {
             navTitle
+            CalendarView()
             VStack(spacing: 12) {
                 Spacer()
                 journalButton
@@ -37,16 +37,18 @@ extension HomeView {
 
     var navTitle: some View {
         Text("Daily Mindset")
-            .font(.title)
+            .font(.largeTitle)
             .fontWeight(.bold)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding([.leading, .top])
+            .padding([.leading, .top], 16)
     }
 
     var buttonTitle: some View {
         Text("Tap to begin")
             .font(.subheadline)
+            .foregroundStyle(.orange)
     }
+
     var journalButton: some View {
         Button(action: {
             viewModel.journalButtonTapped()
@@ -55,6 +57,7 @@ extension HomeView {
                 Image(systemName: "square.and.pencil.circle")
                     .resizable()
                     .frame(width: 100, height: 100)
+                    .foregroundStyle(.indigo)
                 buttonTitle
             }
             .sensoryFeedback(.selection, trigger: viewModel.presentJournalEntry)
