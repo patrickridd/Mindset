@@ -21,5 +21,6 @@ protocol FlowCoordinator: ObservableObject {
     func completeStep()
     func next()
     func back()
+    func popToRoot()
     func view(for step: CoordinatedFlowStep) -> AnyView
 }

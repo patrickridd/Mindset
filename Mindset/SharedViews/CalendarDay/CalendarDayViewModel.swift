@@ -9,6 +9,8 @@ import SwiftUI
 
 class CalendarDayViewModel: ObservableObject {
 
+    @Published var isSelectedDay: Bool
+
     private(set) var calendarDay: CalendarDay
     private(set) var parentViewModel: CalendarViewModel
     private(set) var isDayCompleted: Bool
@@ -20,10 +22,7 @@ class CalendarDayViewModel: ObservableObject {
         self.calendarDay = calendarDay
         self.parentViewModel = parentViewModel
         self.isDayCompleted = isDayCompleted
-    }
-
-    var isSelectedDay: Bool {
-        calendar.isDate(calendarDay.date, inSameDayAs: parentViewModel.selectedDate)
+        self.isSelectedDay = calendar.isDate(calendarDay.date, inSameDayAs: parentViewModel.selectedDate)
     }
 
     var isCalendarDayInCurrentMonth: Bool {
@@ -98,6 +97,7 @@ class CalendarDayViewModel: ObservableObject {
 
     func dayTapped() {
         parentViewModel.selectedDate = calendarDay.date
+        isSelectedDay = calendar.isDate(calendarDay.date, inSameDayAs: parentViewModel.selectedDate)
     }
 
 }

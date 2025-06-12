@@ -12,8 +12,8 @@ class JournalEntryFlowCoordinator: FlowCoordinator {
 
     @Published var path = NavigationPath()
     @Published private(set) var stepsCompleted: Int = 0
+
     private(set) var currentIndex = 0
-    
     let steps: [any Prompt]
     var onCompletion: () -> Void
 
@@ -32,6 +32,10 @@ class JournalEntryFlowCoordinator: FlowCoordinator {
     
     func back() {
         path.removeLast()
+    }
+
+    func popToRoot() {
+        path.removeLast(path.count)
     }
 
     func next() {

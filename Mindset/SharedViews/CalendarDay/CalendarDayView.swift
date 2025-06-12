@@ -33,6 +33,7 @@ struct CalendarDayView: View {
                         )
                         .fontWeight(viewModel.numberTextFontWeight)
                 }
+                .sensoryFeedback(.selection, trigger: viewModel.isSelectedDay)
             }
             .buttonStyle(PlainButtonStyle())
         }

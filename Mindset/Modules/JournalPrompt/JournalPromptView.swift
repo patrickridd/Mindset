@@ -10,6 +10,7 @@ import SwiftUI
 struct JournalPromptView: CoordinatableView {
     
     @StateObject private var viewModel: JournalPromptViewModel
+    @FocusState private var isFocused: Bool
 
     let id: String
 
@@ -33,6 +34,7 @@ struct JournalPromptView: CoordinatableView {
                     Text(viewModel.journalPrompt.subtitle)
                         .font(.subheadline)
                         .foregroundColor(.gray)
+                        .fixedSize(horizontal: true, vertical: false)
                     Spacer()
                 }
             }
@@ -51,6 +53,10 @@ struct JournalPromptView: CoordinatableView {
                     .background(Color.clear)
                     .cornerRadius(16)
                     .disabled(viewModel.submissionSuccess)
+                    .focused($isFocused)
+                    .onAppear {
+                        isFocused = true
+                    }
             }
             .padding(.horizontal)
             
@@ -88,13 +94,13 @@ struct JournalPromptView: CoordinatableView {
                     .padding()
                     .background(viewModel.buttonBackgroundColor)
                     .cornerRadius(12)
+                    .sensoryFeedback(viewModel.submissionSuccess ? .increase : .success, trigger: viewModel.flowCoordinator.stepsCompleted)
                 }
                 .disabled(viewModel.buttonDisabled)
                 .padding(.horizontal)
                 .padding(.bottom, 40)
             }
             .background(viewModel.parentButtonBackgroundColor)
-
         }
         .animation(.bouncy, value: viewModel.submissionSuccess)
         .background(viewModel.bodyBackgroundColor)

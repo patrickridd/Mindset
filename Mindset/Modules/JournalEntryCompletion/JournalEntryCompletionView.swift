@@ -32,6 +32,7 @@ struct JournalEntryCompletionView: View {
                 .padding()
                 .background(.green)
                 .cornerRadius(12)
+                .sensoryFeedback(.success, trigger: viewModel.flowCoordinator.path)
             }
             .padding(.bottom)
         }
