@@ -19,6 +19,8 @@ struct HomeView: View {
         VStack(spacing: 8) {
             navTitle
             CalendarView()
+            StreakTracker()
+                .padding(.horizontal)
             VStack(spacing: 12) {
                 Spacer()
                 journalButton
@@ -63,4 +65,5 @@ extension HomeView {
             .sensoryFeedback(.selection, trigger: viewModel.presentJournalEntry)
         }
     }
+
 }
