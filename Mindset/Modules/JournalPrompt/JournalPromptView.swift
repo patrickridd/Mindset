@@ -44,7 +44,7 @@ struct JournalPromptView: CoordinatableView {
             ZStack(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 16)
                     .stroke(Color.gray.opacity(0.3), lineWidth: 2)
-                    .background(RoundedRectangle(cornerRadius: 16).fill(Color.white))
+                    .background(RoundedRectangle(cornerRadius: 16).fill(Color(uiColor: .systemBackground)))
                     .frame(height: 180)
                 
                 TextEditor(text: $viewModel.journalPrompt.entryText)

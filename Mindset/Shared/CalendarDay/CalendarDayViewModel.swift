@@ -64,14 +64,14 @@ class CalendarDayViewModel: ObservableObject {
 
     var digitTextColor: Color {
         if isSelectedDay {
-            return .black
+            return .primary
         } else {
-            return .black.opacity(isCalendarDayBeforeToday ? 0.25 : 1)
+            return .primary.opacity(isCalendarDayBeforeToday ? 0.25 : 1)
         }
     }
 
     var dayOfWeekTextColor: Color {
-        .black.opacity(isCalendarDayBeforeToday ? 0.25 : 1)
+        .primary.opacity(isCalendarDayBeforeToday ? 0.25 : 1)
     }
 
     var dayOfWeekFontWeight: Font.Weight {

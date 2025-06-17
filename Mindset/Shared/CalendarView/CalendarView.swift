@@ -43,7 +43,6 @@ struct CalendarView: View {
             }
         }
         .padding(.vertical, 8)
-        .background(Color.white)
     }
 }
 
