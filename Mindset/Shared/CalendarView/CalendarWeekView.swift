@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CalendarView: View {
+struct CalendarWeekView: View {
     
     @ObservedObject private var viewModel: CalendarViewModel
 
@@ -10,7 +10,9 @@ struct CalendarView: View {
 
     var body: some View {
         VStack(spacing: 8) {
-            monthTextView
+            HStack {
+                monthTextView
+            }
             TabView(selection: $viewModel.currentWeekIndex) {
                 ForEach(Week.allCases.indices, id: \.self) { weekIndex in
                     HStack(spacing: 8) {
@@ -47,10 +49,10 @@ struct CalendarView: View {
 }
 
 #Preview {
-    CalendarView()
+    CalendarWeekView()
 }
 
-extension CalendarView {
+extension CalendarWeekView {
 
     var monthTextView: some View {
         Text(viewModel.monthString)
@@ -59,7 +61,6 @@ extension CalendarView {
             .foregroundColor(.orange)
             .multilineTextAlignment(.leading)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.leading)
     }
 
 }
