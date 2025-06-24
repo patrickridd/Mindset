@@ -48,8 +48,9 @@ extension JournalEntryFlowView {
             Button {
 
             } label: {
-                Text("😎")
+                Text(viewModel.progressEmoji)
                     .font(.largeTitle)
+                    .animation(.easeInOut, value: viewModel.journalPromptProgressValue)
             }
         }
     }

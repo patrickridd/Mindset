@@ -13,7 +13,7 @@ class HomeViewModel: ObservableObject {
     @Published var presentJournalEntry: Bool = false
     private let coordinator: any Coordinated
     
-    private(set) var flowCoordinator: JournalEntryFlowCoordinator
+    private(set) var flowCoordinator: JournalEntryFlowCoordinator?
     private(set) var journalEntry: JournalEntry
     
     init(coordinator: any Coordinated) {
@@ -24,17 +24,14 @@ class HomeViewModel: ObservableObject {
         )
         self.flowCoordinator = JournalEntryFlowCoordinator(
             steps: journalEntry.journalPrompts,
-            onCompletion: {
+            onCompletion: { [weak self] in
+                self?.journalCompleted()
         })
-        
-        self.flowCoordinator.onCompletion = { [weak self] in
-            coordinator.dismissFullScreenOver()
-            self?.flowCoordinator.popToRoot()
-        }
 
     }
 
     func journalButtonTapped() {
+        guard let flowCoordinator else { return }
         presentJournalEntry.toggle()
         coordinator.presentFullScreenCover(.journalEntryView(
             journalEntry: journalEntry,
@@ -42,4 +39,8 @@ class HomeViewModel: ObservableObject {
         ))
     }
 
+    func journalCompleted() {
+        coordinator.dismissFullScreenOver()
+        flowCoordinator?.reset()
+    }
 }

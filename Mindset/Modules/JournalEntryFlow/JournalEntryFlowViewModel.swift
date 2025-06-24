@@ -30,6 +30,10 @@ class JournalEntryFlowViewModel: ObservableObject {
         return stepsCompleted/totalSteps
     }
 
+    var progressEmoji: String {
+        ProgressEmoji(rawValue: flowCoordinator.stepsCompleted)?.emoji ?? "😑"
+    }
+
     func closeButtonTapped() {
         parentCoordinator.dismissFullScreenOver()
     }

@@ -17,9 +17,8 @@ struct HomeView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            navTitle
-            CalendarView()
-            StreakTracker()
+            topBar
+            CalendarWeekView()
                 .padding(.horizontal)
             VStack(spacing: 12) {
                 Spacer()
@@ -37,17 +36,40 @@ struct HomeView: View {
 
 extension HomeView {
 
-    var navTitle: some View {
-        Text("Daily Mindset")
-            .font(.largeTitle)
-            .fontWeight(.bold)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding([.leading, .top], 16)
+    var topBar: some View {
+        HStack(alignment: .center) {
+            navTitle
+            Spacer()
+            HStack(spacing: 16) {
+                StreakTracker()
+                profileButton
+            }
+        }
+        .padding(.horizontal, 16)
     }
 
+    var navTitle: some View {
+        Text("Mindset")
+            .font(.largeTitle)
+            .fontWeight(.bold)
+            .frame(maxWidth: .infinity,
+                   alignment: .leading)
+    }
+
+    var profileButton: some View {
+        Button {
+            
+        } label: {
+           Image(systemName: "person.circle")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .foregroundStyle(.indigo)
+        }
+    }
+    
     var buttonTitle: some View {
         Text("Tap to begin")
-            .font(.subheadline)
+            .font(.headline)
             .foregroundStyle(.orange)
     }
 
@@ -55,10 +77,10 @@ extension HomeView {
         Button(action: {
             viewModel.journalButtonTapped()
         }) {
-            VStack {
-                Image(systemName: "square.and.pencil.circle")
+            VStack(spacing: 12) {
+                Image(systemName: "square.and.pencil.circle.fill")
                     .resizable()
-                    .frame(width: 100, height: 100)
+                    .frame(width: 200, height: 200)
                     .foregroundStyle(.indigo)
                 buttonTitle
             }

@@ -35,17 +35,20 @@ struct StreakTracker: View {
     }
     
     var body: some View {
-        HStack {
-            Image(systemName: "flame.fill")
-                .foregroundColor(.orange)
-            Text("\(currentStreak)-day streak")
-                .font(.headline)
-                .foregroundColor(.orange)
-                .bold()
+        Button {
+            
+        } label: {
+            HStack(alignment: .center, spacing: 2) {
+                Image(systemName: "flame.fill")
+                    .foregroundColor(.orange)
+                Text("\(currentStreak)")
+                    .font(.headline)
+                    .foregroundColor(.orange)
+                    .bold()
+            }
+            .frame(alignment: .leading)
+            .accessibilityLabel("Current streak: \(currentStreak) days")
         }
-        .padding(.top, 16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .accessibilityLabel("Current streak: \(currentStreak) days")
     }
 }
 

@@ -14,10 +14,12 @@ struct MainTabView: View {
     var body: some View {
         TabView {
             HomeView(viewModel: HomeViewModel(coordinator: coordinator))
-                .tabItem {
-                    Label("", systemImage: "house")
-                }
+//                .tabItem {
+//                    Label("", systemImage: "brain.filled.head.profile")
+//                }
         }
+        .tint(.indigo)
+
     }
 }
 

@@ -34,7 +34,6 @@ struct JournalPromptView: CoordinatableView {
                     Text(viewModel.journalPrompt.subtitle)
                         .font(.subheadline)
                         .foregroundColor(.gray)
-                        .fixedSize(horizontal: true, vertical: false)
                     Spacer()
                 }
             }
@@ -46,7 +45,7 @@ struct JournalPromptView: CoordinatableView {
                     .stroke(Color.gray.opacity(0.3), lineWidth: 2)
                     .background(RoundedRectangle(cornerRadius: 16).fill(Color(uiColor: .systemBackground)))
                     .frame(height: 180)
-                
+
                 TextEditor(text: $viewModel.journalPrompt.entryText)
                     .padding(12)
                     .frame(height: 180)
@@ -107,7 +106,6 @@ struct JournalPromptView: CoordinatableView {
         .toolbar(.hidden, for: .navigationBar)
     }
 }
-
 
 #Preview {
     JournalPromptView(viewModel: .init(journalPrompt: JournalPrompt.goalSetting, flowCoordinator: JournalEntryFlowCoordinator(steps: [], onCompletion: {})))

@@ -35,7 +35,13 @@ class JournalEntryFlowCoordinator: FlowCoordinator {
     }
 
     func popToRoot() {
-        path.removeLast(path.count)
+        path.removeLast(path.count-1)
+    }
+
+    func reset() {
+        popToRoot()
+        currentIndex = 0
+        stepsCompleted = 0
     }
 
     func next() {
