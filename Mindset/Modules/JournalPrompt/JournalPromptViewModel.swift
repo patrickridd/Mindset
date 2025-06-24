@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Combine
+import AVFoundation
 
 @MainActor
 class JournalPromptViewModel: ObservableObject {
@@ -14,6 +15,8 @@ class JournalPromptViewModel: ObservableObject {
     @Published var journalPrompt: any Prompt
     @Published var submissionSuccess: Bool = false
     @Published var flowCoordinator: (any FlowCoordinator)
+    
+    private let soundPlayer = SoundPlayer()
 
     init(journalPrompt: any Prompt, flowCoordinator: any FlowCoordinator) {
         self.journalPrompt = journalPrompt
@@ -29,6 +32,7 @@ class JournalPromptViewModel: ObservableObject {
         }
 
         submissionSuccess = true
+        soundPlayer.stepComplete()
         journalPrompt.completed = true
         flowCoordinator.completeStep()
     }

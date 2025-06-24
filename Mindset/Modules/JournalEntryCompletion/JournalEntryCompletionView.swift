@@ -38,6 +38,9 @@ struct JournalEntryCompletionView: View {
         }
         .padding([.horizontal, .top])
         .toolbar(.hidden, for: .navigationBar)
+        .onAppear {
+            SoundPlayer().playEntryComplete()
+        }
     }
 }
 
