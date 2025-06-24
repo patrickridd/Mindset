@@ -33,6 +33,7 @@ class HomeViewModel: ObservableObject {
     func journalButtonTapped() {
         guard let flowCoordinator else { return }
         presentJournalEntry.toggle()
+        SoundPlayer().entryStarted()
         coordinator.presentFullScreenCover(.journalEntryView(
             journalEntry: journalEntry,
             flowCoordinator: flowCoordinator

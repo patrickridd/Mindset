@@ -18,7 +18,7 @@ struct JournalPromptView: CoordinatableView {
         self._viewModel = StateObject(wrappedValue: viewModel)
         self.id = UUID().uuidString
     }
-    
+
     var body: some View {
         VStack(spacing: 16) {
             // Title
