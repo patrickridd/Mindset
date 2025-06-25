@@ -18,12 +18,11 @@ struct HomeView: View {
     var body: some View {
         VStack(spacing: 8) {
             topBar
-            // TODO: Pass selectedDate binding to CalendarWeekView when supported
             CalendarWeekView(selectedDate: $viewModel.selectedDate)
                 .padding(.horizontal)
             
             // Show entry for selected day if it exists
-            if let entry = viewModel.entryForSelectedDate {
+            if let entry = viewModel.journalEntry {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Journal for \(entry.promptEntryDate.formatted(date: .long, time: .omitted))")
                         .font(.headline)
@@ -50,7 +49,7 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(viewModel: HomeViewModel(coordinator: Coordinator()))
+    HomeView(viewModel: HomeViewModel(coordinator: Coordinator(), promptsEntryPersistence: PromptsEntryFileStore()))
 }
 
 extension HomeView {

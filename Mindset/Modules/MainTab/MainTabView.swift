@@ -13,7 +13,9 @@ struct MainTabView: View {
 
     var body: some View {
         TabView {
-            HomeView(viewModel: HomeViewModel(coordinator: coordinator))
+            coordinator.build(
+                .homeView(promptsEntryPersistence: PromptsEntryFileStore())
+            )
 //                .tabItem {
 //                    Label("", systemImage: "brain.filled.head.profile")
 //                }

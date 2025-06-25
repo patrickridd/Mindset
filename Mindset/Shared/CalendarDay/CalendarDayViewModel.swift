@@ -96,7 +96,7 @@ class CalendarDayViewModel: ObservableObject {
     }
 
     func dayTapped() {
-        parentViewModel.selectedDate = calendarDay.date
+        parentViewModel.selectedDate = Calendar.current.startOfDay(for: calendarDay.date)
         isSelectedDay = calendar.isDate(calendarDay.date, inSameDayAs: parentViewModel.selectedDate)
     }
 

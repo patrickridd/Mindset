@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum CoordinatedView: Hashable, Identifiable {
-    case homeView
+    case homeView(promptsEntryPersistence: PromptsEntryPersistence)
     case promptView(journalPrompt: any PromptContent, flowCoordinator: PromptChainFlowCoordinator)
     case journalEntryView(journalEntry: PromptsEntry, flowCoordinator: PromptChainFlowCoordinator)
     

@@ -5,6 +5,7 @@
 //  Created by patrick ridd on 6/2/25.
 //
 
+import Combine
 import SwiftUI
 
 @MainActor
@@ -13,15 +14,18 @@ class HomeViewModel: ObservableObject {
     @Published var presentJournalEntry: Bool = false
     @Published var selectedDate: Date
     @Published var journalEntries: [Date: PromptsEntry] = [:]
-
+    
     private let coordinator: any Coordinated
-
+    private let promptsEntryPersistence: PromptsEntryPersistence
     private(set) var flowCoordinator: PromptChainFlowCoordinator?
     private(set) var journalEntry: PromptsEntry?
+    private var cancellable: AnyCancellable?
 
-    init(coordinator: any Coordinated) {
+    init(coordinator: any Coordinated, promptsEntryPersistence: PromptsEntryPersistence) {
         self.selectedDate = Calendar.current.startOfDay(for: Date())
+        self.promptsEntryPersistence = promptsEntryPersistence
         self.coordinator = coordinator
+        self.loadJournalEntries()
         self.journalEntry = entryForSelectedDate
         if let journalEntry {
             self.flowCoordinator = PromptChainFlowCoordinator(
@@ -30,6 +34,15 @@ class HomeViewModel: ObservableObject {
                     self?.journalCompleted()
                 })
         }
+        self.addSelectedDateSubscriber()
+    }
+
+    func loadJournalEntries() {
+        let entries = promptsEntryPersistence.load()
+        for entry in entries {
+            journalEntries[Calendar.current.startOfDay(for: entry.promptEntryDate)] = entry
+        }
+        
     }
 
     func journalButtonTapped() {
@@ -47,17 +60,23 @@ class HomeViewModel: ObservableObject {
     }
 
     func journalCompleted() {
+        if let journalEntry {
+            promptsEntryPersistence.save([journalEntry])
+            journalEntries[selectedDate] = journalEntry
+        }
         coordinator.dismissFullScreenOver()
         flowCoordinator?.reset()
-        journalEntries[selectedDate] = journalEntry
     }
 
     var entryForSelectedDate: PromptsEntry? {
         journalEntries[selectedDate]
     }
     
-    func selectDate(_ date: Date) {
-        self.selectedDate = date
+    func addSelectedDateSubscriber() {
+        cancellable = $selectedDate.sink(receiveValue: { [weak self] _ in
+            self?.loadJournalEntries()
+            self?.journalEntry = self?.entryForSelectedDate
+        })
     }
 
     private func createNewPromptEntry() {
