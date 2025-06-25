@@ -5,12 +5,16 @@
 //  Created by patrick ridd on 5/20/25.
 //
 
-import Foundation
+import SwiftUI
 
 class CalendarWeekViewModel: ObservableObject {
 
-    @Published var selectedDate: Date = Date()
+    @Binding var selectedDate: Date
     @Published var currentWeekIndex: Int = 0
+
+    init(selectedDate: Binding<Date>) {
+        self._selectedDate = selectedDate
+    }
 
     let calendar = Calendar.current
     let daysRange: Int = 30 // Days before and after today

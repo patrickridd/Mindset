@@ -18,8 +18,27 @@ struct HomeView: View {
     var body: some View {
         VStack(spacing: 8) {
             topBar
-            CalendarWeekView()
+            // TODO: Pass selectedDate binding to CalendarWeekView when supported
+            CalendarWeekView(selectedDate: $viewModel.selectedDate)
                 .padding(.horizontal)
+            
+            // Show entry for selected day if it exists
+            if let entry = viewModel.entryForSelectedDate {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Journal for \(entry.promptEntryDate.formatted(date: .long, time: .omitted))")
+                        .font(.headline)
+                        .foregroundStyle(.orange)
+                    ForEach(entry.prompts.indices, id: \.self) { i in
+                        Text("• \(String(describing: entry.prompts[i]))") // Customize based on actual PromptContent type
+                            .font(.subheadline)
+                    }
+                }
+                .padding()
+                .background(Color(.secondarySystemBackground))
+                .cornerRadius(12)
+                .padding(.vertical, 4)
+            }
+            
             VStack(spacing: 12) {
                 Spacer()
                 journalButton

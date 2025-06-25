@@ -42,9 +42,9 @@ struct CalendarDayView: View {
 
 #Preview {
     HStack {
-        CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: CalendarDay.init(date: Date().addingTimeInterval(60*60*24*(-1)), isCurrentMonth: true), parentViewModel: CalendarWeekViewModel()))
-        CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: CalendarDay.init(date: Date(), isCurrentMonth: true), parentViewModel: CalendarWeekViewModel()))
-        CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: .init(date: Date().addingTimeInterval(60*60*24), isCurrentMonth: true), parentViewModel: CalendarWeekViewModel()))
-        CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: .init(date: Date().addingTimeInterval(60*60*24*2), isCurrentMonth: true), parentViewModel: CalendarWeekViewModel()))
+        CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: CalendarDay.init(date: Date().addingTimeInterval(60*60*24*(-1)), isCurrentMonth: true), parentViewModel: CalendarWeekViewModel(selectedDate: .constant(Date()))))
+        CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: CalendarDay.init(date: Date(), isCurrentMonth: true), parentViewModel: CalendarWeekViewModel(selectedDate: .constant(Date()))))
+        CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: .init(date: Date().addingTimeInterval(60*60*24), isCurrentMonth: true), parentViewModel: CalendarWeekViewModel(selectedDate: .constant(Date()))))
+        CalendarDayView(viewModel: CalendarDayViewModel(calendarDay: .init(date: Date().addingTimeInterval(60*60*24*2), isCurrentMonth: true), parentViewModel: CalendarWeekViewModel(selectedDate: .constant(Date()))))
     }
 }

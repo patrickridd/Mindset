@@ -4,8 +4,8 @@ struct CalendarWeekView: View {
     
     @ObservedObject private var viewModel: CalendarWeekViewModel
 
-    init(viewModel: CalendarWeekViewModel = CalendarWeekViewModel()) {
-        self.viewModel = viewModel
+    init(selectedDate: Binding<Date>) {
+        self.viewModel = CalendarWeekViewModel(selectedDate: selectedDate)
     }
 
     var body: some View {
@@ -51,7 +51,7 @@ struct CalendarWeekView: View {
 }
 
 #Preview {
-    CalendarWeekView()
+    CalendarWeekView(selectedDate: .constant(Date()))
 }
 
 extension CalendarWeekView {
