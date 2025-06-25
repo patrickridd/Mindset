@@ -1,5 +1,5 @@
 //
-//  JournalPrompt.swift
+//  PromptContent.swift
 //  Mindset
 //
 //  Created by patrick ridd on 6/2/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol Prompt: CoordinatedFlowStep {
+protocol PromptContent: CoordinatedFlowStep {
     var id: String { get }
     var title: String { get }
     var subtitle: String { get }

@@ -7,26 +7,10 @@
 
 import SwiftUI
 
- 
-protocol CoordinatableView: View, Hashable, Identifiable {}
-
-extension CoordinatableView {
-
-    public var id: Self { self }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.id == rhs.id
-    }
-}
-
 enum CoordinatedView: Hashable, Identifiable {
     case homeView
-    case promptView(journalPrompt: any Prompt, flowCoordinator: PromptChainFlowCoordinator)
-    case journalEntryView(journalEntry: JournalEntry, flowCoordinator: PromptChainFlowCoordinator)
+    case promptView(journalPrompt: any PromptContent, flowCoordinator: PromptChainFlowCoordinator)
+    case journalEntryView(journalEntry: PromptsEntry, flowCoordinator: PromptChainFlowCoordinator)
     
     public var id: Self { self }
     

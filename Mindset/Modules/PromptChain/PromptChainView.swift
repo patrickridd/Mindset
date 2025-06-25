@@ -18,7 +18,7 @@ struct PromptChainView: View {
                 .padding(.horizontal)
             NavigationStack(path: $flowCoordinator.path) {
                 EmptyView()
-                    .navigationDestination(for: JournalPrompt.self) { prompt in
+                    .navigationDestination(for: Prompt.self) { prompt in
                         flowCoordinator.view(for: prompt)
                     }
                     .navigationDestination(for: PromptCompletionStep.self) { completionStep in
@@ -30,7 +30,7 @@ struct PromptChainView: View {
 }
 
 #Preview {
-    PromptChainView(viewModel: .init(coordinator: Coordinator(), journalEntry: JournalEntry(journalPrompts: [JournalPrompt.gratitude]), flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {
+    PromptChainView(viewModel: .init(coordinator: Coordinator(), journalEntry: PromptsEntry(prompts: [Prompt.gratitude]), flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {
     })))
 }
 

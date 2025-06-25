@@ -12,13 +12,13 @@ import AVFoundation
 @MainActor
 class PromptViewModel: ObservableObject {
 
-    @Published var journalPrompt: any Prompt
+    @Published var journalPrompt: any PromptContent
     @Published var submissionSuccess: Bool = false
     @Published var flowCoordinator: (any FlowCoordinator)
     
     private let soundPlayer = SoundPlayer()
 
-    init(journalPrompt: any Prompt, flowCoordinator: any FlowCoordinator) {
+    init(journalPrompt: any PromptContent, flowCoordinator: any FlowCoordinator) {
         self.journalPrompt = journalPrompt
         self.flowCoordinator = flowCoordinator
     }

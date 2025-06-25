@@ -14,10 +14,10 @@ class PromptChainFlowCoordinator: FlowCoordinator {
     @Published private(set) var stepsCompleted: Int = 0
 
     private(set) var currentIndex = 0
-    let steps: [any Prompt]
+    let steps: [any PromptContent]
     var onCompletion: () -> Void
 
-    required init(steps: [any Prompt], onCompletion: @escaping () -> Void) {
+    required init(steps: [any PromptContent], onCompletion: @escaping () -> Void) {
         self.steps = steps
         self.onCompletion = onCompletion
         start()
@@ -58,7 +58,7 @@ class PromptChainFlowCoordinator: FlowCoordinator {
         stepsCompleted += 1
     }
 
-    func view(for step: any Prompt) -> AnyView {
+    func view(for step: any PromptContent) -> AnyView {
         AnyView(
             PromptView(viewModel: .init(journalPrompt: step, flowCoordinator: self))
         )

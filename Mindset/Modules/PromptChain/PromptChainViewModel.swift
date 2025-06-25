@@ -10,15 +10,15 @@ import SwiftUI
 @MainActor
 class PromptChainViewModel: ObservableObject {
 
-    @Published var journalEntry: any JournalEntryContent
+    @Published var journalEntry: any PromptsEntryContent
     private let parentCoordinator: any Coordinated
     private let flowCoordinator: any FlowCoordinator
 
-    var journalPrompts: [any Prompt] {
-        journalEntry.journalPrompts
+    var journalPrompts: [any PromptContent] {
+        journalEntry.prompts
     }
 
-    init(coordinator: any Coordinated, journalEntry: any JournalEntryContent, flowCoordinator: any FlowCoordinator) {
+    init(coordinator: any Coordinated, journalEntry: any PromptsEntryContent, flowCoordinator: any FlowCoordinator) {
         self.parentCoordinator = coordinator
         self.journalEntry = journalEntry
         self.flowCoordinator = flowCoordinator

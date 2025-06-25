@@ -13,7 +13,7 @@ extension Date {
 
 struct StreakTracker: View {
     
-    @State var allJournalEntries: [JournalEntry] = []
+    @State var allJournalEntries: [PromptsEntry] = []
     
     var currentStreak: Int {
         // Get all dates with a completed entry
