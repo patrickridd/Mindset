@@ -30,7 +30,7 @@ struct PromptChainView: View {
 }
 
 #Preview {
-    PromptChainView(viewModel: .init(coordinator: Coordinator(), journalEntry: PromptsEntry(prompts: [Prompt.gratitude]), flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {
+    PromptChainView(viewModel: .init(coordinator: Coordinator(), journalEntry: PromptsEntry(promptEntryDate: Date(), prompts: [Prompt.gratitude], type: .day), flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {
     })))
 }
 

@@ -20,7 +20,9 @@ class HomeViewModel: ObservableObject {
         self.coordinator = coordinator
         
         self.journalEntry = PromptsEntry(
-            prompts: [.gratitude, Prompt.affirmation, .goalSetting]
+            promptEntryDate: Date(),
+            prompts: [.gratitude, Prompt.affirmation, .goalSetting],
+            type: .day
         )
         self.flowCoordinator = PromptChainFlowCoordinator(
             steps: journalEntry.prompts,

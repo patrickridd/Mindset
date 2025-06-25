@@ -7,8 +7,9 @@
 
 import Foundation
 
-protocol PromptsEntryContent: Identifiable {
+protocol PromptsEntryContent: Identifiable, Codable {
     var id: UUID { get }
+    var promptEntryDate: Date { get }
     var dateCompleted: Date? { get set }
     var prompts: [any PromptContent] { get }
 }

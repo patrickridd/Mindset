@@ -8,13 +8,13 @@
 import SwiftUI
 
 struct HomeView: View {
-    
+
     @StateObject private var viewModel: HomeViewModel
-    
+
     init(viewModel: HomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
-    
+
     var body: some View {
         VStack(spacing: 8) {
             topBar

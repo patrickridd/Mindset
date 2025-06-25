@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol PromptContent: CoordinatedFlowStep {
+protocol PromptContent: CoordinatedFlowStep, Codable {
     var id: String { get }
     var title: String { get }
     var subtitle: String { get }
