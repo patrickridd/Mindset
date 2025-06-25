@@ -12,13 +12,13 @@ class CalendarDayViewModel: ObservableObject {
     @Published var isSelectedDay: Bool
 
     private(set) var calendarDay: CalendarDay
-    private(set) var parentViewModel: CalendarViewModel
+    private(set) var parentViewModel: CalendarWeekViewModel
     private(set) var isDayCompleted: Bool
 
     private let today = Calendar.current.startOfDay(for: Date())
     private let calendar = Calendar.current
 
-    init(calendarDay: CalendarDay, parentViewModel: CalendarViewModel, isDayCompleted: Bool = false) {
+    init(calendarDay: CalendarDay, parentViewModel: CalendarWeekViewModel, isDayCompleted: Bool = false) {
         self.calendarDay = calendarDay
         self.parentViewModel = parentViewModel
         self.isDayCompleted = isDayCompleted
