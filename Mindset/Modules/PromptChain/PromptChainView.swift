@@ -1,5 +1,5 @@
 //
-//  JournalEntryFlowView.swift
+//  EntryFlowView.swift
 //  Mindset
 //
 //  Created by patrick ridd on 6/2/25.
@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct JournalEntryFlowView: View {
+struct PromptChainView: View {
 
-    @StateObject var viewModel: JournalEntryFlowViewModel
-    @EnvironmentObject var flowCoordinator: JournalEntryFlowCoordinator
+    @StateObject var viewModel: PromptChainViewModel
+    @EnvironmentObject var flowCoordinator: PromptChainFlowCoordinator
 
     var body: some View {
         VStack {
@@ -22,7 +22,7 @@ struct JournalEntryFlowView: View {
                         flowCoordinator.view(for: prompt)
                     }
                     .navigationDestination(for: PromptCompletionStep.self) { completionStep in
-                        JournalEntryCompletionView(viewModel: .init(completionPrompt: completionStep, flowCoordinator: flowCoordinator))
+                        PromptChainCompletionView(viewModel: .init(completionPrompt: completionStep, flowCoordinator: flowCoordinator))
                     }
             }
         }
@@ -30,11 +30,11 @@ struct JournalEntryFlowView: View {
 }
 
 #Preview {
-    JournalEntryFlowView(viewModel: .init(coordinator: Coordinator(), journalEntry: JournalEntry(journalPrompts: [JournalPrompt.gratitude]), flowCoordinator: JournalEntryFlowCoordinator(steps: [], onCompletion: {
+    PromptChainView(viewModel: .init(coordinator: Coordinator(), journalEntry: JournalEntry(journalPrompts: [JournalPrompt.gratitude]), flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {
     })))
 }
 
-extension JournalEntryFlowView {
+extension PromptChainView {
     var topBarView: some View {
         HStack {
             Button {

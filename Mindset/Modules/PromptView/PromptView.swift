@@ -7,14 +7,14 @@
 
 import SwiftUI
 
-struct JournalPromptView: CoordinatableView {
+struct PromptView: CoordinatableView {
     
-    @StateObject private var viewModel: JournalPromptViewModel
+    @StateObject private var viewModel: PromptViewModel
     @FocusState private var isFocused: Bool
 
     let id: String
 
-    init(viewModel: JournalPromptViewModel) {
+    init(viewModel: PromptViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
         self.id = UUID().uuidString
     }
@@ -108,5 +108,5 @@ struct JournalPromptView: CoordinatableView {
 }
 
 #Preview {
-    JournalPromptView(viewModel: .init(journalPrompt: JournalPrompt.goalSetting, flowCoordinator: JournalEntryFlowCoordinator(steps: [], onCompletion: {})))
+    PromptView(viewModel: .init(journalPrompt: JournalPrompt.goalSetting, flowCoordinator: JournalEntryFlowCoordinator(steps: [], onCompletion: {})))
 }

@@ -1,5 +1,5 @@
 //
-//  JournalEntryFlowViewModel.swift
+//  PromptChainViewModel.swift
 //  Mindset
 //
 //  Created by patrick ridd on 6/2/25.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-class JournalEntryFlowViewModel: ObservableObject {
+class PromptChainViewModel: ObservableObject {
 
     @Published var journalEntry: any JournalEntryContent
     private let parentCoordinator: any Coordinated

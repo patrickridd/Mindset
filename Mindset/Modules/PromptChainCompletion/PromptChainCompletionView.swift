@@ -1,5 +1,5 @@
 //
-//  JournalEntryCompletionView.swift
+//  PromptChainCompletionView.swift
 //  Mindset
 //
 //  Created by patrick ridd on 6/8/25.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct JournalEntryCompletionView: View {
+struct PromptChainCompletionView: View {
 
-    @StateObject var viewModel: JournalEntryCompletionViewModel
+    @StateObject var viewModel: PromptChainCompletionViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
@@ -45,5 +45,5 @@ struct JournalEntryCompletionView: View {
 }
 
 #Preview {
-    JournalEntryCompletionView(viewModel: .init(completionPrompt: PromptCompletionStep(), flowCoordinator: JournalEntryFlowCoordinator(steps: [], onCompletion: {})))
+    PromptChainCompletionView(viewModel: .init(completionPrompt: PromptCompletionStep(), flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {})))
 }

@@ -10,7 +10,7 @@ import Combine
 import AVFoundation
 
 @MainActor
-class JournalPromptViewModel: ObservableObject {
+class PromptViewModel: ObservableObject {
 
     @Published var journalPrompt: any Prompt
     @Published var submissionSuccess: Bool = false

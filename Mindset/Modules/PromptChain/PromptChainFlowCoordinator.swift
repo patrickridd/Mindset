@@ -1,5 +1,5 @@
 //
-//  JournalEntryCoordinator.swift
+//  PromptChainFlowCoordinator.swift
 //  Mindset
 //
 //  Created by patrick ridd on 6/5/25.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 
-class JournalEntryFlowCoordinator: FlowCoordinator {
+class PromptChainFlowCoordinator: FlowCoordinator {
 
     @Published var path = NavigationPath()
     @Published private(set) var stepsCompleted: Int = 0
@@ -60,7 +60,7 @@ class JournalEntryFlowCoordinator: FlowCoordinator {
 
     func view(for step: any Prompt) -> AnyView {
         AnyView(
-            JournalPromptView(viewModel: .init(journalPrompt: step, flowCoordinator: self))
+            PromptView(viewModel: .init(journalPrompt: step, flowCoordinator: self))
         )
     }
     
