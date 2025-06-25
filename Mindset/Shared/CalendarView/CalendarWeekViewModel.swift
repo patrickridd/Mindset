@@ -25,10 +25,9 @@ class CalendarWeekViewModel: ObservableObject {
 
     var alignedEndDate: Date {
         let today = Date()
-        let endDate = calendar.date(byAdding: .day, value: daysRange, to: today) ?? today
-        let weekday = calendar.component(.weekday, from: endDate)
-        // weekday: 1 = Sunday, 7 = Saturday
-        return calendar.date(byAdding: .day, value: 7 - weekday, to: endDate) ?? endDate
+        let weekday = calendar.component(.weekday, from: today)
+        // Align to the end of the current week (Saturday)
+        return calendar.date(byAdding: .day, value: 7 - weekday, to: today) ?? today
     }
 
     var allDates: [CalendarDay] {
