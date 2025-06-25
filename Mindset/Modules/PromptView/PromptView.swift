@@ -34,6 +34,7 @@ struct PromptView: CoordinatableView {
                     Text(viewModel.journalPrompt.subtitle)
                         .font(.subheadline)
                         .foregroundColor(.gray)
+                        .fixedSize(horizontal: false, vertical: true)
                     Spacer()
                 }
             }

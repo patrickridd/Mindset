@@ -12,7 +12,7 @@ class HomeViewModel: ObservableObject {
 
     @Published var presentJournalEntry: Bool = false
     private let coordinator: any Coordinated
-    
+
     private(set) var flowCoordinator: PromptChainFlowCoordinator?
     private(set) var journalEntry: JournalEntry
     
