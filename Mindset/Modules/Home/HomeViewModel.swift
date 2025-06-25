@@ -13,7 +13,7 @@ class HomeViewModel: ObservableObject {
     @Published var presentJournalEntry: Bool = false
     private let coordinator: any Coordinated
     
-    private(set) var flowCoordinator: JournalEntryFlowCoordinator?
+    private(set) var flowCoordinator: PromptChainFlowCoordinator?
     private(set) var journalEntry: JournalEntry
     
     init(coordinator: any Coordinated) {
@@ -22,7 +22,7 @@ class HomeViewModel: ObservableObject {
         self.journalEntry = JournalEntry(
             journalPrompts: [.gratitude, JournalPrompt.affirmation, .goalSetting]
         )
-        self.flowCoordinator = JournalEntryFlowCoordinator(
+        self.flowCoordinator = PromptChainFlowCoordinator(
             steps: journalEntry.journalPrompts,
             onCompletion: { [weak self] in
                 self?.journalCompleted()

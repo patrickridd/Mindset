@@ -46,14 +46,14 @@ class Coordinator: Coordinated {
         switch screen {
         case .homeView:
             HomeView(viewModel: HomeViewModel(coordinator: self))
-        case .journalPromptView(let prompt, let flowCoordinator):
-            JournalPromptView(viewModel: JournalPromptViewModel(
+        case .promptView(let prompt, let flowCoordinator):
+            PromptView(viewModel: PromptViewModel(
                 journalPrompt: prompt,
                 flowCoordinator: flowCoordinator
             ))
             .environmentObject(flowCoordinator)
         case .journalEntryView(let journalEntry, let flowCoordinator):
-            JournalEntryFlowView(viewModel: JournalEntryFlowViewModel(coordinator: self, journalEntry: journalEntry, flowCoordinator: flowCoordinator))
+            PromptChainView(viewModel: PromptChainViewModel(coordinator: self, journalEntry: journalEntry, flowCoordinator: flowCoordinator))
                 .environmentObject(flowCoordinator)
         }
     }

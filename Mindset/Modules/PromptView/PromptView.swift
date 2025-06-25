@@ -1,5 +1,5 @@
 //
-//  JournalEntryView.swift
+//  PromptView.swift
 //  Mindset
 //
 //  Created by patrick ridd on 6/1/25.
@@ -108,5 +108,5 @@ struct PromptView: CoordinatableView {
 }
 
 #Preview {
-    PromptView(viewModel: .init(journalPrompt: JournalPrompt.goalSetting, flowCoordinator: JournalEntryFlowCoordinator(steps: [], onCompletion: {})))
+    PromptView(viewModel: .init(journalPrompt: JournalPrompt.goalSetting, flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {})))
 }

@@ -1,5 +1,5 @@
 //
-//  JournalPromptViewModel.swift
+//  PromptViewModel.swift
 //  Mindset
 //
 //  Created by patrick ridd on 6/1/25.
