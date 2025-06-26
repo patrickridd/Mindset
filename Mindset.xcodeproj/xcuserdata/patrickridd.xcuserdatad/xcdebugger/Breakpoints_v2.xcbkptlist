@@ -23,16 +23,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7B2118E9-D2FA-4B53-B36F-35C26CE4D590"
-            shouldBeEnabled = "No"
+            uuid = "26029584-8637-43D6-AF7F-0E49808D225D"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Mindset/Shared/CalendarView/CalendarWeekViewModel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "93"
-            endingLineNumber = "93"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
             landmarkName = "viewDidAppear()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7B8E7FA0-B796-4C18-B77A-6E9CBF421A9E"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Mindset/Shared/CalendarView/CalendarWeekViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "selectedDayDidChange()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

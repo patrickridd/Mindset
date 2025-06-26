@@ -15,6 +15,7 @@ class CalendarWeekViewModel: ObservableObject {
 
     init(selectedDate: Binding<Date>) {
         self._selectedDate = selectedDate
+        viewDidAppear()
     }
 
     let calendar = Calendar.current

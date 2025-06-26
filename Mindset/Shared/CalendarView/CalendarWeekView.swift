@@ -27,9 +27,6 @@ struct CalendarWeekView: View {
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .frame(height: 70)
-            .onAppear {
-                viewModel.viewDidAppear()
-            }
             .onChange(of: viewModel.selectedDate) { _,_  in
                 viewModel.selectedDayDidChange()
             }
