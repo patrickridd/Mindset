@@ -7,7 +7,7 @@ struct CalendarWeekView: View {
     init(selectedDate: Binding<Date>) {
         self.viewModel = CalendarWeekViewModel(selectedDate: selectedDate)
     }
-
+    
     var body: some View {
         VStack(spacing: 8) {
             HStack {
@@ -28,22 +28,10 @@ struct CalendarWeekView: View {
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             .frame(height: 70)
             .onAppear {
-                // Set initial week index to the week containing today
-                if let todayIndex = viewModel.allDates.firstIndex(where: {
-                    viewModel.calendar.isDate($0.date, inSameDayAs: viewModel.selectedDate)
-                }) {
-                    viewModel.currentWeekIndex = todayIndex / 7
-                    viewModel.currentWeekIndex = min(max(viewModel.currentWeekIndex, 0), viewModel.weeks.count - 1)
-                }
+                viewModel.viewDidAppear()
             }
             .onChange(of: viewModel.selectedDate) { _,_  in
-                // Update week index if selectedDate changes
-                if let selectedIndex = viewModel.allDates.firstIndex(where: {
-                    viewModel.calendar.isDate($0.date, inSameDayAs: viewModel.selectedDate)
-                }) {
-                    viewModel.currentWeekIndex = selectedIndex / 7
-                    viewModel.currentWeekIndex = min(max(viewModel.currentWeekIndex, 0), viewModel.weeks.count - 1)
-                }
+                viewModel.selectedDayDidChange()
             }
         }
         .padding(.vertical, 8)

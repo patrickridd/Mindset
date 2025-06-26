@@ -11,4 +11,5 @@ protocol PromptsEntryPersistence {
     func load() -> [PromptsEntry]
     func save(_ entries: [PromptsEntry])
     func add(_ entry: PromptsEntry)
+    func delete(_ entry: PromptsEntry) 
 }

@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 class CalendarDayViewModel: ObservableObject {
 
     @Published var isSelectedDay: Bool
@@ -96,8 +97,16 @@ class CalendarDayViewModel: ObservableObject {
     }
 
     func dayTapped() {
-        parentViewModel.selectedDate = Calendar.current.startOfDay(for: calendarDay.date)
-        isSelectedDay = calendar.isDate(calendarDay.date, inSameDayAs: parentViewModel.selectedDate)
+        let newDate = Calendar.current.startOfDay(for: calendarDay.date)
+        // Only update if it's different
+        guard !calendar.isDate(newDate, inSameDayAs: parentViewModel.selectedDate)
+        else { return }
+
+        parentViewModel.selectedDate = newDate
+        isSelectedDay = calendar.isDate(
+            calendarDay.date,
+            inSameDayAs: parentViewModel.selectedDate
+        )
     }
 
 }

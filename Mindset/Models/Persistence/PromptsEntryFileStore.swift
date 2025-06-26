@@ -31,4 +31,13 @@ struct PromptsEntryFileStore: PromptsEntryPersistence {
         existing.append(entry)
         save(existing)
     }
+
+    func delete(_ entry: PromptsEntry) {
+        var existing = load()
+        if let index = existing.firstIndex(of: entry) {
+            existing.remove(at: index)
+            save(existing)
+        }
+    }
+
 }

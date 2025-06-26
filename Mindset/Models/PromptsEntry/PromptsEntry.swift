@@ -22,6 +22,12 @@ struct PromptsEntry: PromptsEntryContent {
     }
 }
 
+extension PromptsEntry: Equatable {
+    static func == (lhs: PromptsEntry, rhs: PromptsEntry) -> Bool {
+        lhs.id == rhs.id
+    }
+}
+
 extension PromptsEntry {
     enum CodingKeys: String, CodingKey {
         case id

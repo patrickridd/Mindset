@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 class CalendarWeekViewModel: ObservableObject {
 
     @Binding var selectedDate: Date
@@ -77,4 +78,23 @@ class CalendarWeekViewModel: ObservableObject {
         calendar.isDate(selectedDate, inSameDayAs: calendarDay.date)
     }
 
+    func selectedDayDidChange() {
+        // Update week index if selectedDate changes
+        if let selectedIndex = allDates.firstIndex(where: {
+            calendar.isDate($0.date, inSameDayAs: selectedDate)
+        }) {
+            currentWeekIndex = selectedIndex / 7
+            currentWeekIndex = min(max(currentWeekIndex, 0), weeks.count - 1)
+        }
+    }
+
+    func viewDidAppear() {
+        // Set initial week index to the week containing today
+        if let todayIndex = allDates.firstIndex(where: {
+            calendar.isDate($0.date, inSameDayAs: selectedDate)
+        }) {
+            currentWeekIndex = todayIndex / 7
+            currentWeekIndex = min(max(currentWeekIndex, 0), weeks.count - 1)
+        }
+    }
 }

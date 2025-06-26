@@ -11,22 +11,27 @@ import SwiftUI
 @MainActor
 class HomeViewModel: ObservableObject {
 
-    @Published var presentJournalEntry: Bool = false
+    @Published var presentingPromptChainFlow: Bool = false
     @Published var selectedDate: Date
     @Published var journalEntries: [Date: PromptsEntry] = [:]
-    
+    @Published var journalEntry: PromptsEntry?
+
     private let coordinator: any Coordinated
     private let promptsEntryPersistence: PromptsEntryPersistence
-    private(set) var flowCoordinator: PromptChainFlowCoordinator?
-    private(set) var journalEntry: PromptsEntry?
     private var cancellable: AnyCancellable?
+    private(set) var flowCoordinator: PromptChainFlowCoordinator?
+
+    var buttonDisabled: Bool {
+        !Calendar.current.isDate(selectedDate, inSameDayAs: Date())
+    }
 
     init(coordinator: any Coordinated, promptsEntryPersistence: PromptsEntryPersistence) {
         self.selectedDate = Calendar.current.startOfDay(for: Date())
         self.promptsEntryPersistence = promptsEntryPersistence
         self.coordinator = coordinator
         self.loadJournalEntries()
-        self.journalEntry = entryForSelectedDate
+        self.journalEntry = entry(for: selectedDate)
+
         if let journalEntry {
             self.flowCoordinator = PromptChainFlowCoordinator(
                 steps: journalEntry.prompts,
@@ -42,7 +47,6 @@ class HomeViewModel: ObservableObject {
         for entry in entries {
             journalEntries[Calendar.current.startOfDay(for: entry.promptEntryDate)] = entry
         }
-        
     }
 
     func journalButtonTapped() {
@@ -51,7 +55,7 @@ class HomeViewModel: ObservableObject {
             journalButtonTapped()
             return
         }
-        presentJournalEntry.toggle()
+        presentingPromptChainFlow.toggle()
         SoundPlayer().entryStarted()
         coordinator.presentFullScreenCover(.journalEntryView(
             journalEntry: journalEntry,
@@ -68,20 +72,26 @@ class HomeViewModel: ObservableObject {
         flowCoordinator?.reset()
     }
 
-    var entryForSelectedDate: PromptsEntry? {
-        journalEntries[selectedDate]
+    func entry(for date: Date) -> PromptsEntry? {
+        journalEntries[date.startOfDay]
     }
-    
+
     func addSelectedDateSubscriber() {
-        cancellable = $selectedDate.sink(receiveValue: { [weak self] _ in
-            self?.loadJournalEntries()
-            self?.journalEntry = self?.entryForSelectedDate
+        cancellable = $selectedDate.sink(receiveValue: { [weak self] newDate in
+            self?.journalEntry = self?.entry(for: newDate)
         })
+    }
+
+    func deleteEntry() {
+        if let journalEntry {
+            promptsEntryPersistence.delete(journalEntry)
+            self.journalEntry = nil
+        }
     }
 
     private func createNewPromptEntry() {
         let newEntry = PromptsEntry(
-            promptEntryDate: selectedDate,
+            promptEntryDate: selectedDate.startOfDay,
             prompts: [.gratitude, Prompt.affirmation, .goalSetting],
             type: .day
         )

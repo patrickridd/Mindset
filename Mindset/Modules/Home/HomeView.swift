@@ -20,29 +20,37 @@ struct HomeView: View {
             topBar
             CalendarWeekView(selectedDate: $viewModel.selectedDate)
                 .padding(.horizontal)
-            
-            // Show entry for selected day if it exists
-            if let entry = viewModel.journalEntry {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Journal for \(entry.promptEntryDate.formatted(date: .long, time: .omitted))")
-                        .font(.headline)
-                        .foregroundStyle(.orange)
-                    ForEach(entry.prompts.indices, id: \.self) { i in
-                        Text("• \(String(describing: entry.prompts[i]))") // Customize based on actual PromptContent type
-                            .font(.subheadline)
+            ScrollView(showsIndicators: false) {
+                // Show entry for selected day if it exists
+                if let entry = $viewModel.journalEntry.wrappedValue {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack {
+                            Text("Journal for \(entry.promptEntryDate.formatted(date: .long, time: .omitted))")
+                                .font(.headline)
+                                .foregroundStyle(.orange)
+                            Spacer()
+                            Button(action: viewModel.deleteEntry) {
+                                Image(systemName: "trash")
+                                    .foregroundColor(.red)
+                            }
+                        }
+                        ForEach(entry.prompts.indices, id: \.self) { i in
+                            Text("• \(String(describing: entry.prompts[i]))") // Customize based on actual PromptContent type
+                                .font(.subheadline)
+                        }
                     }
+                    .padding()
+                    .background(Color(.secondarySystemBackground))
+                    .cornerRadius(12)
+                    .animation(.easeInOut, value: viewModel.journalEntry == nil)
                 }
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(12)
-                .padding(.vertical, 4)
-            }
-            
-            VStack(spacing: 12) {
-                Spacer()
-                journalButton
-                    .padding(.bottom, 100)
-                Spacer()
+
+                VStack(spacing: 12) {
+                    Spacer()
+                    journalButton
+                        .padding(.bottom, 100)
+                    Spacer()
+                }
             }
         }
     }
@@ -102,8 +110,10 @@ extension HomeView {
                     .foregroundStyle(.indigo)
                 buttonTitle
             }
-            .sensoryFeedback(.selection, trigger: viewModel.presentJournalEntry)
+            .sensoryFeedback(.selection, trigger: viewModel.presentingPromptChainFlow)
         }
+        .disabled(viewModel.buttonDisabled)
+        .opacity(viewModel.buttonDisabled ? 0.5 : 1.0)
     }
 
 }
