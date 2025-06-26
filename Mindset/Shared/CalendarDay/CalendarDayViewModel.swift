@@ -11,13 +11,11 @@ import SwiftUI
 class CalendarDayViewModel: ObservableObject {
 
     @Published var isSelectedDay: Bool
-
-    private(set) var calendarDay: CalendarDay
-    private(set) var parentViewModel: CalendarWeekViewModel
-    private(set) var isDayCompleted: Bool
-
+    private let calendarDay: CalendarDay
+    private let parentViewModel: CalendarWeekViewModel
     private let today = Calendar.current.startOfDay(for: Date())
     private let calendar = Calendar.current
+    private(set) var isDayCompleted: Bool
 
     init(calendarDay: CalendarDay, parentViewModel: CalendarWeekViewModel, isDayCompleted: Bool = false) {
         self.calendarDay = calendarDay
