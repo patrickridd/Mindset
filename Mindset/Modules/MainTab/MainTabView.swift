@@ -12,14 +12,20 @@ struct MainTabView: View {
     @EnvironmentObject var coordinator: Coordinator
 
     var body: some View {
-//        TabView {
+        TabView {
             coordinator.build(
                 .homeView(promptsEntryPersistence: PromptsEntryFileStore())
             )
-//                .tabItem {
-//                    Label("", systemImage: "brain.filled.head.profile")
-//                }
-//        }
+            .tabItem {
+                Label("", systemImage: "brain.filled.head.profile")
+            }
+            coordinator.build(
+                .trackerView(promptsEntryPersistence: PromptsEntryFileStore())
+            )
+            .tabItem {
+                Label("", systemImage: "chart.bar.xaxis.ascending")
+            }
+        }
         .tint(.indigo)
     }
 }

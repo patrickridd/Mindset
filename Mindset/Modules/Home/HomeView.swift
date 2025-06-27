@@ -1,8 +1,8 @@
 //
-//  ContentView.swift
+//  HomeView.swift
 //  Mindset
 //
-//  Created by patrick ridd on 5/14/25.
+//  Created by patrick ridd on 6/26/25.
 //
 
 import SwiftUI
@@ -16,42 +16,20 @@ struct HomeView: View {
     }
 
     var body: some View {
-        VStack(spacing: 8) {
+        VStack {
             topBar
-            CalendarWeekView(selectedDate: $viewModel.selectedDate)
-                .padding(.horizontal)
-            ScrollView(showsIndicators: false) {
-                // Show entry for selected day if it exists
+                .padding(.top)
+            ScrollView {
+                Spacer()
                 if let entry = $viewModel.journalEntry.wrappedValue {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Text("Journal for \(entry.promptEntryDate.formatted(date: .long, time: .omitted))")
-                                .font(.headline)
-                                .foregroundStyle(.orange)
-                            Spacer()
-                            Button(action: viewModel.deleteEntry) {
-                                Image(systemName: "trash")
-                                    .foregroundColor(.red)
-                            }
-                        }
-                        ForEach(entry.prompts.indices, id: \.self) { i in
-                            Text("• \(String(describing: entry.prompts[i]))") // Customize based on actual PromptContent type
-                                .font(.subheadline)
-                        }
-                    }
-                    .padding()
-                    .background(Color(.secondarySystemBackground))
-                    .cornerRadius(12)
-                    .animation(.easeInOut, value: viewModel.journalEntry == nil)
-                }
-
-                VStack(spacing: 12) {
+                    entryView(for: entry)
                     Spacer()
+                } else {
                     journalButton
-                        .padding(.bottom, 100)
-                    Spacer()
                 }
+                Spacer()
             }
+            .scrollBounceBehavior(.always)
         }
     }
 }
@@ -61,7 +39,6 @@ struct HomeView: View {
 }
 
 extension HomeView {
-
     var topBar: some View {
         HStack(alignment: .center) {
             navTitle
@@ -75,7 +52,7 @@ extension HomeView {
     }
 
     var navTitle: some View {
-        Text("Mindset")
+        Text("Daily Mindset")
             .font(.largeTitle)
             .fontWeight(.bold)
             .frame(maxWidth: .infinity,
@@ -92,13 +69,13 @@ extension HomeView {
                 .foregroundStyle(.indigo)
         }
     }
-    
+
     var buttonTitle: some View {
         Text("Tap to begin")
             .font(.headline)
             .foregroundStyle(.orange)
     }
-
+    
     var journalButton: some View {
         Button(action: {
             viewModel.journalButtonTapped()
@@ -110,10 +87,38 @@ extension HomeView {
                     .foregroundStyle(.indigo)
                 buttonTitle
             }
+            .padding(.top, 150)
             .sensoryFeedback(.selection, trigger: viewModel.presentingPromptChainFlow)
         }
-        .disabled(viewModel.buttonDisabled)
-        .opacity(viewModel.buttonDisabled ? 0.5 : 1.0)
     }
 
+    func entryView(for entry: PromptsEntry) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                Text("Journal for \(entry.promptEntryDate.formatted(date: .long, time: .omitted))")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(.orange)
+                Spacer()
+                Button(action: viewModel.deleteEntry) {
+                    Image(systemName: "trash")
+                        .foregroundStyle(.red)
+                }
+            }
+            ForEach(entry.prompts.indices, id: \.self) { i in
+                // Customize based on actual PromptContent type
+                HStack {
+                    Text("• \(entry.prompts[i].title):")
+                        .font(.subheadline)
+                    Text(String(describing: entry.prompts[i].entryText))
+                        .font(.headline)
+                }
+            }
+        }
+        .padding()
+        .background(Color(.secondarySystemBackground))
+        .cornerRadius(12)
+        .animation(.easeInOut, value: viewModel.journalEntry == nil)
+        .padding(.horizontal, 24)
+    }
 }

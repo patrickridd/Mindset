@@ -43,7 +43,7 @@ class PromptViewModel: ObservableObject {
     }
 
     var buttonText: String {
-        submissionSuccess ? "CONTINUE" : "CHECK"
+        submissionSuccess ? "CONTINUE" : "LET'S GO!"
     }
 
     var buttonBackgroundColor: Color {

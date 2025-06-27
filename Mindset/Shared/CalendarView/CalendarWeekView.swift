@@ -10,9 +10,8 @@ struct CalendarWeekView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            HStack {
-                monthTextView
-            }
+            monthTextView
+                .padding(.horizontal)
             TabView(selection: $viewModel.currentWeekIndex) {
                 ForEach(viewModel.weeks.indices, id: \.self) { weekIndex in
                     HStack(spacing: 8) {
@@ -43,8 +42,8 @@ extension CalendarWeekView {
 
     var monthTextView: some View {
         Text(viewModel.monthString)
-            .font(.subheadline)
-            .fontWeight(.semibold)
+            .font(.title)
+            .fontWeight(.bold)
             .foregroundColor(.orange)
             .multilineTextAlignment(.leading)
             .frame(maxWidth: .infinity, alignment: .leading)

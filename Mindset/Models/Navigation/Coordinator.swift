@@ -49,6 +49,11 @@ class Coordinator: Coordinated {
                 coordinator: self,
                 promptsEntryPersistence: promptsEntryPersistence
             ))
+        case .trackerView(let promptsEntryPersistence):
+            TrackerView(viewModel: TrackerViewModel(
+                coordinator: self,
+                promptsEntryPersistence: promptsEntryPersistence
+            ))
         case .promptView(let prompt, let flowCoordinator):
             PromptView(viewModel: PromptViewModel(
                 journalPrompt: prompt,

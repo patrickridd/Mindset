@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Prompt: PromptContent {
+class Prompt: PromptContent {
 
     let title: String
     let subtitle: String
@@ -15,6 +15,15 @@ struct Prompt: PromptContent {
     var date: Date
     var entryText: String
     var completed: Bool = false
+    
+    init(title: String, subtitle: String, id: String, date: Date, entryText: String) {
+        self.title = title
+        self.subtitle = subtitle
+        self.id = id
+        self.date = date
+        self.entryText = entryText
+    }
+
 }
 
 extension Prompt {

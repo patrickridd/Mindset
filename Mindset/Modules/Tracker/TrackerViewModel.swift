@@ -1,15 +1,16 @@
 //
-//  HomeViewModel.swift
+//  ChartViewModel.swift
 //  Mindset
 //
-//  Created by patrick ridd on 6/26/25.
+//  Created by patrick ridd on 6/2/25.
 //
 
+import Combine
 import SwiftUI
 
 @MainActor
-class HomeViewModel: ObservableObject {
-    
+class TrackerViewModel: ObservableObject {
+
     @Published var presentingPromptChainFlow: Bool = false
     @Published var selectedDate: Date
     @Published var journalEntries: [Date: PromptsEntry] = [:]
@@ -17,8 +18,13 @@ class HomeViewModel: ObservableObject {
 
     private let coordinator: any Coordinated
     private let promptsEntryPersistence: PromptsEntryPersistence
+    private var cancellable: AnyCancellable?
     private(set) var flowCoordinator: PromptChainFlowCoordinator?
-    
+
+    var buttonDisabled: Bool {
+        !Calendar.current.isDate(selectedDate, inSameDayAs: Date())
+    }
+
     init(coordinator: any Coordinated, promptsEntryPersistence: PromptsEntryPersistence) {
         self.selectedDate = Calendar.current.startOfDay(for: Date())
         self.promptsEntryPersistence = promptsEntryPersistence
@@ -33,6 +39,7 @@ class HomeViewModel: ObservableObject {
                     self?.journalCompleted()
                 })
         }
+        self.addSelectedDateSubscriber()
     }
 
     func loadJournalEntries() {
@@ -67,6 +74,12 @@ class HomeViewModel: ObservableObject {
 
     func entry(for date: Date) -> PromptsEntry? {
         journalEntries[date.startOfDay]
+    }
+
+    func addSelectedDateSubscriber() {
+        cancellable = $selectedDate.sink(receiveValue: { [weak self] newDate in
+            self?.journalEntry = self?.entry(for: newDate)
+        })
     }
 
     func deleteEntry() {
