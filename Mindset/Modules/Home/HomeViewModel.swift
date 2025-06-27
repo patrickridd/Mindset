@@ -83,10 +83,13 @@ class HomeViewModel: ObservableObject {
     }
 
     func deleteEntry() {
-        if let journalEntry {
-            promptsEntryPersistence.delete(journalEntry)
-            self.journalEntry = nil
-        }
+        guard
+            let journalEntry,
+            let index = journalEntries.values.firstIndex(of: journalEntry)
+        else { return }
+        journalEntries.remove(at: index)
+        promptsEntryPersistence.delete(journalEntry)
+        self.journalEntry = nil
     }
 
     private func createNewPromptEntry() {
