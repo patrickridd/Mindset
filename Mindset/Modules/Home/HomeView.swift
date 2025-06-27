@@ -93,32 +93,34 @@ extension HomeView {
     }
 
     func entryView(for entry: PromptsEntry) -> some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text("Journal for \(entry.promptEntryDate.formatted(date: .long, time: .omitted))")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.orange)
-                Spacer()
-                Button(action: viewModel.deleteEntry) {
-                    Image(systemName: "trash")
-                        .foregroundStyle(.red)
-                }
-            }
-            ForEach(entry.prompts.indices, id: \.self) { i in
-                // Customize based on actual PromptContent type
+        Button(action: viewModel.journalButtonTapped) {
+            VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    Text("• \(entry.prompts[i].title):")
-                        .font(.subheadline)
-                    Text(String(describing: entry.prompts[i].entryText))
-                        .font(.headline)
+                    Text("Journal for \(entry.promptEntryDate.formatted(date: .long, time: .omitted))")
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(.orange)
+                    Spacer()
+                    Button(action: viewModel.deleteEntry) {
+                        Image(systemName: "trash")
+                            .foregroundStyle(.red)
+                    }
+                }
+                ForEach(entry.prompts.indices, id: \.self) { i in
+                    // Customize based on actual PromptContent type
+                    HStack {
+                        Text("• \(entry.prompts[i].title):")
+                            .font(.subheadline)
+                        Text(String(describing: entry.prompts[i].entryText))
+                            .font(.headline)
+                    }
                 }
             }
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .cornerRadius(12)
+            .animation(.easeInOut, value: viewModel.journalEntry == nil)
+            .padding(.horizontal, 24)
         }
-        .padding()
-        .background(Color(.secondarySystemBackground))
-        .cornerRadius(12)
-        .animation(.easeInOut, value: viewModel.journalEntry == nil)
-        .padding(.horizontal, 24)
     }
 }

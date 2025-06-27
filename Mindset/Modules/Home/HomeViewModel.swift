@@ -61,6 +61,7 @@ class HomeViewModel: ObservableObject {
             promptsEntryPersistence.save([journalEntry])
             journalEntries[selectedDate] = journalEntry
         }
+        self.journalEntry = journalEntry
         coordinator.dismissFullScreenOver()
         flowCoordinator?.reset()
     }
@@ -73,7 +74,10 @@ class HomeViewModel: ObservableObject {
         guard
             let journalEntry,
             let index = journalEntries.values.firstIndex(of: journalEntry)
-        else { return }
+        else {
+            self.journalEntry = nil
+            return
+        }
         journalEntries.remove(at: index)
         promptsEntryPersistence.delete(journalEntry)
         self.journalEntry = nil
