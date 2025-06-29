@@ -8,92 +8,84 @@
 import SwiftUI
 
 @MainActor
+@Observable
 class HomeViewModel: ObservableObject {
     
-    @Published var presentingPromptChainFlow: Bool = false
-    @Published var selectedDate: Date
-    @Published var journalEntries: [Date: PromptsEntry] = [:]
-    @Published var journalEntry: PromptsEntry?
-
-    private let coordinator: any Coordinated
-    private let promptsEntryPersistence: PromptsEntryPersistence
-    private(set) var flowCoordinator: PromptChainFlowCoordinator?
+    var presentingPromptChainFlow: Bool = false
+    var selectedDate: Date
+    var displayedEntry: PromptsEntry?
     
-    init(coordinator: any Coordinated, promptsEntryPersistence: PromptsEntryPersistence) {
-        self.selectedDate = Calendar.current.startOfDay(for: Date())
-        self.promptsEntryPersistence = promptsEntryPersistence
-        self.coordinator = coordinator
-        self.loadJournalEntries()
-        self.journalEntry = entry(for: selectedDate)
+    private let coordinator: any Coordinated
+    private let promptsEntryManager: PromptsEntryManager
+    private(set) var flowCoordinator: PromptChainFlowCoordinator?
 
-        if let journalEntry {
+    init(coordinator: any Coordinated, promptsEntryManager: PromptsEntryManager) {
+        self.selectedDate = Calendar.current.startOfDay(for: Date())
+        self.promptsEntryManager = promptsEntryManager
+        self.coordinator = coordinator
+
+        if let entry {
             self.flowCoordinator = PromptChainFlowCoordinator(
-                steps: journalEntry.prompts,
+                steps: entry.prompts,
                 onCompletion: { [weak self] in
                     self?.journalCompleted()
                 })
+            self.displayedEntry = entry
         }
     }
 
-    func loadJournalEntries() {
-        let entries = promptsEntryPersistence.load()
-        for entry in entries {
-            journalEntries[Calendar.current.startOfDay(for: entry.promptEntryDate)] = entry
-        }
+    var entry: PromptsEntry? {
+        promptsEntryManager.promptEntry(for: selectedDate)
+    }
+
+    func setDisplayedEntry() {
+        displayedEntry = entry
     }
 
     func journalButtonTapped() {
-        guard let flowCoordinator, let journalEntry else {
+        guard entry != nil else {
             createNewPromptEntry()
-            journalButtonTapped()
+            presentPromptChainFlow()
             return
         }
+        presentPromptChainFlow()
+    }
+
+    private func presentPromptChainFlow() {
+        guard let flowCoordinator, let entry else { return }
         presentingPromptChainFlow.toggle()
         SoundPlayer().entryStarted()
         coordinator.presentFullScreenCover(.journalEntryView(
-            journalEntry: journalEntry,
+            journalEntry: entry,
             flowCoordinator: flowCoordinator
         ))
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            self.setDisplayedEntry()
+        })
     }
 
     func journalCompleted() {
-        if let journalEntry {
-            promptsEntryPersistence.save([journalEntry])
-            journalEntries[selectedDate] = journalEntry
+        if let entry {
+            promptsEntryManager.save(entry: entry, selectedDate: entry.promptEntryDate)
         }
-        self.journalEntry = journalEntry
         coordinator.dismissFullScreenOver()
         flowCoordinator?.reset()
     }
 
-    func entry(for date: Date) -> PromptsEntry? {
-        journalEntries[date.startOfDay]
-    }
-
-    func deleteEntry() {
-        guard
-            let journalEntry,
-            let index = journalEntries.values.firstIndex(of: journalEntry)
-        else {
-            self.journalEntry = nil
-            return
+    func deleteButtonTapped() {
+        if let entry {
+            promptsEntryManager.delete(entry: entry)
         }
-        journalEntries.remove(at: index)
-        promptsEntryPersistence.delete(journalEntry)
-        self.journalEntry = nil
+        displayedEntry = nil
     }
 
     private func createNewPromptEntry() {
-        let newEntry = PromptsEntry(
-            promptEntryDate: selectedDate.startOfDay,
-            prompts: [.gratitude, Prompt.affirmation, .goalSetting],
-            type: .day
-        )
-        self.journalEntry = newEntry
+        let entry = promptsEntryManager.createEntry(for: selectedDate)
         self.flowCoordinator = PromptChainFlowCoordinator(
-            steps: newEntry.prompts,
+            steps: entry.prompts,
             onCompletion: { [weak self] in
                 self?.journalCompleted()
-        })
+            }
+        )
     }
 }

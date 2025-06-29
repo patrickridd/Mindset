@@ -14,13 +14,17 @@ struct MainTabView: View {
     var body: some View {
         TabView {
             coordinator.build(
-                .homeView(promptsEntryPersistence: PromptsEntryFileStore())
+                .homeView(promptsEntryManager: PromptsEntryManager(
+                    promptsEntryPersistence: PromptsEntryFileStore()
+                ))
             )
             .tabItem {
                 Label("", systemImage: "brain.filled.head.profile")
             }
             coordinator.build(
-                .trackerView(promptsEntryPersistence: PromptsEntryFileStore())
+                .trackerView(promptsEntryManager: PromptsEntryManager(
+                    promptsEntryPersistence: PromptsEntryFileStore())
+                )
             )
             .tabItem {
                 Label("", systemImage: "chart.bar.xaxis.ascending")

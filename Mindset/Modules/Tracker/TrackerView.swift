@@ -21,7 +21,7 @@ struct TrackerView: View {
                 .padding(.top)
             ScrollView(showsIndicators: false) {
                 // Show entry for selected day if it exists
-                if let entry = $viewModel.journalEntry.wrappedValue {
+                if let entry = $viewModel.entryDisplayed.wrappedValue {
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
                             Text("Journal for \(entry.promptEntryDate.formatted(date: .long, time: .omitted))")
@@ -29,7 +29,7 @@ struct TrackerView: View {
                                 .fontWeight(.semibold)
                                 .foregroundStyle(.orange)
                             Spacer()
-                            Button(action: viewModel.deleteEntry) {
+                            Button(action: viewModel.deleteButtonTapped) {
                                 Image(systemName: "trash")
                                     .foregroundStyle(.red)
                             }
@@ -47,7 +47,7 @@ struct TrackerView: View {
                     .padding()
                     .background(Color(.secondarySystemBackground))
                     .cornerRadius(12)
-                    .animation(.easeInOut, value: viewModel.journalEntry == nil)
+                    .animation(.easeInOut, value: viewModel.entryDisplayed == nil)
                 }
             }
         }
@@ -55,7 +55,7 @@ struct TrackerView: View {
 }
 
 #Preview {
-    TrackerView(viewModel: TrackerViewModel(coordinator: Coordinator(), promptsEntryPersistence: PromptsEntryFileStore()))
+    TrackerView(viewModel: TrackerViewModel(coordinator: Coordinator(), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore())))
 }
 
 extension TrackerView {

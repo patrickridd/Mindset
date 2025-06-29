@@ -21,7 +21,7 @@ struct HomeView: View {
                 .padding(.top)
             ScrollView {
                 Spacer()
-                if let entry = $viewModel.journalEntry.wrappedValue {
+                if let entry = $viewModel.displayedEntry.wrappedValue {
                     entryView(for: entry)
                     Spacer()
                 } else {
@@ -35,7 +35,7 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(viewModel: HomeViewModel(coordinator: Coordinator(), promptsEntryPersistence: PromptsEntryFileStore()))
+    HomeView(viewModel: HomeViewModel(coordinator: Coordinator(), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore())))
 }
 
 extension HomeView {
@@ -101,7 +101,7 @@ extension HomeView {
                         .fontWeight(.semibold)
                         .foregroundStyle(.orange)
                     Spacer()
-                    Button(action: viewModel.deleteEntry) {
+                    Button(action: viewModel.deleteButtonTapped) {
                         Image(systemName: "trash")
                             .foregroundStyle(.red)
                     }
@@ -119,7 +119,7 @@ extension HomeView {
             .padding()
             .background(Color(.secondarySystemBackground))
             .cornerRadius(12)
-            .animation(.easeInOut, value: viewModel.journalEntry == nil)
+            .animation(.easeInOut, value: viewModel.entry == nil)
             .padding(.horizontal, 24)
         }
     }
