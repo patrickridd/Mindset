@@ -8,15 +8,14 @@
 import SwiftUI
 
 @MainActor
-@Observable
+
 class HomeViewModel: ObservableObject {
     
-    var presentingPromptChainFlow: Bool = false
-    var selectedDate: Date
-    var displayedEntry: PromptsEntry?
-    
-    private let coordinator: any Coordinated
-    private let promptsEntryManager: PromptsEntryManager
+    @Published var presentingPromptChainFlow: Bool = false
+    @Published var selectedDate: Date
+    @Published var promptsEntryManager: PromptsEntryManager
+
+    private(set) var coordinator: any Coordinated
     private(set) var flowCoordinator: PromptChainFlowCoordinator?
 
     init(coordinator: any Coordinated, promptsEntryManager: PromptsEntryManager) {
@@ -30,16 +29,11 @@ class HomeViewModel: ObservableObject {
                 onCompletion: { [weak self] in
                     self?.journalCompleted()
                 })
-            self.displayedEntry = entry
         }
     }
 
     var entry: PromptsEntry? {
         promptsEntryManager.promptEntry(for: selectedDate)
-    }
-
-    func setDisplayedEntry() {
-        displayedEntry = entry
     }
 
     func journalButtonTapped() {
@@ -59,9 +53,6 @@ class HomeViewModel: ObservableObject {
             journalEntry: entry,
             flowCoordinator: flowCoordinator
         ))
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-            self.setDisplayedEntry()
-        })
     }
 
     func journalCompleted() {
@@ -76,7 +67,6 @@ class HomeViewModel: ObservableObject {
         if let entry {
             promptsEntryManager.delete(entry: entry)
         }
-        displayedEntry = nil
     }
 
     private func createNewPromptEntry() {

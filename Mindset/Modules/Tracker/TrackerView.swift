@@ -21,33 +21,12 @@ struct TrackerView: View {
                 .padding(.top)
             ScrollView(showsIndicators: false) {
                 // Show entry for selected day if it exists
-                if let entry = $viewModel.entryDisplayed.wrappedValue {
-                    VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Text("Journal for \(entry.promptEntryDate.formatted(date: .long, time: .omitted))")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(.orange)
-                            Spacer()
-                            Button(action: viewModel.deleteButtonTapped) {
-                                Image(systemName: "trash")
-                                    .foregroundStyle(.red)
-                            }
-                        }
-                        ForEach(entry.prompts.indices, id: \.self) { i in
-                            // Customize based on actual PromptContent type
-                            HStack {
-                                Text("• \(entry.prompts[i].title):")
-                                    .font(.subheadline)
-                                Text(String(describing: entry.prompts[i].entryText))
-                                    .font(.headline)
-                            }
-                        }
-                    }
-                    .padding()
-                    .background(Color(.secondarySystemBackground))
-                    .cornerRadius(12)
-                    .animation(.easeInOut, value: viewModel.entryDisplayed == nil)
+                if let entry = viewModel.entry {
+                    PromptEntryCardView(viewModel: PromptEntryCardViewModel(
+                        entry: entry,
+                        coordinator: viewModel.coordinator,
+                        promptsEntryManager: viewModel.promptsEntryManager
+                    ))
                 }
             }
         }

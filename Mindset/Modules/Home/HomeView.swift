@@ -21,8 +21,12 @@ struct HomeView: View {
                 .padding(.top)
             ScrollView {
                 Spacer()
-                if let entry = $viewModel.displayedEntry.wrappedValue {
-                    entryView(for: entry)
+                if let entry = viewModel.entry {
+                    PromptEntryCardView(viewModel: PromptEntryCardViewModel(
+                        entry: entry,
+                        coordinator: viewModel.coordinator,
+                        promptsEntryManager: viewModel.promptsEntryManager
+                    ))
                     Spacer()
                 } else {
                     journalButton
