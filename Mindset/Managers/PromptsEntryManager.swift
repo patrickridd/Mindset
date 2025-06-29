@@ -11,11 +11,16 @@ protocol PromptsEntryManagerProtocol {
     
 }
 
-class PromptsEntryManager {
+@MainActor
+class PromptsEntryManager: ObservableObject {
     
+    @Published var entries: [Date: PromptsEntry] = [:]
     private let promptsEntryPersistence: PromptsEntryPersistence
-    private(set) var entries: [Date: PromptsEntry] = [:]
 
+    public static let shared = PromptsEntryManager(
+        promptsEntryPersistence: PromptsEntryFileStore()
+    )
+    
     init(promptsEntryPersistence: PromptsEntryPersistence) {
         self.promptsEntryPersistence = promptsEntryPersistence
         loadJournalEntries()
@@ -43,8 +48,8 @@ class PromptsEntryManager {
         entries[Calendar.current.startOfDay(for: date.startOfDay)]
     }
 
-    func save(entry: PromptsEntry, selectedDate: Date) {
-        entries[selectedDate.startOfDay] = entry
+    func save(entry: PromptsEntry) {
+        entries[entry.promptEntryDate.startOfDay] = entry
         promptsEntryPersistence.save([entry])
     }
 

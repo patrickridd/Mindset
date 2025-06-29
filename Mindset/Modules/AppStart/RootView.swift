@@ -10,6 +10,7 @@ import SwiftUI
 struct RootView: View {
 
     @StateObject var coordinator: Coordinator = Coordinator()
+    @StateObject var promptEntryManager: PromptsEntryManager = PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore())
 
     var body: some View {
         NavigationStack(path: $coordinator.path) {
@@ -25,6 +26,7 @@ struct RootView: View {
                 }
         }
         .environmentObject(coordinator)
+        .environmentObject(promptEntryManager)
     }
 }
 

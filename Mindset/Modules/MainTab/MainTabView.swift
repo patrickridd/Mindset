@@ -10,21 +10,18 @@ import SwiftUI
 struct MainTabView: View {
     
     @EnvironmentObject var coordinator: Coordinator
+    @EnvironmentObject var promptsEntryManager: PromptsEntryManager
 
     var body: some View {
         TabView {
             coordinator.build(
-                .homeView(promptsEntryManager: PromptsEntryManager(
-                    promptsEntryPersistence: PromptsEntryFileStore()
-                ))
+                .homeView(promptsEntryManager: promptsEntryManager)
             )
             .tabItem {
                 Label("", systemImage: "brain.filled.head.profile")
             }
             coordinator.build(
-                .trackerView(promptsEntryManager: PromptsEntryManager(
-                    promptsEntryPersistence: PromptsEntryFileStore())
-                )
+                .trackerView(promptsEntryManager: promptsEntryManager)
             )
             .tabItem {
                 Label("", systemImage: "chart.bar.xaxis.ascending")
