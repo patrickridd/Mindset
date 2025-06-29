@@ -20,7 +20,7 @@ struct PromptChainCompletionView: View {
             Spacer()
             
             Button(action: {
-                viewModel.continueButtonTapped()
+                viewModel.buttonTapped()
             }) {
                 HStack {
                     Text("DONE")

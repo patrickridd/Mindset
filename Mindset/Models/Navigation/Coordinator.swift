@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 class Coordinator: Coordinated {
     @Published var path: NavigationPath = NavigationPath()
     @Published var sheet: CoordinatedView?

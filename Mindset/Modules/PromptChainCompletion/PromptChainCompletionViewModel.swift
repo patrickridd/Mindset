@@ -18,7 +18,7 @@ class PromptChainCompletionViewModel: ObservableObject {
         self.flowCoordinator = flowCoordinator
     }
 
-    func continueButtonTapped() {
+    func buttonTapped() {
         flowCoordinator.onCompletion()
     }
 }
