@@ -109,5 +109,5 @@ struct PromptView: CoordinatableView {
 }
 
 #Preview {
-    PromptView(viewModel: .init(journalPrompt: Prompt.goalSetting, flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {})))
+    PromptView(viewModel: .init(journalPrompt: Prompt.goalSetting, flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {}), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore())))
 }

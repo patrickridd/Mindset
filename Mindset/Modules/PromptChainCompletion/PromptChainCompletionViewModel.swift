@@ -10,15 +10,15 @@ import Foundation
 @MainActor
 class PromptChainCompletionViewModel: ObservableObject {
     
-    @Published var flowCoordinator: any FlowCoordinator
     @Published var completionPrompt: any CoordinatedFlowCompletionStep
+    let coordinator: any Coordinated
 
-    init(completionPrompt: any CoordinatedFlowCompletionStep, flowCoordinator: any FlowCoordinator) {
+    init(completionPrompt: any CoordinatedFlowCompletionStep, coordinator: any Coordinated) {
         self.completionPrompt = completionPrompt
-        self.flowCoordinator = flowCoordinator
+        self.coordinator = coordinator
     }
 
     func buttonTapped() {
-        flowCoordinator.onCompletion()
+        coordinator.dismissFullScreenOver()
     }
 }

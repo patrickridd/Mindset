@@ -17,12 +17,18 @@ class PromptViewModel: ObservableObject {
     @Published var flowCoordinator: (any FlowCoordinator)
     
     private let soundPlayer = SoundPlayer()
+    private let promptEntryManager: PromptsEntryManager
 
-    init(journalPrompt: any PromptContent, flowCoordinator: any FlowCoordinator) {
+    init(
+        journalPrompt: any PromptContent,
+        flowCoordinator: any FlowCoordinator,
+        promptsEntryManager: PromptsEntryManager
+    ) {
         self.journalPrompt = journalPrompt
         self.flowCoordinator = flowCoordinator
+        self.promptEntryManager = promptsEntryManager
     }
-    
+
     func submit() {
         guard !journalPrompt.entryText.isEmpty else { return }
 

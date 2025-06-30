@@ -49,9 +49,10 @@ class HomeViewModel: ObservableObject {
         guard let flowCoordinator, let entry else { return }
         presentingPromptChainFlow.toggle()
         SoundPlayer().entryStarted()
-        coordinator.presentFullScreenCover(.journalEntryView(
-            journalEntry: entry,
-            flowCoordinator: flowCoordinator
+        coordinator.presentFullScreenCover(.promptsChainView(
+            promptsEntry: entry,
+            flowCoordinator: flowCoordinator,
+            promptsEntryManager: promptsEntryManager
         ))
     }
 

@@ -55,14 +55,15 @@ class Coordinator: Coordinated {
                 coordinator: self,
                 promptsEntryManager: promptsEntryManager
             ))
-        case .promptView(let prompt, let flowCoordinator):
+        case .promptView(let prompt, let flowCoordinator, let promptsEntryManager):
             PromptView(viewModel: PromptViewModel(
                 journalPrompt: prompt,
-                flowCoordinator: flowCoordinator
+                flowCoordinator: flowCoordinator,
+                promptsEntryManager: promptsEntryManager
             ))
             .environmentObject(flowCoordinator)
-        case .journalEntryView(let journalEntry, let flowCoordinator):
-            PromptChainView(viewModel: PromptChainViewModel(coordinator: self, journalEntry: journalEntry, flowCoordinator: flowCoordinator))
+        case .promptsChainView(let promptEntry, let flowCoordinator, let promptsEntryManger):
+            PromptChainView(viewModel: PromptChainViewModel(coordinator: self, promptsEntry: promptEntry, flowCoordinator: flowCoordinator, promptsEntryManager: promptsEntryManger))
                 .environmentObject(flowCoordinator)
         }
     }

@@ -11,7 +11,7 @@ struct PromptChainView: View {
 
     @StateObject var viewModel: PromptChainViewModel
     @EnvironmentObject var flowCoordinator: PromptChainFlowCoordinator
-
+    
     var body: some View {
         VStack {
             topBarView
@@ -22,7 +22,7 @@ struct PromptChainView: View {
                         flowCoordinator.view(for: prompt)
                     }
                     .navigationDestination(for: PromptCompletionStep.self) { completionStep in
-                        PromptChainCompletionView(viewModel: .init(completionPrompt: completionStep, flowCoordinator: flowCoordinator))
+                        PromptChainCompletionView(viewModel: .init(completionPrompt: completionStep, coordinator: viewModel.parentCoordinator))
                     }
             }
         }
@@ -30,8 +30,9 @@ struct PromptChainView: View {
 }
 
 #Preview {
-    PromptChainView(viewModel: .init(coordinator: Coordinator(), journalEntry: PromptsEntry(promptEntryDate: Date(), prompts: [Prompt.gratitude], type: .day), flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {
-    })))
+    PromptChainView(viewModel: .init(coordinator: Coordinator(), promptsEntry: PromptsEntry(promptEntryDate: Date(), prompts: [Prompt.gratitude], type: .day), flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {
+    }), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()))
+    )
 }
 
 extension PromptChainView {
@@ -44,13 +45,13 @@ extension PromptChainView {
                     .resizable()
                     .frame(width: 32, height: 32)
             }
-            ProgressBarView(progress: viewModel.journalPromptProgressValue)
+            ProgressBarView(progress: viewModel.promptEntryProgressValue)
             Button {
 
             } label: {
                 Text(viewModel.progressEmoji)
                     .font(.largeTitle)
-                    .animation(.easeInOut, value: viewModel.journalPromptProgressValue)
+                    .animation(.easeInOut, value: viewModel.promptEntryProgressValue)
             }
         }
     }

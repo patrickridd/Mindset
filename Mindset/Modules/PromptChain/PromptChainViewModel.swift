@@ -5,26 +5,31 @@
 //  Created by patrick ridd on 6/2/25.
 //
 
+import Combine
 import SwiftUI
 
 @MainActor
 class PromptChainViewModel: ObservableObject {
 
-    @Published var journalEntry: any PromptsEntryContent
-    private let parentCoordinator: any Coordinated
-    private let flowCoordinator: any FlowCoordinator
+    @Published var promptsEntry: PromptsEntry
+    let parentCoordinator: any Coordinated
+    private let flowCoordinator: PromptChainFlowCoordinator
+    private let promptsEntryManager: PromptsEntryManager
+    private(set) var cancellable: Cancellable?
 
-    var journalPrompts: [any PromptContent] {
-        journalEntry.prompts
+    var prompts: [any PromptContent] {
+        promptsEntry.prompts
     }
 
-    init(coordinator: any Coordinated, journalEntry: any PromptsEntryContent, flowCoordinator: any FlowCoordinator) {
+    init(coordinator: any Coordinated, promptsEntry: PromptsEntry, flowCoordinator: PromptChainFlowCoordinator, promptsEntryManager: PromptsEntryManager) {
         self.parentCoordinator = coordinator
-        self.journalEntry = journalEntry
+        self.promptsEntry = promptsEntry
         self.flowCoordinator = flowCoordinator
+        self.promptsEntryManager = promptsEntryManager
+        self.addFlowStepSubscriber()
     }
 
-    var journalPromptProgressValue: Double {
+    var promptEntryProgressValue: Double {
         let stepsCompleted = Double(flowCoordinator.stepsCompleted)
         let totalSteps: Double = Double(flowCoordinator.steps.count)
         return stepsCompleted/totalSteps
@@ -38,4 +43,13 @@ class PromptChainViewModel: ObservableObject {
         parentCoordinator.dismissFullScreenOver()
     }
 
+    func addFlowStepSubscriber() {
+        self.cancellable = flowCoordinator.$stepsCompleted.sink { [weak self] _ in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.promptsEntryManager.save(entry: self.promptsEntry)
+            }
+        }
+    }
 }
+

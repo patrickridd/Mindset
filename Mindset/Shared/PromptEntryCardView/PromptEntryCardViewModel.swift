@@ -33,9 +33,10 @@ class PromptEntryCardViewModel: ObservableObject {
                 self.promptsEntryManager.save(entry: self.entry)
             }
         )
-        coordinator.presentFullScreenCover(.journalEntryView(
-            journalEntry: entry,
-            flowCoordinator: flowCoordinator
+        coordinator.presentFullScreenCover(.promptsChainView(
+            promptsEntry: entry,
+            flowCoordinator: flowCoordinator,
+            promptsEntryManager: promptsEntryManager
         ))
     }
 

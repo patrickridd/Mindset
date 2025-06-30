@@ -12,7 +12,7 @@ class PromptChainFlowCoordinator: FlowCoordinator {
 
     @Published var path = NavigationPath()
     @Published private(set) var stepsCompleted: Int = 0
-
+    
     private(set) var currentIndex = 0
     let steps: [any PromptContent]
     var onCompletion: () -> Void
@@ -60,7 +60,14 @@ class PromptChainFlowCoordinator: FlowCoordinator {
 
     func view(for step: any PromptContent) -> AnyView {
         AnyView(
-            PromptView(viewModel: .init(journalPrompt: step, flowCoordinator: self))
+            PromptView(
+                viewModel: .init(journalPrompt: step,
+                                 flowCoordinator: self,
+                                 promptsEntryManager: PromptsEntryManager(
+                                    promptsEntryPersistence: PromptsEntryFileStore()
+                                 )
+                                )
+            )
         )
     }
     

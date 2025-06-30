@@ -32,7 +32,7 @@ struct PromptChainCompletionView: View {
                 .padding()
                 .background(.green)
                 .cornerRadius(12)
-                .sensoryFeedback(.success, trigger: viewModel.flowCoordinator.path)
+                .sensoryFeedback(.success, trigger: viewModel.coordinator.fullScreenCover)
             }
             .padding(.bottom)
         }
@@ -45,5 +45,5 @@ struct PromptChainCompletionView: View {
 }
 
 #Preview {
-    PromptChainCompletionView(viewModel: .init(completionPrompt: PromptCompletionStep(), flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {})))
+    PromptChainCompletionView(viewModel: .init(completionPrompt: PromptCompletionStep(), coordinator: Coordinator()))
 }
