@@ -1,5 +1,5 @@
 //
-//  PromptEntryCardView.swift
+//  PromptsEntryCardView.swift
 //  Mindset
 //
 //  Created by patrick ridd on 6/28/25.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct PromptEntryCardView: View {
+struct PromptsEntryCardView: View {
     
-    @ObservedObject var viewModel: PromptEntryCardViewModel
+    @ObservedObject var viewModel: PromptsEntryCardViewModel
 
     var body: some View {
         Button(action: viewModel.entryTapped) {
@@ -28,7 +28,7 @@ struct PromptEntryCardView: View {
                 ForEach(viewModel.entry.prompts.indices, id: \.self) { i in
                     // Customize based on actual PromptContent type
                     HStack {
-                        Text("• \(viewModel.entry.prompts[i].title):")
+                        Text("• \(viewModel.entry.prompts[i].title)")
                             .font(.subheadline)
                         Text(String(describing: viewModel.entry.prompts[i].entryText))
                             .font(.headline)
@@ -37,15 +37,21 @@ struct PromptEntryCardView: View {
             }
             .padding()
             .background(Color(.secondarySystemBackground))
-            .cornerRadius(12)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            // Clip background with rounded corners
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(.indigo, lineWidth: 1)
+                            // Add rounded border
+                        )
             .padding(.horizontal, 24)
         }
     }
 }
 
 #Preview {
-    PromptEntryCardView(
-        viewModel: PromptEntryCardViewModel(entry: PromptsEntry(promptEntryDate: Date(), prompts: [MockPromptContent()], type: .day), coordinator: Coordinator(), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()))
+    PromptsEntryCardView(
+        viewModel: PromptsEntryCardViewModel(entry: PromptsEntry(promptEntryDate: Date(), prompts: [MockPromptContent()], type: .day), coordinator: Coordinator(), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()))
     )
 }
 

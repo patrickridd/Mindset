@@ -14,7 +14,7 @@ class CalendarDayViewModel: ObservableObject {
     
     private let calendarDay: CalendarDay
     private let parentViewModel: CalendarWeekViewModel
-    private let today = Calendar.current.startOfDay(for: Date())
+    private let today = Date.today
     private let calendar = Calendar.current
     private(set) var isDayCompleted: Bool
 

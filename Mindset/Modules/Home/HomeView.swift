@@ -22,14 +22,16 @@ struct HomeView: View {
             ScrollView {
                 Spacer()
                 if let entry = viewModel.entry {
-                    PromptEntryCardView(viewModel: PromptEntryCardViewModel(
+                    PromptsEntryCardView(viewModel: PromptsEntryCardViewModel(
                         entry: entry,
                         coordinator: viewModel.coordinator,
                         promptsEntryManager: viewModel.promptsEntryManager
                     ))
                     Spacer()
                 } else {
-                    journalButton
+                    StartPromptsEntryCardView(viewModel: .init(coordinator: viewModel.coordinator, promptsEntryManager: viewModel.promptsEntryManager))
+                        .padding(.top, 12)
+
                 }
                 Spacer()
             }
@@ -52,6 +54,7 @@ extension HomeView {
                 profileButton
             }
         }
+        
         .padding(.horizontal, 16)
     }
 
@@ -78,53 +81,5 @@ extension HomeView {
         Text("Tap to begin")
             .font(.headline)
             .foregroundStyle(.orange)
-    }
-    
-    var journalButton: some View {
-        Button(action: {
-            viewModel.journalButtonTapped()
-        }) {
-            VStack(spacing: 12) {
-                Image(systemName: "square.and.pencil.circle.fill")
-                    .resizable()
-                    .frame(width: 200, height: 200)
-                    .foregroundStyle(.indigo)
-                buttonTitle
-            }
-            .padding(.top, 150)
-            .sensoryFeedback(.selection, trigger: viewModel.presentingPromptChainFlow)
-        }
-    }
-
-    func entryView(for entry: PromptsEntry) -> some View {
-        Button(action: viewModel.journalButtonTapped) {
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Text("Journal for \(entry.promptEntryDate.formatted(date: .long, time: .omitted))")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.orange)
-                    Spacer()
-                    Button(action: viewModel.deleteButtonTapped) {
-                        Image(systemName: "trash")
-                            .foregroundStyle(.red)
-                    }
-                }
-                ForEach(entry.prompts.indices, id: \.self) { i in
-                    // Customize based on actual PromptContent type
-                    HStack {
-                        Text("• \(entry.prompts[i].title):")
-                            .font(.subheadline)
-                        Text(String(describing: entry.prompts[i].entryText))
-                            .font(.headline)
-                    }
-                }
-            }
-            .padding()
-            .background(Color(.secondarySystemBackground))
-            .cornerRadius(12)
-            .animation(.easeInOut, value: viewModel.entry == nil)
-            .padding(.horizontal, 24)
-        }
     }
 }

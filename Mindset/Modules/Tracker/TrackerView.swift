@@ -22,11 +22,12 @@ struct TrackerView: View {
             ScrollView(showsIndicators: false) {
                 // Show entry for selected day if it exists
                 if let entry = viewModel.entry {
-                    PromptEntryCardView(viewModel: PromptEntryCardViewModel(
+                    PromptsEntryCardView(viewModel: PromptsEntryCardViewModel(
                         entry: entry,
                         coordinator: viewModel.coordinator,
                         promptsEntryManager: viewModel.promptsEntryManager
                     ))
+                    .padding(.top)
                 }
             }
         }

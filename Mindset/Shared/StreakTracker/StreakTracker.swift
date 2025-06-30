@@ -9,6 +9,10 @@ import SwiftUI
 
 extension Date {
     var startOfDay: Date { Calendar.current.startOfDay(for: self) }
+    
+    static var today: Date {
+        Calendar.current.startOfDay(for: Date())
+    }
 }
 
 struct StreakTracker: View {

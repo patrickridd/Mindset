@@ -8,7 +8,7 @@
 import Foundation
 
 @MainActor
-class PromptEntryCardViewModel: ObservableObject {
+class PromptsEntryCardViewModel: ObservableObject {
 
     let promptsEntryManager: PromptsEntryManager
     let entry: PromptsEntry
