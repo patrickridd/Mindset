@@ -9,12 +9,9 @@ import SwiftUI
 
 struct MoodSliderView: View {
 
-    @State private var moodValue: Double = 5
+    @State private var moodValue: Double = 3
 
-    let emojiMap = [
-        0: "😭", 1: "😢", 2: "😞", 3: "🙁", 4: "🫤", 5: "😐",
-        6: "🙂", 7: "😊", 8: "😄", 9: "😁", 10: "🤩"
-    ]
+    let emojiMap = [0: "😭", 1:"😞", 2: "🙁", 3: "😐", 4: "🙂", 5: "😀", 6: "🤩"]
     
     var moodEmoji: String {
         emojiMap[Int(moodValue)] ?? "🙂"
@@ -24,11 +21,9 @@ struct MoodSliderView: View {
         VStack(alignment: .leading) {
             Text("How are you feeling today? \(moodEmoji)")
                 .font(.title2)
-            Slider(value: $moodValue, in: 0...10, step: 1)
+            Slider(value: $moodValue, in: 0...Double(emojiMap.count-1), step: 1)
                 .accentColor(.indigo)
                 .sensoryFeedback(.selection, trigger: moodValue)
-            Text("\(Int(moodValue))/10")
-                .font(.headline)
         }
         .padding(.horizontal, 24)
     }
