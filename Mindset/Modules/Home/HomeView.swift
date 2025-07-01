@@ -16,26 +16,33 @@ struct HomeView: View {
     }
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             topBar
-                .padding(.top)
             ScrollView {
-                Spacer()
-                if let entry = viewModel.entry {
-                    PromptsEntryCardView(viewModel: PromptsEntryCardViewModel(
-                        entry: entry,
-                        coordinator: viewModel.coordinator,
-                        promptsEntryManager: viewModel.promptsEntryManager
-                    ))
-                    Spacer()
-                } else {
-                    StartPromptsEntryCardView(viewModel: .init(coordinator: viewModel.coordinator, promptsEntryManager: viewModel.promptsEntryManager))
-                        .padding(.top, 12)
-
+                VStack(spacing: 25) {
+                    VStack(spacing: 8) {
+                        Text("Good morning, Patrick!")
+                            .font(.title)
+                            .frame(width: UIScreen.main.bounds.width-48,
+                                   alignment: .leading)
+                        Text("Start your morning mindset here.")
+                            .frame(width: UIScreen.main.bounds.width-48,
+                                   alignment: .leading)
+                            .padding(.leading, 2)
+                    }
+                    if let entry = viewModel.entry {
+                        PromptsEntryCardView(viewModel: PromptsEntryCardViewModel(
+                            entry: entry,
+                            coordinator: viewModel.coordinator,
+                            promptsEntryManager: viewModel.promptsEntryManager
+                        ))
+                        .padding(.top)
+                    } else {
+                        StartPromptsEntryCardView(viewModel: .init(coordinator: viewModel.coordinator, promptsEntryManager: viewModel.promptsEntryManager))
+                    }
                 }
-                Spacer()
+                .padding(.top, 25)
             }
-            .scrollBounceBehavior(.always)
         }
     }
 }
@@ -46,16 +53,20 @@ struct HomeView: View {
 
 extension HomeView {
     var topBar: some View {
-        HStack(alignment: .center) {
-            navTitle
-            Spacer()
-            HStack(spacing: 16) {
-                StreakTracker()
-                profileButton
+        VStack {
+            HStack(alignment: .center) {
+                navTitle
+                Spacer()
+                HStack(spacing: 16) {
+                    StreakTracker()
+                    profileButton
+                }
             }
+            .padding(.vertical)
+            .padding(.horizontal, 16)
+            
+            Divider()
         }
-        
-        .padding(.horizontal, 16)
     }
 
     var navTitle: some View {

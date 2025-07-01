@@ -12,29 +12,28 @@ struct StartPromptsEntryCardView: View {
     @StateObject var viewModel: StartPromptsEntryCardViewModel
 
     var body: some View {
-        Button {
-            viewModel.playButtonTapped()
-        } label: {
+        VStack(spacing: 25.0) {
             HStack {
                 VStack(alignment: .leading, spacing: 8.0) {
                     headlineView
                     promptsDescriptionview
                 }
                 Spacer()
-                playButtonView
             }
-            .padding()
-            .background(Color(.secondarySystemBackground.withAlphaComponent(0.7)))
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            // Clip background with rounded corners
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .stroke(.indigo, lineWidth: 1)
-                            // Add rounded border
-                        )
-            .padding(.horizontal, 24)
-            .sensoryFeedback(.selection, trigger: viewModel.promptEntry)
+            MoodSliderView()
+            playButtonView
         }
+        .padding()
+        .background(Color(.secondarySystemBackground.withAlphaComponent(0.7)))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        // Clip background with rounded corners
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(.indigo, lineWidth: 1)
+                        // Add rounded border
+                    )
+        .padding(.horizontal, 24)
+        .sensoryFeedback(.selection, trigger: viewModel.promptEntry)
     }
 }
 
@@ -56,9 +55,13 @@ extension StartPromptsEntryCardView {
     }
     
     var playButtonView: some View {
-        Image(systemName: "square.and.pencil.circle.fill")
-            .resizable()
-            .frame(width: 50, height: 50)
+        Button {
+            viewModel.playButtonTapped()
+        } label: {
+            Image(systemName: "square.and.pencil.circle.fill")
+                .resizable()
+                .frame(width: 50, height: 50)
+        }
     }
     
     var promptsDescriptionview: some View {
