@@ -14,8 +14,10 @@ struct PromptChainView: View {
     
     var body: some View {
         VStack {
-            topBarView
-                .padding(.horizontal)
+            if viewModel.showTopBar {
+                topBarView
+                    .padding(.horizontal)
+            }
             NavigationStack(path: $flowCoordinator.path) {
                 EmptyView()
                     .navigationDestination(for: Prompt.self) { prompt in

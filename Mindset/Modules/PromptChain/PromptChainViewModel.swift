@@ -20,8 +20,13 @@ class PromptChainViewModel: ObservableObject {
     var prompts: [any PromptContent] {
         promptsEntry.prompts
     }
-
-    init(coordinator: any Coordinated, promptsEntry: PromptsEntry, flowCoordinator: PromptChainFlowCoordinator, promptsEntryManager: PromptsEntryManager) {
+    
+    init(
+        coordinator: any Coordinated,
+        promptsEntry: PromptsEntry,
+        flowCoordinator: PromptChainFlowCoordinator,
+        promptsEntryManager: PromptsEntryManager
+    ) {
         self.parentCoordinator = coordinator
         self.promptsEntry = promptsEntry
         self.flowCoordinator = flowCoordinator
@@ -41,6 +46,10 @@ class PromptChainViewModel: ObservableObject {
 
     func closeButtonTapped() {
         parentCoordinator.dismissFullScreenOver()
+    }
+
+    var showTopBar: Bool {
+        flowCoordinator.path.count <= flowCoordinator.steps.count
     }
 
     func addFlowStepSubscriber() {

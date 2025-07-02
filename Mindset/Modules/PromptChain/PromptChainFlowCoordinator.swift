@@ -61,12 +61,13 @@ class PromptChainFlowCoordinator: FlowCoordinator {
     func view(for step: any PromptContent) -> AnyView {
         AnyView(
             PromptView(
-                viewModel: .init(journalPrompt: step,
-                                 flowCoordinator: self,
-                                 promptsEntryManager: PromptsEntryManager(
-                                    promptsEntryPersistence: PromptsEntryFileStore()
-                                 )
-                                )
+                viewModel: .init(
+                    journalPrompt: step,
+                    flowCoordinator: self,
+                    promptsEntryManager: PromptsEntryManager(
+                        promptsEntryPersistence: PromptsEntryFileStore()
+                    )
+                )
             )
         )
     }
