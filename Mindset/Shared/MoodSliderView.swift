@@ -19,8 +19,12 @@ struct MoodSliderView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text("How are you feeling today? \(moodEmoji)")
-                .font(.title2)
+            HStack {
+                Text("How are you feeling today?")
+                    .font(.subheadline)
+                Text(moodEmoji)
+                    .font(.title)
+            }
             Slider(value: $moodValue, in: 0...Double(emojiMap.count-1), step: 1)
                 .accentColor(.indigo)
                 .sensoryFeedback(.selection, trigger: moodValue)
