@@ -12,19 +12,21 @@ struct PromptsEntry: PromptsEntryContent {
     let prompts: [any PromptContent]
     let promptEntryDate: Date
     var dateCompleted: Date? = nil
+    var moodValue: Double? = nil
     var type: PromptsEntryType
 
-    init(id: UUID = UUID(), promptEntryDate: Date, prompts: [any PromptContent], type: PromptsEntryType) {
+    init(id: UUID = UUID(), promptEntryDate: Date, prompts: [any PromptContent], type: PromptsEntryType, moodValue: Double? = nil) {
         self.id = id
         self.promptEntryDate = promptEntryDate
         self.prompts = prompts
         self.type = type
+        self.moodValue = moodValue
     }
 }
 
 extension PromptsEntry: Equatable {
     static func == (lhs: PromptsEntry, rhs: PromptsEntry) -> Bool {
-        lhs.id == rhs.id
+        lhs.id == rhs.id && lhs.moodValue == rhs.moodValue
     }
 }
 
@@ -35,6 +37,7 @@ extension PromptsEntry {
         case prompts
         case dateCompleted
         case type
+        case moodValue
     }
 
     struct AnyPromptContentWrapper: Codable {
@@ -84,6 +87,7 @@ extension PromptsEntry: Codable {
         try container.encode(dateCompleted, forKey: .dateCompleted)
         try container.encode(promptEntryDate, forKey: .promptEntryDate)
         try container.encode(type, forKey: .type)
+        try container.encode(moodValue, forKey: .moodValue)
     }
 
     public init(from decoder: Decoder) throws {
@@ -94,5 +98,6 @@ extension PromptsEntry: Codable {
         self.dateCompleted = try container.decodeIfPresent(Date.self, forKey: .dateCompleted)
         self.promptEntryDate = try container.decode(Date.self, forKey: .promptEntryDate)
         self.type = try container.decode(PromptsEntryType.self, forKey: .type)
+        self.moodValue = try container.decodeIfPresent(Double.self, forKey: .moodValue)
     }
 }

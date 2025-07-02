@@ -9,7 +9,7 @@ import SwiftUI
 
 struct MoodSliderView: View {
 
-    @State private var moodValue: Double = 3
+    @Binding var moodValue: Double
 
     let emojiMap = [0: "😭", 1:"😞", 2: "🙁", 3: "😐", 4: "🙂", 5: "😀", 6: "🤩"]
     
@@ -34,5 +34,6 @@ struct MoodSliderView: View {
 }
 
 #Preview {
-    MoodSliderView()
+    MoodSliderView(moodValue: .constant(3))
 }
+
