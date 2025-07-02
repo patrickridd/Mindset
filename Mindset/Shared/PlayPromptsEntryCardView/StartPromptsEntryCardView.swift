@@ -51,6 +51,13 @@ extension StartPromptsEntryCardView {
                 .foregroundStyle(.orange)
             Image(systemName: "sun.min")
                 .foregroundStyle(.yellow)
+//            Spacer()
+//            Button {
+//            } label: {
+//                Image(systemName: "slider.horizontal.3")
+//                    .foregroundStyle(.indigo)
+//            }
+//            .padding(.bottom)
         }
     }
     
