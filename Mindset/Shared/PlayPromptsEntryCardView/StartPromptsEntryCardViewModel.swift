@@ -36,5 +36,8 @@ class StartPromptsEntryCardViewModel: ObservableObject {
             promptsEntryManager: promptsEntryManager
         ))
     }
-    
+
+    func editButtonTapped() {
+        print("editButtonTapped")
+    }
 }

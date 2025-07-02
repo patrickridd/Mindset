@@ -46,18 +46,14 @@ extension StartPromptsEntryCardView {
     var headlineView: some View {
         HStack(alignment: .center) {
             Text("Morning Mindset")
-                .font(.headline)
+                .font(.title2)
                 .multilineTextAlignment(.leading)
                 .foregroundStyle(.orange)
             Image(systemName: "sun.min")
                 .foregroundStyle(.yellow)
-//            Spacer()
-//            Button {
-//            } label: {
-//                Image(systemName: "slider.horizontal.3")
-//                    .foregroundStyle(.indigo)
-//            }
-//            .padding(.bottom)
+            Spacer()
+            editButtonView
+                .padding(.bottom)
         }
     }
     
@@ -71,6 +67,17 @@ extension StartPromptsEntryCardView {
         }
     }
     
+    var editButtonView: some View {
+        Button {
+            viewModel.editButtonTapped()
+        } label: {
+            Image(systemName: "slider.horizontal.3")
+                .resizable()
+                .frame(width: 18, height: 18)
+                .foregroundStyle(.indigo)
+        }
+    }
+
     var promptsDescriptionview: some View {
         ForEach(Array(viewModel.promptEntry.prompts.enumerated()), id: \.offset) { (i, prompt) in
             // Customize based on actual PromptContent type
