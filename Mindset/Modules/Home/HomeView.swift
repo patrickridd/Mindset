@@ -58,7 +58,7 @@ struct HomeView: View {
 #Preview {
     HomeView(
         viewModel: HomeViewModel(
-            coordinator: Coordinator(),
+            coordinator: Coordinator(viewFactory: ViewFactory()),
             promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()),
             dayTime: .morning
         )
@@ -68,7 +68,7 @@ struct HomeView: View {
 #Preview {
     HomeView(
         viewModel: HomeViewModel(
-            coordinator: Coordinator(),
+            coordinator: Coordinator(viewFactory: ViewFactory()),
             promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()),
             dayTime: .night
         )

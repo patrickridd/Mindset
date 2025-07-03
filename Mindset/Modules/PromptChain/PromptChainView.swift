@@ -32,7 +32,7 @@ struct PromptChainView: View {
 }
 
 #Preview {
-    PromptChainView(viewModel: .init(coordinator: Coordinator(), promptsEntry: PromptsEntry(promptEntryDate: Date(), prompts: [Prompt.gratitude], type: .morning), flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {
+    PromptChainView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntry: PromptsEntry(promptEntryDate: Date(), prompts: [Prompt.gratitude], type: .morning), flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {
     }), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()))
     )
 }

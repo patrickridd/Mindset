@@ -45,5 +45,5 @@ struct PromptChainCompletionView: View {
 }
 
 #Preview {
-    PromptChainCompletionView(viewModel: .init(completionPrompt: PromptCompletionStep(), coordinator: Coordinator()))
+    PromptChainCompletionView(viewModel: .init(completionPrompt: PromptCompletionStep(), coordinator: Coordinator(viewFactory: ViewFactory())))
 }

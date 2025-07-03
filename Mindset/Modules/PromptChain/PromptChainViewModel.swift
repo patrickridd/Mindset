@@ -45,7 +45,7 @@ class PromptChainViewModel: ObservableObject {
     }
 
     func closeButtonTapped() {
-        parentCoordinator.dismissFullScreenOver()
+        parentCoordinator.dismissFullScreenCover()
     }
 
     var showTopBar: Bool {

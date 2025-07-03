@@ -53,7 +53,7 @@ class HomeViewModel: ObservableObject {
         if let entry {
             promptsEntryManager.save(entry: entry)
         }
-        coordinator.dismissFullScreenOver()
+        coordinator.dismissFullScreenCover()
         flowCoordinator?.reset()
     }
 

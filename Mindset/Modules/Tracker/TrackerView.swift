@@ -35,7 +35,7 @@ struct TrackerView: View {
 }
 
 #Preview {
-    TrackerView(viewModel: TrackerViewModel(coordinator: Coordinator(), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore())))
+    TrackerView(viewModel: TrackerViewModel(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore())))
 }
 
 extension TrackerView {

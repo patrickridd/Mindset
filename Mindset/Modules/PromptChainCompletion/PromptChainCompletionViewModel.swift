@@ -19,6 +19,6 @@ class PromptChainCompletionViewModel: ObservableObject {
     }
 
     func buttonTapped() {
-        coordinator.dismissFullScreenOver()
+        coordinator.dismissFullScreenCover()
     }
 }
