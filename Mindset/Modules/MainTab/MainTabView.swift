@@ -35,19 +35,7 @@ struct MainTabView: View {
     }
     
     var getDayTime: DayTime {
-        let initialType: DayTime
-        #if DEBUG
-        // colorScheme is only available at runtime, so use the provided promptsEntryType if any in preview
-        initialType = .morning
-        #else
-        if let providedType = promptsEntryType {
-            initialType = providedType
-        } else {
-            // Determine initial promptsEntryType based on colorScheme at runtime
-            initialType = colorScheme == .dark ? .night : .day
-        }
-        #endif
-        return initialType
+        colorScheme == .dark ? .night : .morning
     }
 }
 

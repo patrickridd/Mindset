@@ -43,6 +43,10 @@ struct HomeView: View {
                             promptsEntryManager: viewModel.promptsEntryManager,
                             dayTime: viewModel.dayTime
                         ))
+                        .animation(
+                            .spring(duration: 0.5),
+                            value: viewModel.dayTime
+                        )
                     }
                 }
                 .padding(.top, 25)
