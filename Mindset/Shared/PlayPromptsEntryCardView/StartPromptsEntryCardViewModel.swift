@@ -13,19 +13,21 @@ class StartPromptsEntryCardViewModel: ObservableObject {
     let coordinator: any Coordinated
     let promptsEntryManager: PromptsEntryManager
     let promptEntry = PromptsEntry(promptEntryDate: .today, prompts: [.gratitude, Prompt.affirmation, .goalSetting, Prompt.reflection], type: .day)
-
+    let promptsEntryType: PromptsEntryType
+    
     @Published var moodValue: Double = 3
     @Published var hasInteractedWithMoodSlider: Bool = false
 
-    init(coordinator: any Coordinated, promptsEntryManager: PromptsEntryManager) {
+    init(coordinator: any Coordinated, promptsEntryManager: PromptsEntryManager, promptsEntryType: PromptsEntryType) {
         self.coordinator = coordinator
         self.promptsEntryManager = promptsEntryManager
+        self.promptsEntryType = promptsEntryType
     }
 
     func playButtonTapped() {
         SoundPlayer().entryStarted()
         // TODO: Update PromptsEntryManager.createEntry to accept moodValue.
-        let entry = promptsEntryManager.createEntry(for: .today, moodValue: self.moodValue)
+        let entry = promptsEntryManager.createEntry(for: .today, moodValue: self.moodValue, promptsEntryType: promptsEntryType)
         let flowCoordinator = PromptChainFlowCoordinator(
             steps: entry.prompts,
             onCompletion: { [weak self] in

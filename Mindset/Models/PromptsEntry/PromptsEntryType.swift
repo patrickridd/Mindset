@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum PromptsEntryType: String, Codable {
+enum PromptsEntryType: String, Codable, CaseIterable {
     case day
     case night
 }

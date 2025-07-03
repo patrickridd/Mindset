@@ -43,7 +43,7 @@ struct StartPromptsEntryCardView: View {
 }
 
 #Preview {
-    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore())))
+    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), promptsEntryType: .day))
 }
 
 extension StartPromptsEntryCardView {
@@ -52,10 +52,12 @@ extension StartPromptsEntryCardView {
         HStack(alignment: .center) {
             Text("Morning Mindset")
                 .font(.title2)
+                .fontWeight(.bold)
                 .multilineTextAlignment(.leading)
                 .foregroundStyle(.orange)
             Image(systemName: "sun.min")
                 .foregroundStyle(.yellow)
+                .fontWeight(.bold)
             Spacer()
             editButtonView
                 .padding(.bottom)
