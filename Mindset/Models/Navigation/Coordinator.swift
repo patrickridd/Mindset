@@ -45,10 +45,11 @@ class Coordinator: Coordinated {
     @ViewBuilder
     func build(_ screen: CoordinatedView) -> some View {
         switch screen {
-        case .homeView(let promptsEntryManager):
+        case .homeView(let promptsEntryManager, let dayTime):
             HomeView(viewModel: HomeViewModel(
                 coordinator: self,
-                promptsEntryManager: promptsEntryManager
+                promptsEntryManager: promptsEntryManager,
+                dayTime: dayTime
             ))
         case .trackerView(let promptsEntryManager):
             TrackerView(viewModel: TrackerViewModel(

@@ -13,9 +13,9 @@ struct PromptsEntry: PromptsEntryContent {
     let promptEntryDate: Date
     var dateCompleted: Date? = nil
     var moodValue: Double? = nil
-    var type: PromptsEntryType
+    var type: DayTime
 
-    init(id: UUID = UUID(), promptEntryDate: Date, prompts: [any PromptContent], type: PromptsEntryType, moodValue: Double? = nil) {
+    init(id: UUID = UUID(), promptEntryDate: Date, prompts: [any PromptContent], type: DayTime, moodValue: Double? = nil) {
         self.id = id
         self.promptEntryDate = promptEntryDate
         self.prompts = prompts
@@ -97,7 +97,7 @@ extension PromptsEntry: Codable {
         self.prompts = promptWrappers.map { $0.prompt }
         self.dateCompleted = try container.decodeIfPresent(Date.self, forKey: .dateCompleted)
         self.promptEntryDate = try container.decode(Date.self, forKey: .promptEntryDate)
-        self.type = try container.decode(PromptsEntryType.self, forKey: .type)
+        self.type = try container.decode(DayTime.self, forKey: .type)
         self.moodValue = try container.decodeIfPresent(Double.self, forKey: .moodValue)
     }
 }

@@ -8,35 +8,11 @@
 import SwiftUI
 
 struct HomeView: View {
-    
-    @Environment(\.colorScheme) private var colorScheme
+
     @StateObject private var viewModel: HomeViewModel
 
-    init(viewModel: HomeViewModel, promptsEntryType: PromptsEntryType? = nil) {
-        let initialType: PromptsEntryType
-        #if DEBUG
-        // colorScheme is only available at runtime, so use the provided promptsEntryType if any in preview
-        if let providedType = promptsEntryType {
-            initialType = providedType
-        } else {
-            initialType = .day
-        }
-        #else
-        if let providedType = promptsEntryType {
-            initialType = providedType
-        } else {
-            // Determine initial promptsEntryType based on colorScheme at runtime
-            initialType = colorScheme == .dark ? .night : .day
-        }
-        #endif
-        
-        let updatedViewModel = HomeViewModel(
-            coordinator: viewModel.coordinator,
-            promptsEntryManager: viewModel.promptsEntryManager,
-            promptsEntryType: initialType
-        )
-        
-        self._viewModel = StateObject(wrappedValue: updatedViewModel)
+    init(viewModel: HomeViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -65,7 +41,7 @@ struct HomeView: View {
                         StartPromptsEntryCardView(viewModel: StartPromptsEntryCardViewModel(
                             coordinator: viewModel.coordinator,
                             promptsEntryManager: viewModel.promptsEntryManager,
-                            promptsEntryType: viewModel.promptsEntryType
+                            dayTime: viewModel.dayTime
                         ))
                     }
                 }
@@ -76,13 +52,22 @@ struct HomeView: View {
 }
 
 #Preview {
-    // Note: colorScheme is only available at runtime, so previews should test both light and dark if needed
     HomeView(
         viewModel: HomeViewModel(
             coordinator: Coordinator(),
-            promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore())
-        ),
-        promptsEntryType: nil
+            promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()),
+            dayTime: .morning
+        )
+    )
+}
+
+#Preview {
+    HomeView(
+        viewModel: HomeViewModel(
+            coordinator: Coordinator(),
+            promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()),
+            dayTime: .night
+        )
     )
 }
 
@@ -91,8 +76,7 @@ extension HomeView {
         VStack {
             HStack(alignment: .center) {
                 VStack(alignment: .leading, spacing: 0) {
-//                    navTitle
-                    promptsEntryTypePicker
+                    DayTimePicker(dayTime: $viewModel.dayTime)
                 }
                 Spacer()
                 HStack(alignment: .top, spacing: 16) {
@@ -104,31 +88,6 @@ extension HomeView {
             .padding(.horizontal, 16)
             
             Divider()
-        }
-    }
-
-    var promptsEntryTypePicker: some View {
-        HStack(alignment: .center, spacing: 4) {
-            ForEach(PromptsEntryType.allCases, id: \.self) { type in
-                Button(action: {
-                    viewModel.promptsEntryType = type
-                }) {
-                    Text(type.displayName)
-                        .font(.title2)
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 18)
-                        .background(
-                            viewModel.promptsEntryType == type ? Color.accentColor.opacity(colorScheme == .dark ? 0.4 : 0.18) : Color.clear
-                        )
-                        .foregroundStyle(viewModel.promptsEntryType == type ? Color.accentColor : Color.primary)
-                        .clipShape(Capsule())
-                        .animation(
-                            .easeInOut(duration: 0.18),
-                            value: viewModel.promptsEntryType
-                        )
-                }
-                .buttonStyle(.plain)
-            }
         }
     }
 
@@ -158,11 +117,12 @@ extension HomeView {
     }
 }
 
-extension PromptsEntryType {
+extension DayTime {
     var displayName: String {
         switch self {
-        case .day: return "☀️"
+        case .morning: return "☀️"
         case .night: return "🌙"
         }
     }
 }
+

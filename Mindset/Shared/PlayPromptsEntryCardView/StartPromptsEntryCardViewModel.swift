@@ -6,28 +6,29 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor
 class StartPromptsEntryCardViewModel: ObservableObject {
 
     let coordinator: any Coordinated
     let promptsEntryManager: PromptsEntryManager
-    let promptEntry = PromptsEntry(promptEntryDate: .today, prompts: [.gratitude, Prompt.affirmation, .goalSetting, Prompt.reflection], type: .day)
-    let promptsEntryType: PromptsEntryType
+    let promptEntry = PromptsEntry(promptEntryDate: .today, prompts: [.gratitude, Prompt.affirmation, .goalSetting, Prompt.reflection], type: .morning)
     
+    let dayTime: DayTime
     @Published var moodValue: Double = 3
     @Published var hasInteractedWithMoodSlider: Bool = false
 
-    init(coordinator: any Coordinated, promptsEntryManager: PromptsEntryManager, promptsEntryType: PromptsEntryType) {
+    init(coordinator: any Coordinated, promptsEntryManager: PromptsEntryManager, dayTime: DayTime) {
         self.coordinator = coordinator
         self.promptsEntryManager = promptsEntryManager
-        self.promptsEntryType = promptsEntryType
+        self.dayTime = dayTime
     }
 
     func playButtonTapped() {
         SoundPlayer().entryStarted()
         // TODO: Update PromptsEntryManager.createEntry to accept moodValue.
-        let entry = promptsEntryManager.createEntry(for: .today, moodValue: self.moodValue, promptsEntryType: promptsEntryType)
+        let entry = promptsEntryManager.createEntry(for: .today, moodValue: self.moodValue, promptsEntryType: dayTime)
         let flowCoordinator = PromptChainFlowCoordinator(
             steps: entry.prompts,
             onCompletion: { [weak self] in
@@ -43,6 +44,15 @@ class StartPromptsEntryCardViewModel: ObservableObject {
         ))
     }
 
+    var title: String {
+        switch dayTime {
+        case .morning:
+            return "Good morning ☀️"
+        case .night:
+            return "Good Evening 🌝"
+        }
+    }
+    
     func editButtonTapped() {
         print("editButtonTapped")
     }

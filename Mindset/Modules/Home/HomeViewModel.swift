@@ -14,16 +14,16 @@ class HomeViewModel: ObservableObject {
     @Published var presentingPromptChainFlow: Bool = false
     @Published var selectedDate: Date
     @Published var promptsEntryManager: PromptsEntryManager
-    @Published var promptsEntryType: PromptsEntryType
+    @Published var dayTime: DayTime
     
     private(set) var coordinator: any Coordinated
     private(set) var flowCoordinator: PromptChainFlowCoordinator?
 
-    init(coordinator: any Coordinated, promptsEntryManager: PromptsEntryManager, promptsEntryType: PromptsEntryType? = nil) {
+    init(coordinator: any Coordinated, promptsEntryManager: PromptsEntryManager, dayTime: DayTime? = nil) {
         self.selectedDate = Calendar.current.startOfDay(for: Date())
         self.promptsEntryManager = promptsEntryManager
         self.coordinator = coordinator
-        self.promptsEntryType = promptsEntryType ?? .day
+        self.dayTime = dayTime ?? .morning
 
         if let entry {
             self.flowCoordinator = PromptChainFlowCoordinator(

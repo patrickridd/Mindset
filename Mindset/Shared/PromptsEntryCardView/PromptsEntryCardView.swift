@@ -51,7 +51,7 @@ struct PromptsEntryCardView: View {
 
 #Preview {
     PromptsEntryCardView(
-        viewModel: PromptsEntryCardViewModel(entry: PromptsEntry(promptEntryDate: Date(), prompts: [MockPromptContent()], type: .day), coordinator: Coordinator(), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()))
+        viewModel: PromptsEntryCardViewModel(entry: PromptsEntry(promptEntryDate: Date(), prompts: [MockPromptContent()], type: .morning), coordinator: Coordinator(), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()))
     )
 }
 

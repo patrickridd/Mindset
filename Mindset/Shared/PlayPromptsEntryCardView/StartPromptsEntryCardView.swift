@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StartPromptsEntryCardView: View {
     
-    @StateObject var viewModel: StartPromptsEntryCardViewModel
+    @ObservedObject var viewModel: StartPromptsEntryCardViewModel
 
     var body: some View {
         VStack(spacing: 25.0) {
@@ -43,21 +43,20 @@ struct StartPromptsEntryCardView: View {
 }
 
 #Preview {
-    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), promptsEntryType: .day))
+    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .morning))
+    
+    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night))
 }
 
 extension StartPromptsEntryCardView {
     
     var headlineView: some View {
         HStack(alignment: .center) {
-            Text("Morning Mindset")
+            Text(viewModel.title)
                 .font(.title2)
                 .fontWeight(.bold)
                 .multilineTextAlignment(.leading)
                 .foregroundStyle(.orange)
-            Image(systemName: "sun.min")
-                .foregroundStyle(.yellow)
-                .fontWeight(.bold)
             Spacer()
             editButtonView
                 .padding(.bottom)
