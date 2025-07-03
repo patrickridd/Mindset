@@ -47,10 +47,14 @@ class StartPromptsEntryCardViewModel: ObservableObject {
     var title: String {
         switch dayTime {
         case .morning:
-            return "Good morning ☀️"
+            return "Morning Mindset ☀️"
         case .night:
-            return "Good Evening 🌝"
+            return "Evening Reflection 🌝"
         }
+    }
+    
+    var titleForegroundColor: Color {
+        dayTime == .morning ? .orange : .indigo
     }
     
     func editButtonTapped() {

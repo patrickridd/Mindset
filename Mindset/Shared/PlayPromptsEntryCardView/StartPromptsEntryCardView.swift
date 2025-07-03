@@ -56,7 +56,7 @@ extension StartPromptsEntryCardView {
                 .font(.title2)
                 .fontWeight(.bold)
                 .multilineTextAlignment(.leading)
-                .foregroundStyle(.orange)
+                .foregroundStyle(viewModel.titleForegroundColor)
             Spacer()
             editButtonView
                 .padding(.bottom)

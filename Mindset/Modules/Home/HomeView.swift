@@ -21,13 +21,16 @@ struct HomeView: View {
             ScrollView {
                 VStack(spacing: 25) {
                     VStack(spacing: 8) {
-                        Text("Good morning, Patrick!")
-                            .font(.title)
+                        Text(viewModel.title)
+                            .font(.largeTitle)
+                            .fontWeight(.medium)
                             .frame(width: UIScreen.main.bounds.width-48,
                                    alignment: .leading)
-                        Text("Start your morning mindset here.")
+                        Text(viewModel.subtitle)
                             .frame(width: UIScreen.main.bounds.width-48,
                                    alignment: .leading)
+                            .font(.headline)
+                            .fontWeight(.light)
                             .padding(.leading, 2)
                     }
                     if let entry = viewModel.entry {
@@ -50,6 +53,15 @@ struct HomeView: View {
                     }
                 }
                 .padding(.top, 25)
+                Text("""
+                    “When you arise in the morning think of what a privilege it is to be alive, to think, to enjoy, to love ...”
+                    
+                    ― Marcus Aurelius, Meditations
+                    """
+                )
+                .font(.footnote)
+                .padding([.horizontal, .top], 40)
+                .italic()
             }
         }
     }
