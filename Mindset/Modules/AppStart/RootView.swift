@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RootView: View {
 
-    @StateObject var coordinator: Coordinator = Coordinator()
+    @StateObject var coordinator: Coordinator = Coordinator(viewFactory: ViewFactory())
     @StateObject var promptEntryManager: PromptsEntryManager = PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore())
 
     var body: some View {
@@ -31,5 +31,5 @@ struct RootView: View {
 }
 
 #Preview {
-    RootView()
+    RootView(coordinator: Coordinator(viewFactory: ViewFactory()))
 }

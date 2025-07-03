@@ -29,7 +29,7 @@ class PromptsEntryCardViewModel: ObservableObject {
             steps: entry.prompts,
             onCompletion: { [weak self] in
                 guard let self else { return }
-                self.coordinator.dismissFullScreenOver()
+                self.coordinator.dismissFullScreenCover()
                 self.promptsEntryManager.save(entry: self.entry)
             }
         )
