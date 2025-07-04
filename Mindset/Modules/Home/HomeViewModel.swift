@@ -31,7 +31,7 @@ class HomeViewModel: ObservableObject {
     }
     
     var title: String {
-        dayTime == .morning ? "Good morning!" : "Good evening!"
+        dayTime == .morning ? "Morning, Patrick!" : "Evening, Patrick!"
     }
     
     var subtitle: String {

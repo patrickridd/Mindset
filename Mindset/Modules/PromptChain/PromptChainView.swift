@@ -46,6 +46,7 @@ extension PromptChainView {
                 Image(systemName: "x.circle.fill")
                     .resizable()
                     .frame(width: 32, height: 32)
+                    .foregroundStyle(.indigo)
             }
             ProgressBarView(progress: viewModel.promptEntryProgressValue)
             Button {
