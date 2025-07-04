@@ -33,6 +33,10 @@ struct HomeView: View {
                             .fontWeight(.light)
                             .padding(.leading, 2)
                     }
+                    .animation(
+                        .easeInOut(duration: 0.5),
+                        value: viewModel.dayTime
+                    )
                     if let entry = viewModel.entry {
                         PromptsEntryCardView(viewModel: PromptsEntryCardViewModel(
                             entry: entry,
