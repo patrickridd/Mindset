@@ -38,14 +38,14 @@ struct StartPromptsEntryCardView: View {
                         // Add rounded border
                     )
         .padding(.horizontal, 24)
-        .sensoryFeedback(.selection, trigger: viewModel.promptEntry)
+        .sensoryFeedback(.selection, trigger: viewModel.startButtonPlayed)
     }
 }
 
 #Preview {
-    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .morning))
+    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .morning, selectedPrompts: nil))
     
-    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night))
+    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, selectedPrompts: nil))
 }
 
 extension StartPromptsEntryCardView {
@@ -86,7 +86,7 @@ extension StartPromptsEntryCardView {
     }
 
     var promptsDescriptionview: some View {
-        ForEach(Array(viewModel.promptEntry.prompts.enumerated()), id: \.offset) { (i, prompt) in
+        ForEach(Array(viewModel.promptsEntry.prompts.enumerated()), id: \.offset) { (i, prompt) in
             // Customize based on actual PromptContent type
             HStack {
                 Text("•")

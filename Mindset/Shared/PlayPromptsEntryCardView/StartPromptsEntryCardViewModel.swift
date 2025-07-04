@@ -11,34 +11,41 @@ import SwiftUI
 @MainActor
 class StartPromptsEntryCardViewModel: ObservableObject {
 
-    let coordinator: any Coordinated
-    let promptsEntryManager: PromptsEntryManager
-    let promptEntry = PromptsEntry(promptEntryDate: .today, prompts: [.gratitude, Prompt.affirmation, .goalSetting, Prompt.reflection], type: .morning)
-    
-    let dayTime: DayTime
     @Published var moodValue: Double = 3
     @Published var hasInteractedWithMoodSlider: Bool = false
+    @Published var startButtonPlayed: Bool = false
 
-    init(coordinator: any Coordinated, promptsEntryManager: PromptsEntryManager, dayTime: DayTime) {
+    let promptsEntry: PromptsEntry
+    let coordinator: any Coordinated
+    let promptsEntryManager: PromptsEntryManager
+    let dayTime: DayTime
+
+    init(
+        coordinator: any Coordinated,
+        promptsEntryManager: PromptsEntryManager,
+        dayTime: DayTime,
+        selectedPrompts: [Prompt]?
+    ) {
         self.coordinator = coordinator
         self.promptsEntryManager = promptsEntryManager
         self.dayTime = dayTime
+        let prompts = selectedPrompts ?? dayTime.defaultPrompts
+        self.promptsEntry = PromptsEntry(promptEntryDate: .today, prompts: prompts, type: dayTime)
     }
 
     func playButtonTapped() {
+        startButtonPlayed.toggle()
         SoundPlayer().entryStarted()
-        // TODO: Update PromptsEntryManager.createEntry to accept moodValue.
-        let entry = promptsEntryManager.createEntry(for: .today, moodValue: self.moodValue, promptsEntryType: dayTime)
         let flowCoordinator = PromptChainFlowCoordinator(
-            steps: entry.prompts,
+            steps: promptsEntry.prompts,
             onCompletion: { [weak self] in
                 guard let self else { return }
                 self.coordinator.dismissFullScreenCover()
-                self.promptsEntryManager.save(entry: entry)
+                self.promptsEntryManager.save(entry: promptsEntry)
             }
         )
         coordinator.presentFullScreenCover(.promptsChainView(
-            promptsEntry: entry,
+            promptsEntry: promptsEntry,
             flowCoordinator: flowCoordinator,
             promptsEntryManager: promptsEntryManager
         ))

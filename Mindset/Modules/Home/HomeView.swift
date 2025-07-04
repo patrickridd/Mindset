@@ -44,7 +44,8 @@ struct HomeView: View {
                         StartPromptsEntryCardView(viewModel: StartPromptsEntryCardViewModel(
                             coordinator: viewModel.coordinator,
                             promptsEntryManager: viewModel.promptsEntryManager,
-                            dayTime: viewModel.dayTime
+                            dayTime: viewModel.dayTime,
+                            selectedPrompts: viewModel.selectedPrompts
                         ))
                         .animation(
                             .spring(duration: 0.5),

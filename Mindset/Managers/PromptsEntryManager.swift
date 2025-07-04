@@ -33,10 +33,10 @@ class PromptsEntryManager: ObservableObject {
         }
     }
 
-    func createEntry(for selectedDate: Date, moodValue: Double, promptsEntryType: DayTime) -> PromptsEntry {
+    func createEntry(for selectedDate: Date, moodValue: Double, promptsEntryType: DayTime, prompts: [Prompt]) -> PromptsEntry {
         let newEntry = PromptsEntry(
             promptEntryDate: selectedDate.startOfDay,
-            prompts: [.gratitude, Prompt.affirmation, .goalSetting],
+            prompts: prompts,
             type: promptsEntryType,
             moodValue: moodValue
         )
