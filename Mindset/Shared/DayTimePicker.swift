@@ -23,7 +23,7 @@ struct DayTimePicker: View {
                         .padding(.vertical, 6)
                         .padding(.horizontal, 18)
                         .background(
-                            dayTime == type ? Color.indigo.opacity(colorScheme == .dark ? 0.5 : 0.9) : Color.clear
+                            dayTime == type ? Color.indigo.opacity(colorScheme == .dark ? 0.5 : 0.9) : .gray.opacity(0.4)
                         )
                         .foregroundStyle(dayTime == type ? Color.accentColor : Color.primary)
                         .clipShape(Capsule())
@@ -35,6 +35,10 @@ struct DayTimePicker: View {
                 .buttonStyle(.plain)
             }
         }
+        .animation(
+            .easeInOut(duration: 0.5),
+            value: dayTime
+        )
     }
 }
 

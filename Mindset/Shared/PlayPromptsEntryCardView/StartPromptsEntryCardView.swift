@@ -12,9 +12,12 @@ struct StartPromptsEntryCardView: View {
     @ObservedObject var viewModel: StartPromptsEntryCardViewModel
 
     var body: some View {
-        VStack(spacing: 25.0) {
+        VStack(spacing: 40) {
             HStack {
-                VStack(alignment: .leading, spacing: 8.0) {
+                VStack(
+                    alignment: .leading,
+                    spacing: 8.0
+                ) {
                     headlineView
                     promptsDescriptionview
                 }
@@ -96,6 +99,18 @@ extension StartPromptsEntryCardView {
                     .font(.subheadline)
             }
         }
+    }
+
+    var quoteView: some View {
+        Text("""
+            “When you arise in the morning think of what a privilege it is to be alive, to think, to enjoy, to love ...”
+            
+            ― Marcus Aurelius, Meditations
+            """
+        )
+        .padding([.horizontal, .top], 40)
+        .font(.caption)
+        .foregroundStyle(.secondary)
     }
 }
 

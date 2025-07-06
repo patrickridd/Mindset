@@ -40,22 +40,31 @@ struct PromptChainView: View {
 extension PromptChainView {
     var topBarView: some View {
         HStack {
-            Button {
-                viewModel.closeButtonTapped()
-            } label: {
-                Image(systemName: "x.circle.fill")
-                    .resizable()
-                    .frame(width: 32, height: 32)
-                    .foregroundStyle(.indigo)
-            }
+            closeButton
             ProgressBarView(progress: viewModel.promptEntryProgressValue)
             Button {
 
             } label: {
+//                Image(systemName: "questionmark.circle.fill")
+//                    .resizable()
+//                    .frame(width: 24, height: 24)
+//                    .foregroundStyle(.white)
                 Text(viewModel.progressEmoji)
                     .font(.largeTitle)
                     .animation(.easeInOut, value: viewModel.promptEntryProgressValue)
             }
+        }
+        .padding(.vertical)
+    }
+
+    var closeButton: some View {
+        Button {
+            viewModel.closeButtonTapped()
+        } label: {
+            Image(systemName: "x.circle.fill")
+                .resizable()
+                .frame(width: 32, height: 32)
+                .foregroundStyle(.indigo)
         }
     }
 }

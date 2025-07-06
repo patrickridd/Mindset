@@ -20,4 +20,11 @@ enum DayTime: String, Codable, CaseIterable {
 
         }
     }
+
+    var displayName: String {
+        switch self {
+        case .morning: return "☀️"
+        case .night: return "🌙"
+        }
+    }
 }

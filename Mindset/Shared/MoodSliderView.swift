@@ -20,7 +20,7 @@ struct MoodSliderView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 50) {
             HStack {
                 Text("How are you feeling today?")
                     .font(.subheadline)

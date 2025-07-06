@@ -20,18 +20,19 @@ struct HomeView: View {
             topBar
             ScrollView {
                 VStack(spacing: 25) {
-                    VStack(spacing: 8) {
+                    VStack(spacing: 12) {
                         Text(viewModel.title)
                             .font(.largeTitle)
                             .fontWeight(.medium)
                             .frame(width: UIScreen.main.bounds.width-48,
                                    alignment: .leading)
-                        Text(viewModel.subtitle)
-                            .frame(width: UIScreen.main.bounds.width-48,
-                                   alignment: .leading)
-                            .font(.headline)
-                            .fontWeight(.light)
-                            .padding(.leading, 2)
+//                        Text(viewModel.subtitle)
+//                            .frame(width: UIScreen.main.bounds.width-48,
+//                                   alignment: .leading)
+//                            .font(.headline)
+//                            .fontWeight(.light)
+//                            .padding(.leading, 2)
+                        quoteView
                     }
                     .animation(
                         .easeInOut(duration: 0.5),
@@ -58,15 +59,6 @@ struct HomeView: View {
                     }
                 }
                 .padding(.top, 25)
-                Text("""
-                    “When you arise in the morning think of what a privilege it is to be alive, to think, to enjoy, to love ...”
-                    
-                    ― Marcus Aurelius, Meditations
-                    """
-                )
-                .font(.footnote)
-                .padding([.horizontal, .top], 40)
-                .italic()
             }
         }
     }
@@ -96,25 +88,31 @@ extension HomeView {
     var topBar: some View {
         VStack {
             HStack(alignment: .center) {
-                VStack(alignment: .leading, spacing: 0) {
-                    DayTimePicker(dayTime: $viewModel.dayTime)
-                }
-                Spacer()
-                HStack(alignment: .top, spacing: 16) {
-                    StreakTracker()
-                    profileButton
+                VStack(alignment: .leading, spacing: 8) {
+                    navTitle
+                    HStack {
+                        DayTimePicker(
+                            dayTime: $viewModel.dayTime
+                        )
+                        .padding(.leading, 4)
+                        Spacer()
+                        HStack(alignment: .top, spacing: 16) {
+                            StreakTracker()
+                            profileButton
+                        }
+                    }
                 }
             }
             .padding(.top)
             .padding(.horizontal, 16)
-            
+
             Divider()
         }
     }
 
     var navTitle: some View {
         Text("Daily Mindset")
-            .font(.largeTitle)
+            .font(.title2)
             .fontWeight(.bold)
             .frame(maxWidth: .infinity,
                    alignment: .leading)
@@ -136,14 +134,17 @@ extension HomeView {
             .font(.headline)
             .foregroundStyle(.orange)
     }
-}
-
-extension DayTime {
-    var displayName: String {
-        switch self {
-        case .morning: return "☀️"
-        case .night: return "🌙"
-        }
+    
+    var quoteView: some View {
+        Text("""
+            “When you arise in the morning think of what a privilege it is to be alive, to think, to enjoy, to love ...”
+            
+            ― Marcus Aurelius, Meditations
+            """
+        )
+        .padding([.horizontal], 24)
+        .font(.caption)
+        .foregroundStyle(.secondary)
     }
 }
 
