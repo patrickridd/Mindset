@@ -11,7 +11,7 @@ import SwiftUI
 @MainActor
 class StartPromptsEntryCardViewModel: ObservableObject {
 
-    @Published var moodValue: Double = 3
+    @Published var moodValue: Int?
     @Published var hasInteractedWithMoodSlider: Bool = false
     @Published var startButtonPlayed: Bool = false
 

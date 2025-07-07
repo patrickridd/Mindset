@@ -23,12 +23,7 @@ struct StartPromptsEntryCardView: View {
                 }
                 Spacer()
             }
-            MoodSliderView(moodValue: $viewModel.moodValue)
-                .onChange(of: viewModel.moodValue) { _, _ in
-                    if !viewModel.hasInteractedWithMoodSlider {
-                        viewModel.hasInteractedWithMoodSlider = true
-                    }
-                }
+            MoodEmojiPickerView(selectedIndex: $viewModel.moodValue)
             playButtonView
         }
         .padding()
@@ -74,7 +69,7 @@ extension StartPromptsEntryCardView {
                 .resizable()
                 .frame(width: 50, height: 50)
         }
-        .disabled(!viewModel.hasInteractedWithMoodSlider)
+        .disabled(viewModel.moodValue == nil)
     }
     
     var editButtonView: some View {

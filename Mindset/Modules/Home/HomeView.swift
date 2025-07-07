@@ -26,13 +26,12 @@ struct HomeView: View {
                             .fontWeight(.medium)
                             .frame(width: UIScreen.main.bounds.width-48,
                                    alignment: .leading)
-//                        Text(viewModel.subtitle)
-//                            .frame(width: UIScreen.main.bounds.width-48,
-//                                   alignment: .leading)
-//                            .font(.headline)
-//                            .fontWeight(.light)
-//                            .padding(.leading, 2)
+                        Text(viewModel.subtitle)
+                            .frame(width: UIScreen.main.bounds.width-48,
+                                   alignment: .leading)
                         quoteView
+                            .fontWeight(.light)
+                            .padding(.leading, 2)
                     }
                     .animation(
                         .easeInOut(duration: 0.5),
@@ -94,7 +93,7 @@ extension HomeView {
                         DayTimePicker(
                             dayTime: $viewModel.dayTime
                         )
-                        .padding(.leading, 4)
+                        .padding(.leading, 3)
                         Spacer()
                         HStack(alignment: .top, spacing: 16) {
                             StreakTracker()
@@ -144,7 +143,7 @@ extension HomeView {
         )
         .padding([.horizontal], 24)
         .font(.caption)
+        .italic()
         .foregroundStyle(.secondary)
     }
 }
-
