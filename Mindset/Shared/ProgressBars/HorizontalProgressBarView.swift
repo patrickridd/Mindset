@@ -9,7 +9,7 @@ import SwiftUI
 
 import SwiftUI
 
-struct ProgressBarView: View {
+struct HorizontalProgressBarView: View {
     var progress: Double // 0.0 to 1.0
     var gradient: LinearGradient = LinearGradient(
         gradient: Gradient(colors: [Color.pink, Color.blue]),
@@ -37,5 +37,5 @@ struct ProgressBarView: View {
 }
 
 #Preview {
-    ProgressBarView(progress: 0.6)
+    HorizontalProgressBarView(progress: 0.6)
 }

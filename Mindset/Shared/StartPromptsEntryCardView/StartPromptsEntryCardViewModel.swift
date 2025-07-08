@@ -5,7 +5,6 @@
 //  Created by patrick ridd on 6/29/25.
 //
 
-import Foundation
 import SwiftUI
 
 @MainActor
@@ -61,11 +60,19 @@ class StartPromptsEntryCardViewModel: ObservableObject {
     }
     
     var titleForegroundColor: Color {
-        dayTime == .morning ? .orange : .indigo
+        dayTime == .morning ? .white : .white
     }
     
     func editButtonTapped() {
         print("editButtonTapped")
+    }
+
+    var backgroundColor: LinearGradient {
+        switch dayTime {
+        case .morning:
+            LinearGradient(colors: [Color.orange, Color.purple], startPoint: .topLeading, endPoint: .bottomTrailing)        case .night:
+            LinearGradient(colors: [Color.purple, Color.blue], startPoint: .topLeading, endPoint: .bottomTrailing)
+        }
     }
 }
 

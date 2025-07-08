@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct HomeView: View {
-
+    
     @StateObject private var viewModel: HomeViewModel
-
+    @State var contentHeights: [CGFloat] = Array(repeating: 0, count: 3)
+    
     init(viewModel: HomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
-
+    
     var body: some View {
         VStack(spacing: 0) {
             topBar
@@ -45,20 +46,15 @@ struct HomeView: View {
                         ))
                         .padding(.top)
                     } else {
-                        StartPromptsEntryCardView(viewModel: StartPromptsEntryCardViewModel(
-                            coordinator: viewModel.coordinator,
-                            promptsEntryManager: viewModel.promptsEntryManager,
-                            dayTime: viewModel.dayTime,
-                            selectedPrompts: viewModel.selectedPrompts
-                        ))
-                        .animation(
-                            .spring(duration: 0.5),
-                            value: viewModel.dayTime
-                        )
+                        VerticalProgressBarView(views: [
+                            MoodEmojiPickerView(selectedIndex: $viewModel.moodValue),
+                            StartPromptsEntryCardView(viewModel: .init(coordinator: viewModel.coordinator, promptsEntryManager: viewModel.promptsEntryManager, dayTime: .morning, selectedPrompts: DayTime.morning.defaultPrompts)),
+                            StartPromptsEntryCardView(viewModel: .init(coordinator: viewModel.coordinator, promptsEntryManager: viewModel.promptsEntryManager, dayTime: .night, selectedPrompts: DayTime.night.defaultPrompts))
+                        ], currentStep: 0)
                     }
                 }
-                .padding(.top, 25)
             }
+            .padding(.top)
         }
     }
 }

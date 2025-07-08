@@ -15,6 +15,7 @@ class HomeViewModel: ObservableObject {
     @Published var selectedDate: Date
     @Published var promptsEntryManager: PromptsEntryManager
     @Published var dayTime: DayTime
+    @Published var moodValue: Int?
     @Published var selectedPrompts: [Prompt]?
 
     private(set) var coordinator: any Coordinated

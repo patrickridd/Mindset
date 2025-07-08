@@ -23,18 +23,20 @@ struct StartPromptsEntryCardView: View {
                 }
                 Spacer()
             }
-            MoodEmojiPickerView(selectedIndex: $viewModel.moodValue)
+            .padding()
             playButtonView
+                .padding(.bottom)
         }
-        .padding()
-        .background(Color(.secondarySystemBackground.withAlphaComponent(0.7)))
-        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .background(viewModel.backgroundColor)
         // Clip background with rounded corners
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(.indigo, lineWidth: 1)
-                        // Add rounded border
-                    )
+        .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            // Add rounded border
+            RoundedRectangle(
+                cornerRadius: 12
+            )
+            .stroke(.indigo, lineWidth: 1)
+        )
         .padding(.horizontal, 24)
         .sensoryFeedback(.selection, trigger: viewModel.startButtonPlayed)
     }
@@ -68,8 +70,8 @@ extension StartPromptsEntryCardView {
             Image(systemName: "square.and.pencil.circle.fill")
                 .resizable()
                 .frame(width: 50, height: 50)
+                .foregroundStyle(.white.opacity(0.9))
         }
-        .disabled(viewModel.moodValue == nil)
     }
     
     var editButtonView: some View {
@@ -89,9 +91,10 @@ extension StartPromptsEntryCardView {
             HStack {
                 Text("•")
                     .font(.subheadline)
-                    .foregroundStyle(.orange)
+                    .foregroundStyle(.white)
                 Text(prompt.title)
                     .font(.subheadline)
+                    .foregroundStyle(.white)
             }
         }
     }

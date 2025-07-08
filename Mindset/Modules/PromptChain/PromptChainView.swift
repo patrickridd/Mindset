@@ -41,7 +41,7 @@ extension PromptChainView {
     var topBarView: some View {
         HStack {
             closeButton
-            ProgressBarView(progress: viewModel.promptEntryProgressValue)
+            HorizontalProgressBarView(progress: viewModel.promptEntryProgressValue)
             Button {
 
             } label: {

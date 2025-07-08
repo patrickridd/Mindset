@@ -7,6 +7,58 @@
 
 import SwiftUI
 
+enum Mood: String, CaseIterable {
+    case depressed
+    case sad
+    case bad
+    case neutral
+    case good
+    case happy
+    case amazing
+    
+    static var allCases: [Mood] {
+        [.depressed, .sad, .bad, .neutral, .good, .happy, .amazing]
+    }
+
+    var emoji: String {
+        switch self {
+        case .amazing:
+            return "🤩"
+        case .bad:
+            return "🙁"
+        case .sad:
+            return "😭"
+        case .neutral:
+            return "😐"
+        case .happy:
+            return "😀"
+        case .depressed:
+            return "😞"
+        case .good:
+            return "🙂"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .bad:
+            return "Bad"
+        case .sad:
+            return "Sad"
+        case .neutral:
+            return "Okay"
+        case .happy:
+            return "Happy"
+        case .depressed:
+            return "Depressed"
+        case .good:
+            return "Good"
+        case .amazing:
+            return "Amazing"
+        }
+    }
+}
+
 struct MoodEmojiPickerView: View {
     let emojis = ["😭", "😞", "🙁", "😐", "🙂", "😀", "🤩"]
     @Binding var selectedIndex: Int?
@@ -15,21 +67,23 @@ struct MoodEmojiPickerView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("How are you feeling today?")
-                .padding(.leading, 8)
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(alignment: .center, spacing: 8) {
-                    ForEach(emojis.indices, id: \.self) { idx in
-                        Text(emojis[idx])
-                            .font(.system(size: 34))
-                            .opacity(selectedIndex == idx ? 1.0 : 0.5)
-                            .scaleEffect(selectedIndex == nil ? (pulse ? 1.15 : 0.85) : (selectedIndex == idx ? 1.3 : 1.0))
+                .frame(maxWidth: .infinity)
+                .multilineTextAlignment(.leading)
+//            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(alignment: .center, spacing: 12) {
+                    ForEach(Mood.allCases.indices, id: \.self) { index in
+                        Text(Mood.allCases[index].emoji)
+                            .font(.title)
+                            .opacity(selectedIndex == nil ? 1.0 : (selectedIndex == index ? 1.0 : 0.85))
+                            .scaleEffect(selectedIndex == nil ? (pulse ? 1.15 : 0.85) : (selectedIndex == index ? 1.5 : 0.85))
                             .onTapGesture {
-                                selectedIndex = idx
+                                selectedIndex = index
                             }
                             .animation(.spring(response: 0.4), value: selectedIndex)
                     }
                 }
-            }
+                .frame(maxWidth: .infinity)
+//            }
         }
         .onAppear {
             withAnimation(Animation.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
