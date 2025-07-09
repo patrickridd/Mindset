@@ -47,6 +47,7 @@ struct HomeView: View {
                         .padding(.top)
                     } else {
                         VerticalProgressBarView(todoCardItems: [
+                            TodoCardItem(view: AnyView(MoodEmojiPickerView(selectedIndex: $viewModel.moodValue)), progressStatus: viewModel.moodValue == nil ? .inProgress : .completed),
                             TodoCardItem(view: AnyView(StartPromptsEntryCardView(viewModel: .init(coordinator: viewModel.coordinator, promptsEntryManager: viewModel.promptsEntryManager, dayTime: .morning, selectedPrompts: DayTime.morning.defaultPrompts))), progressStatus: .inProgress),
                             TodoCardItem(view: AnyView(StartPromptsEntryCardView(viewModel: .init(coordinator: viewModel.coordinator, promptsEntryManager: viewModel.promptsEntryManager, dayTime: .night, selectedPrompts: DayTime.night.defaultPrompts))), progressStatus: .notStarted)
                         ], currentStep: 0)

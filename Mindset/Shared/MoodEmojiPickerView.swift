@@ -65,11 +65,8 @@ struct MoodEmojiPickerView: View {
     @State private var pulse = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("How are you feeling today?")
-                .frame(maxWidth: .infinity)
-                .multilineTextAlignment(.leading)
-//            ScrollView(.horizontal, showsIndicators: false) {
+        GroupBox(content: {
+            GroupBox {
                 HStack(alignment: .center, spacing: 12) {
                     ForEach(Mood.allCases.indices, id: \.self) { index in
                         Text(Mood.allCases[index].emoji)
@@ -82,14 +79,17 @@ struct MoodEmojiPickerView: View {
                             .animation(.spring(response: 0.4), value: selectedIndex)
                     }
                 }
-                .frame(maxWidth: .infinity)
-//            }
-        }
-        .onAppear {
-            withAnimation(Animation.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
-                pulse.toggle()
+                .onAppear {
+                    withAnimation(Animation.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
+                        pulse.toggle()
+                    }
+                }
             }
-        }
+        }, label: {
+            Label("How Are you feeling today?", systemImage: "sunrise.fill")
+        })
+        .padding()
+        
     }
 }
 
