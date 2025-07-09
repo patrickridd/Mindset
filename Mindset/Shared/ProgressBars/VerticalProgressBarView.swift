@@ -37,13 +37,9 @@ struct VerticalProgressBarView: View {
     }
 
     func getProgressBarLineColor(index: Int) -> Color {
-        let nextIndex = index + 1
-        
-        // Return early if nextIndex is out of range
-        guard nextIndex < todoCardItems.count else {
-            return .clear
+        guard index >= 0 || index > todoCardItems.count-1 else {
+            return .gray
         }
-
         if todoCardItems[index].progressStatus == .completed {
             return .indigo
         } else {
@@ -52,7 +48,6 @@ struct VerticalProgressBarView: View {
     }
 
     func getProgressImageColor(index: Int) -> Color {
-        
         if todoCardItems[index].progressStatus == .completed {
             return .green
         }
@@ -71,60 +66,22 @@ struct VerticalProgressBarView: View {
 
     var body: some View {
         ScrollView(showsIndicators: false) {
-            VStack(spacing: 12) {
+            VStack(spacing: 0
+            ) {
                 ForEach(0..<todoCardItems.count, id: \.self) { index in
                     CustomRowView(
                         content: todoCardItems[index].view,
                         image: getProgressImage(todoItem: todoCardItems[index]),
                         imageColor: getProgressImageColor(index: index),
-                        lineColor: getProgressBarLineColor(index: index),
-                        startX: 20,
-                        rightPadding: 20,
-                        position: index < todoCardItems.count - 1 ? .start : .end
+                        topLineColor: getProgressBarLineColor(index: index-1),
+                        bottomLineColor: getProgressBarLineColor(index: index),
+                        index: index,
+                        isFirst: index == 0,
+                        isLast: index == todoCardItems.count-1
                     )
                 }
             }
         }
-
-//        ScrollView {
-//            VStack(alignment: .leading, spacing: 20) {
-//                ForEach(0..<todoCardItems.count, id: \.self) { index in
-//                    HStack(alignment: .center, spacing: 0) {
-//                        GeometryReader { _ in
-//                            todoCardItems[index].view
-//                                .background(
-//                                    GeometryReader { innerGeo in
-//                                        Color.clear
-//                                            .onAppear {
-//                                                contentHeights[index] = innerGeo.size.height
-//                                            }
-//                                            .onChange(of: innerGeo.size.height) { _, newValue in
-//                                                contentHeights[index] = newValue
-//                                            }
-//                                    }
-//                                )
-//                        }
-//                        .frame(minHeight: 24)
-//                        ZStack(alignment: .top) {
-//                            Circle()
-//                                .fill(index <= currentStep ? .indigo : .gray.opacity(0.5))
-//                                .frame(width: 18, height: 18)
-//                            if index < todoCardItems.count - 1 {
-//                                Rectangle()
-//                                    .fill(index < currentStep ? .indigo : .gray.opacity(0.5))
-//                                    .frame(width: 4,
-//                                           height: max(24, (contentHeights[safe: index + 1] ?? 0) / 2
-//                                                       + (contentHeights[safe: index] ?? 0) / 2)
-//                                    )
-//                                    .offset(y: 18)
-//                                    .animation(.easeInOut(duration: 0.3), value: contentHeights[safe: index + 1] ?? 0)
-//                            }
-//                        }
-//                        .padding(.leading)
-//                    }
-//                }
-//            }
-//        }
     }
 }
 
@@ -137,61 +94,73 @@ private extension Array {
 struct CustomRowView: View {
     let content: AnyView
     let image: String
-    let startX: CGFloat
-    let rightPadding: CGFloat
     let imageColor: Color
-    let lineColor: Color
-    let position: CustomLineShape.Position
-
-    init(content: AnyView, image: String, imageColor: Color, lineColor: Color, startX: CGFloat, rightPadding: CGFloat, position: CustomLineShape.Position) {
+    let topLineColor: Color
+    let bottomLineColor: Color
+    let index: Int
+    let isFirst: Bool
+    let isLast: Bool
+    
+    init(content: AnyView, image: String, imageColor: Color, topLineColor: Color, bottomLineColor: Color, index: Int, isFirst: Bool, isLast: Bool) {
         self.content = content
         self.image = image
-        self.startX = startX
-        self.rightPadding = rightPadding
         self.imageColor = imageColor
-        self.lineColor = lineColor
-        self.position = position
+        self.topLineColor = topLineColor
+        self.bottomLineColor = bottomLineColor
+        self.index = index
+        self.isFirst = isFirst
+        self.isLast = isLast
     }
     
     var body: some View {
-        HStack(spacing: -20) {
-            ZStack(alignment: .center) {
-                CustomLineShape(startX: startX)
-                    .stroke(style: StrokeStyle(lineWidth: position == .start ? 4 : 0, lineCap: .round))
-                    .foregroundColor(lineColor)
+        HStack(spacing: 0) {
+            VStack(spacing: 0) {
+                // Top line
+                Rectangle()
+                    .fill(topLineColor)
+                    .frame(width: 4)
+                    .opacity(isFirst ? 0 : 1)
+                    .frame(maxHeight: .infinity)
+                    .padding(.bottom, 2)
+
+                // Icon
                 Image(systemName: image)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 16, height: 16)
                     .foregroundStyle(imageColor)
-                    .padding(position == .start ? .top : .bottom, 20)
+                
+                // Bottom line
+                Rectangle()
+                    .fill(topLineColor)
+                    .frame(width: 4)
+                    .opacity(isLast ? 0 : 1)
+                    .frame(maxHeight: .infinity)
+                    .padding(.top, 2)
             }
-            .frame(width: startX + rightPadding)
-            content
+            VStack {
+                content
+                Divider()
+                    .hidden()
+                    .padding(.top)
+            }
             Spacer()
         }
-        .padding(.trailing)
+        .padding(.leading)
     }
 }
 
-struct CustomLineShape: Shape {
-    let startX: CGFloat
-    
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        path.move(to: CGPoint(x: startX, y: startX + rect.midY + 2))
-        path.addLine(to: CGPoint(x: startX, y: 1.5 * rect.maxY - 23))
-        return path
-    }
-    
-    enum Position {
-        case start
-        case end
-    }
-}
+// Removed CustomLineShape struct as it's no longer needed
 
 #Preview {
     VerticalProgressBarView(todoCardItems: [
+        TodoCardItem(
+            view: AnyView(
+                MoodEmojiPickerView(
+                    selectedIndex: .constant(nil)
+                )),
+            progressStatus: .inProgress
+        ),
         TodoCardItem(
             view: AnyView(
                 StartPromptsEntryCardView(
@@ -203,7 +172,7 @@ struct CustomLineShape: Shape {
                     )
                 )
             ),
-            progressStatus: .completed
+            progressStatus: .notStarted
         ),
         TodoCardItem(
             view: AnyView(
@@ -216,7 +185,7 @@ struct CustomLineShape: Shape {
                     )
                 )
             ),
-            progressStatus: .inProgress
+            progressStatus: .notStarted
         )
     ], currentStep: 1)
 }
