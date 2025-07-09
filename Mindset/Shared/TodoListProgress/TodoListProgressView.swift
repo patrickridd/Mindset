@@ -13,15 +13,6 @@ protocol TodoItem: Identifiable {
     var completed: Bool { get set }
 }
 
-struct TodoCardItem: TodoItem {
-    let id = UUID()
-    let title: String
-    let subtitle: String?
-    var imageName: String
-    let gradient: LinearGradient
-    var completed: Bool = false
-}
-
 struct TodoCardView: View {
     let todo: any TodoItem
 

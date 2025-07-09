@@ -12,7 +12,7 @@ struct StartPromptsEntryCardView: View {
     @ObservedObject var viewModel: StartPromptsEntryCardViewModel
 
     var body: some View {
-        VStack(spacing: 40) {
+        VStack(spacing: 10) {
             HStack {
                 VStack(
                     alignment: .leading,

@@ -15,27 +15,13 @@ struct DayTimePicker: View {
     var body: some View {
         HStack(alignment: .center, spacing: 4) {
             ForEach(DayTime.allCases, id: \.self) { type in
-                Button(action: {
-                    dayTime = type
-                }) {
-                    Text(type.displayName)
-                        .font(.title2)
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 18)
-                        .background(
-                            dayTime == type ? Color.indigo.opacity(colorScheme  == .dark ? 0.5 : 0.9) :
-                                colorScheme  == .dark ? Color.gray.opacity(0.4) :
-                                Color.indigo.opacity(0.1)
-                        )
-                        .animation(
-                            .easeInOut(duration: 0.5),
-                            value: dayTime
-                        )
-                        .foregroundStyle(dayTime == type ? Color.accentColor : Color.primary)
-                        .clipShape(Capsule())
-                       
+                if #available(iOS 26.0, *) {
+                    button(for: type)
+                        .glassEffect()
+                } else {
+                    // Fallback on earlier versions
+                    button(for: type)
                 }
-                .buttonStyle(.plain)
             }
         }
         .animation(
@@ -47,4 +33,31 @@ struct DayTimePicker: View {
 
 #Preview {
     DayTimePicker(dayTime: .constant(.morning))
+}
+
+extension DayTimePicker {
+    
+    func button(for type: DayTime) -> some View {
+        Button(action: {
+            dayTime = type
+        }) {
+            Text(type.displayName)
+                .font(.title2)
+                .padding(.vertical, 6)
+                .padding(.horizontal, 18)
+                .background(
+                    dayTime == type ? Color.indigo.opacity(colorScheme  == .dark ? 0.5 : 0.9) :
+                        colorScheme  == .dark ? Color.gray.opacity(0.4) :
+                        Color.indigo.opacity(0.1)
+                )
+                .animation(
+                    .easeInOut(duration: 0.5),
+                    value: dayTime
+                )
+                .foregroundStyle(dayTime == type ? Color.accentColor : Color.primary)
+                .clipShape(Capsule())
+               
+        }
+        .buttonStyle(.plain)
+    }
 }
