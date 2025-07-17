@@ -14,7 +14,7 @@ struct PromptsEntry: PromptsEntryContent {
     let dayTime: DayTime
     private(set) var completed: Bool = false
 
-    init(id: UUID = UUID(), entryDate: Date, prompts: [any PromptContent], dayTime: DayTime) {
+    init(id: UUID = UUID(), entryDate: Date = .today, prompts: [any PromptContent], dayTime: DayTime) {
         self.id = id
         self.date = entryDate
         self.prompts = prompts
