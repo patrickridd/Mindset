@@ -18,7 +18,7 @@ class MockFileManager: FileManager {
         [cacheURL]
     }
     
-    static func clearAppCache() {
+    func clearAppCache() {
         guard let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else { return }
         do {
             let fileURLs = try FileManager.default.contentsOfDirectory(at: cacheDirectory, includingPropertiesForKeys: nil, options: [])
@@ -30,4 +30,5 @@ class MockFileManager: FileManager {
             print("Error clearing cache: \(error.localizedDescription)")
         }
     }
+
 }
