@@ -40,7 +40,7 @@ class StartPromptsEntryCardViewModel: ObservableObject {
             onCompletion: { [weak self] in
                 guard let self else { return }
                 self.coordinator.dismissFullScreenCover()
-                self.promptsEntry.set(completionDate: Date())
+                self.promptsEntry.setEntryCompleted()
                 self.promptsEntryManager.save(entry: promptsEntry)
             }
         )

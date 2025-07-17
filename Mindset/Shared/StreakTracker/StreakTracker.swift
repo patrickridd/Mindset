@@ -13,7 +13,8 @@ struct StreakTracker: View {
     
     var currentStreak: Int {
         // Get all dates with a completed entry
-        let completedDates = allJournalEntries.compactMap { $0.dateCompleted?.startOfDay }.sorted(by: >)
+        let completedEntries = allJournalEntries.filter { $0.completed }
+        let completedDates = completedEntries.compactMap { $0.date.startOfDay }.sorted(by: >)
         guard !completedDates.isEmpty else { return 0 }
         
         var streak = 0

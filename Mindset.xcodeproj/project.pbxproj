@@ -6,11 +6,27 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		212676062E28889A00239EB4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 212E695C2DD5932000EA7385 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 212E69632DD5932000EA7385;
+			remoteInfo = Mindset;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		212676022E28889A00239EB4 /* MindsetTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MindsetTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		212E69642DD5932000EA7385 /* Mindset.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mindset.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		212676032E28889A00239EB4 /* MindsetTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MindsetTests;
+			sourceTree = "<group>";
+		};
 		212E69662DD5932000EA7385 /* Mindset */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Mindset;
@@ -19,6 +35,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		212675FF2E28889A00239EB4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		212E69612DD5932000EA7385 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				212E69662DD5932000EA7385 /* Mindset */,
+				212676032E28889A00239EB4 /* MindsetTests */,
 				212E69652DD5932000EA7385 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				212E69642DD5932000EA7385 /* Mindset.app */,
+				212676022E28889A00239EB4 /* MindsetTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +73,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		212676012E28889A00239EB4 /* MindsetTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 212676082E28889A00239EB4 /* Build configuration list for PBXNativeTarget "MindsetTests" */;
+			buildPhases = (
+				212675FE2E28889A00239EB4 /* Sources */,
+				212675FF2E28889A00239EB4 /* Frameworks */,
+				212676002E28889A00239EB4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				212676072E28889A00239EB4 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				212676032E28889A00239EB4 /* MindsetTests */,
+			);
+			name = MindsetTests;
+			packageProductDependencies = (
+			);
+			productName = MindsetTests;
+			productReference = 212676022E28889A00239EB4 /* MindsetTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		212E69632DD5932000EA7385 /* Mindset */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 212E69722DD5932100EA7385 /* Build configuration list for PBXNativeTarget "Mindset" */;
@@ -77,9 +125,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					212676012E28889A00239EB4 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = 212E69632DD5932000EA7385;
+					};
 					212E69632DD5932000EA7385 = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -100,11 +152,19 @@
 			projectRoot = "";
 			targets = (
 				212E69632DD5932000EA7385 /* Mindset */,
+				212676012E28889A00239EB4 /* MindsetTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		212676002E28889A00239EB4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		212E69622DD5932000EA7385 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +175,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		212675FE2E28889A00239EB4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		212E69602DD5932000EA7385 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +191,59 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		212676072E28889A00239EB4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 212E69632DD5932000EA7385 /* Mindset */;
+			targetProxy = 212676062E28889A00239EB4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		212676092E28889A00239EB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CVQEUYD92N;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.patrickridd.MindsetTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mindset.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Mindset";
+			};
+			name = Debug;
+		};
+		2126760A2E28889A00239EB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = CVQEUYD92N;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.patrickridd.MindsetTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mindset.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Mindset";
+			};
+			name = Release;
+		};
 		212E69702DD5932100EA7385 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -307,6 +426,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		212676082E28889A00239EB4 /* Build configuration list for PBXNativeTarget "MindsetTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				212676092E28889A00239EB4 /* Debug */,
+				2126760A2E28889A00239EB4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		212E695F2DD5932000EA7385 /* Build configuration list for PBXProject "Mindset" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

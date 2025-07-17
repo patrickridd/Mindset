@@ -8,8 +8,9 @@
 import Foundation
 
 protocol PromptsEntryPersistence {
-    func load() -> [PromptsEntry]
-    func save(_ entries: [PromptsEntry])
-    func add(_ entry: PromptsEntry)
-    func delete(_ entry: PromptsEntry) 
+    func loadPrompts(for dayTime: DayTime) -> [PromptsEntry]
+    func saveEntries(_ entries: [PromptsEntry], for dayTime: DayTime) throws
+    func saveEntry(_ entry: PromptsEntry)
+    func delete(_ entry: PromptsEntry)
+    func fileURL(path: String) -> URL
 }

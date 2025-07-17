@@ -10,27 +10,25 @@ import Foundation
 struct PromptsEntry: PromptsEntryContent {
     let id: UUID
     let prompts: [any PromptContent]
-    let promptEntryDate: Date
-    var dateCompleted: Date? = nil
-    var moodValue: Double? = nil
-    var type: DayTime
+    let date: Date
+    let dayTime: DayTime
+    private(set) var completed: Bool = false
 
-    init(id: UUID = UUID(), promptEntryDate: Date, prompts: [any PromptContent], type: DayTime, moodValue: Double? = nil) {
+    init(id: UUID = UUID(), entryDate: Date, prompts: [any PromptContent], dayTime: DayTime) {
         self.id = id
-        self.promptEntryDate = promptEntryDate
+        self.date = entryDate
         self.prompts = prompts
-        self.type = type
-        self.moodValue = moodValue
+        self.dayTime = dayTime
     }
 
-    mutating func set(completionDate: Date) {
-        dateCompleted = completionDate
+    mutating func setEntryCompleted() {
+        completed = true
     }
 }
 
 extension PromptsEntry: Equatable {
     static func == (lhs: PromptsEntry, rhs: PromptsEntry) -> Bool {
-        lhs.id == rhs.id && lhs.moodValue == rhs.moodValue
+        lhs.id == rhs.id
     }
 }
 
@@ -39,7 +37,7 @@ extension PromptsEntry {
         case id
         case promptEntryDate
         case prompts
-        case dateCompleted
+        case completed
         case type
         case moodValue
     }
@@ -88,10 +86,9 @@ extension PromptsEntry: Codable {
         try container.encode(id, forKey: .id)
         let promptWrappers = prompts.map { AnyPromptContentWrapper(prompt: $0) }
         try container.encode(promptWrappers, forKey: .prompts)
-        try container.encode(dateCompleted, forKey: .dateCompleted)
-        try container.encode(promptEntryDate, forKey: .promptEntryDate)
-        try container.encode(type, forKey: .type)
-        try container.encode(moodValue, forKey: .moodValue)
+        try container.encode(completed, forKey: .completed)
+        try container.encode(date, forKey: .promptEntryDate)
+        try container.encode(dayTime, forKey: .type)
     }
 
     public init(from decoder: Decoder) throws {
@@ -99,14 +96,13 @@ extension PromptsEntry: Codable {
         self.id = try container.decode(UUID.self, forKey: .id)
         let promptWrappers = try container.decode([AnyPromptContentWrapper].self, forKey: .prompts)
         self.prompts = promptWrappers.map { $0.prompt }
-        self.dateCompleted = try container.decodeIfPresent(Date.self, forKey: .dateCompleted)
-        self.promptEntryDate = try container.decode(Date.self, forKey: .promptEntryDate)
-        self.type = try container.decode(DayTime.self, forKey: .type)
-        self.moodValue = try container.decodeIfPresent(Double.self, forKey: .moodValue)
+        self.completed = try container.decodeIfPresent(Bool.self, forKey: .completed) ?? false
+        self.date = try container.decode(Date.self, forKey: .promptEntryDate)
+        self.dayTime = try container.decode(DayTime.self, forKey: .type)
     }
 }
 
 class Mocks {
-    static var morningMindSet = PromptsEntry(promptEntryDate: .today, prompts: DayTime.morning.defaultPrompts, type: .morning)
-    static var nightMindSet = PromptsEntry(promptEntryDate: .today, prompts: DayTime.night.defaultPrompts, type: .night)
+    static var morningMindSet = PromptsEntry(entryDate: .today, prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
+    static var nightMindSet = PromptsEntry(entryDate: .today, prompts: DayTime.night.defaultPrompts, dayTime: .night)
 }

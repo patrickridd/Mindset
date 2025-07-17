@@ -9,34 +9,43 @@ import Foundation
 
 struct PromptsEntryFileStore: PromptsEntryPersistence {
 
-    var fileURL: URL {
-        let manager = FileManager.default
-        let folder = manager.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        return folder.appendingPathComponent("promptsEntries.json")
+    let fileManager: FileManager
+
+    init(fileManager: FileManager = FileManager.default) {
+        self.fileManager = fileManager
     }
 
-    func load() -> [PromptsEntry] {
-        guard let data = try? Data(contentsOf: fileURL) else { return [] }
+    func fileURL(path: String) -> URL {
+        let folder = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return folder.appendingPathComponent(path)
+    }
+
+    func loadPrompts(for dayTime: DayTime) -> [PromptsEntry] {
+        guard let data = try? Data(contentsOf: fileURL(path: dayTime.urlPath)) else { return [] }
         return (try? JSONDecoder().decode([PromptsEntry].self, from: data)) ?? []
     }
 
-    func save(_ entries: [PromptsEntry]) {
+    func saveEntries(_ entries: [PromptsEntry], for dayTime: DayTime) throws {
         if let data = try? JSONEncoder().encode(entries) {
-            try? data.write(to: fileURL)
+            do {
+                try data.write(to: fileURL(path: dayTime.urlPath))
+            } catch {
+                throw error
+            }
         }
     }
-
-    func add(_ entry: PromptsEntry) {
-        var existing = load()
+    
+    func saveEntry(_ entry: PromptsEntry) {
+        var existing = loadPrompts(for: entry.dayTime)
         existing.append(entry)
-        save(existing)
+        try? saveEntries(existing, for: entry.dayTime)
     }
 
     func delete(_ entry: PromptsEntry) {
-        var existing = load()
+        var existing = loadPrompts(for: entry.dayTime)
         if let index = existing.firstIndex(of: entry) {
             existing.remove(at: index)
-            save(existing)
+            try? saveEntries(existing, for: entry.dayTime)
         }
     }
 

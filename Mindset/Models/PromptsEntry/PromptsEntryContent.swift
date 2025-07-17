@@ -9,7 +9,8 @@ import Foundation
 
 protocol PromptsEntryContent: Identifiable, Codable {
     var id: UUID { get }
-    var promptEntryDate: Date { get }
-    var dateCompleted: Date? { get set }
+    var dayTime: DayTime { get }
+    var date: Date { get }
+    var completed: Bool { get }
     var prompts: [any PromptContent] { get }
 }

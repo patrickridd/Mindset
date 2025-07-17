@@ -15,7 +15,7 @@ struct PromptsEntryCardView: View {
         Button(action: viewModel.entryTapped) {
             VStack(alignment: .leading, spacing: 8) {
                 HStack {
-                    Text("Journal for \(viewModel.entry.promptEntryDate.formatted(date: .long, time: .omitted))")
+                    Text("Journal for \(viewModel.entry.date.formatted(date: .long, time: .omitted))")
                         .font(.title2)
                         .fontWeight(.semibold)
                         .foregroundStyle(.orange)
@@ -51,7 +51,7 @@ struct PromptsEntryCardView: View {
 
 #Preview {
     PromptsEntryCardView(
-        viewModel: PromptsEntryCardViewModel(entry: PromptsEntry(promptEntryDate: Date(), prompts: [MockPromptContent()], type: .morning), coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()))
+        viewModel: PromptsEntryCardViewModel(entry: PromptsEntry(entryDate: Date(), prompts: [MockPromptContent()], dayTime: .morning), coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()))
     )
 }
 

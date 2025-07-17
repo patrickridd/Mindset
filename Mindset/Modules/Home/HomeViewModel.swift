@@ -46,7 +46,7 @@ class HomeViewModel: ObservableObject {
     var currentStep: Int {
         if moodValue == nil {
             return 0
-        } else if morningPromptsEntry.dateCompleted != nil {
+        } else if morningPromptsEntry.completed != nil {
             return 1
         } else {
             return 2
@@ -56,17 +56,17 @@ class HomeViewModel: ObservableObject {
     var morningPromptsEntry: PromptsEntry {
         promptsEntryManager.promptEntry(for: .startOfToday, dayTime: .morning)
         ??
-        PromptsEntry(promptEntryDate: .startOfToday, prompts: morningSelectedPrompts
+        PromptsEntry(entryDate: .startOfToday, prompts: morningSelectedPrompts
                      ??
-                     DayTime.morning.defaultPrompts, type: .morning)
+                     DayTime.morning.defaultPrompts, dayTime: .morning)
     }
 
     var nightPromptsEntry: PromptsEntry {
         promptsEntryManager.promptEntry(for: .endOfToday, dayTime: .night)
         ??
-        PromptsEntry(promptEntryDate: .endOfToday, prompts: nightSelectedPrompts
+        PromptsEntry(entryDate: .endOfToday, prompts: nightSelectedPrompts
                      ??
-                     DayTime.night.defaultPrompts, type: .night)
+                     DayTime.night.defaultPrompts, dayTime: .night)
     }
 
     var morningMindsetCard: StartPromptsEntryCardView {
@@ -98,7 +98,7 @@ class HomeViewModel: ObservableObject {
     }
 
     var morningMindsetCardProgress: ProgressStatus {
-        guard promptsEntryManager.promptEntry(for: .today, dayTime: .morning)?.dateCompleted == nil else {
+        guard promptsEntryManager.promptEntry(for: .today, dayTime: .morning)?.completed == nil else {
             return .completed
         }
 
@@ -110,7 +110,7 @@ class HomeViewModel: ObservableObject {
     }
 
     var nightMindsetCardProgress: ProgressStatus {
-        guard promptsEntryManager.promptEntry(for: .today, dayTime: .night)?.dateCompleted == nil else {
+        guard promptsEntryManager.promptEntry(for: .today, dayTime: .night)?.completed == nil else {
             return .completed
         }
 

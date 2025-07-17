@@ -14,7 +14,9 @@ protocol PromptsEntryManagerProtocol {
 @MainActor
 class PromptsEntryManager: ObservableObject {
     
-    @Published var entries: [Date: PromptsEntry] = [:]
+    @Published var morningEntries: [Date: PromptsEntry] = [:]
+    @Published var nightEntries: [Date: PromptsEntry] = [:]
+
     private let promptsEntryPersistence: PromptsEntryPersistence
 
     public static let shared = PromptsEntryManager(
@@ -23,49 +25,61 @@ class PromptsEntryManager: ObservableObject {
     
     init(promptsEntryPersistence: PromptsEntryPersistence) {
         self.promptsEntryPersistence = promptsEntryPersistence
-        loadJournalEntries()
+        loadMorningEntries()
+        loadNightEntries()
     }
 
-    private func loadJournalEntries() {
-        let entries = promptsEntryPersistence.load()
-        for entry in entries {
-            self.entries[Calendar.current.startOfDay(for: entry.promptEntryDate)] = entry
+    private func loadMorningEntries() {
+        let morningEntries = promptsEntryPersistence.loadPrompts(for: .morning)
+        for entry in morningEntries {
+            self.morningEntries[Calendar.current.startOfDay(for: entry.date)] = entry
+        }
+    }
+    
+    private func loadNightEntries() {
+        let nightEntries = promptsEntryPersistence.loadPrompts(for: .night)
+        for entry in nightEntries {
+            self.morningEntries[Calendar.current.startOfDay(for: entry.date)] = entry
         }
     }
 
     func createEntry(for selectedDate: Date, moodValue: Double, promptsEntryType: DayTime, prompts: [Prompt]) -> PromptsEntry {
         let newEntry = PromptsEntry(
-            promptEntryDate: selectedDate.startOfDay,
+            entryDate: selectedDate.startOfDay,
             prompts: prompts,
-            type: promptsEntryType,
-            moodValue: moodValue
+            dayTime: promptsEntryType
         )
-        entries[selectedDate.startOfDay] = newEntry
-        promptsEntryPersistence.save([newEntry])
+        morningEntries[selectedDate.startOfDay] = newEntry
+        promptsEntryPersistence.saveEntry(newEntry)
         return newEntry
     }
 
     func promptEntry(for date: Date, dayTime: DayTime) -> PromptsEntry? {
         switch dayTime {
         case .morning:
-            return entries[Calendar.current.startOfDay(for: date)]
+            return morningEntries[Calendar.current.startOfDay(for: date)]
         case .night:
-            return entries[date.endOfDay]
+            return morningEntries[date.endOfDay]
         }
     }
 
     func save(entry: PromptsEntry) {
-        entries[entry.promptEntryDate] = entry
-        promptsEntryPersistence.save([entry])
+        switch entry.dayTime {
+        case .morning:
+            morningEntries[entry.date] = entry
+        case .night:
+            nightEntries[entry.date] = entry
+        }
+        promptsEntryPersistence.saveEntry(entry)
     }
 
     func delete(entry: PromptsEntry) {
         guard
-            let index = entries.values.firstIndex(of: entry)
+            let index = morningEntries.values.firstIndex(of: entry)
         else {
             return
         }
-        entries.remove(at: index)
+        morningEntries.remove(at: index)
         promptsEntryPersistence.delete(entry)
     }
 
