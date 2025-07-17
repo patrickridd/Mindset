@@ -10,8 +10,7 @@ import SwiftUI
 struct HomeView: View {
     
     @StateObject private var viewModel: HomeViewModel
-    @State var contentHeights: [CGFloat] = Array(repeating: 0, count: 3)
-    
+
     init(viewModel: HomeViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -22,14 +21,6 @@ struct HomeView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 25) {
                     VStack(spacing: 12) {
-//                        Text(viewModel.title)
-//                            .font(.largeTitle)
-//                            .fontWeight(.medium)
-//                            .frame(width: UIScreen.main.bounds.width-48,
-//                                   alignment: .leading)
-//                        Text(viewModel.subtitle)
-//                            .frame(width: UIScreen.main.bounds.width-48,
-//                                   alignment: .leading)
                         quoteView
                             .fontWeight(.light)
                             .padding(.leading, 2)
@@ -38,20 +29,10 @@ struct HomeView: View {
                         .easeInOut(duration: 0.5),
                         value: viewModel.dayTime
                     )
-                    if let entry = viewModel.entry {
-                        PromptsEntryCardView(viewModel: PromptsEntryCardViewModel(
-                            entry: entry,
-                            coordinator: viewModel.coordinator,
-                            promptsEntryManager: viewModel.promptsEntryManager
-                        ))
-                        .padding(.top)
-                    } else {
-                        VerticalProgressBarView(todoCardItems: [
-                            TodoCardItem(view: AnyView(MoodEmojiPickerView(selectedIndex: $viewModel.moodValue)), progressStatus: viewModel.moodValue == nil ? .inProgress : .completed),
-                            TodoCardItem(view: AnyView(StartPromptsEntryCardView(viewModel: .init(coordinator: viewModel.coordinator, promptsEntryManager: viewModel.promptsEntryManager, dayTime: .morning, selectedPrompts: DayTime.morning.defaultPrompts))), progressStatus: .inProgress),
-                            TodoCardItem(view: AnyView(StartPromptsEntryCardView(viewModel: .init(coordinator: viewModel.coordinator, promptsEntryManager: viewModel.promptsEntryManager, dayTime: .night, selectedPrompts: DayTime.night.defaultPrompts))), progressStatus: .notStarted)
-                        ], currentStep: 0)
-                    }
+                    VerticalProgressBarView(
+                        todoCardItems: viewModel.todoCardItems,
+                        currentStep: viewModel.currentStep
+                    )
                 }
             }
             .padding(.top)

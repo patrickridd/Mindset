@@ -14,7 +14,8 @@ class StartPromptsEntryCardViewModel: ObservableObject {
     @Published var hasInteractedWithMoodSlider: Bool = false
     @Published var startButtonPlayed: Bool = false
 
-    let promptsEntry: PromptsEntry
+    private(set) var promptsEntry: PromptsEntry
+    
     let coordinator: any Coordinated
     let promptsEntryManager: PromptsEntryManager
     let dayTime: DayTime
@@ -23,13 +24,12 @@ class StartPromptsEntryCardViewModel: ObservableObject {
         coordinator: any Coordinated,
         promptsEntryManager: PromptsEntryManager,
         dayTime: DayTime,
-        selectedPrompts: [Prompt]?
+        promptsEntry: PromptsEntry
     ) {
         self.coordinator = coordinator
         self.promptsEntryManager = promptsEntryManager
         self.dayTime = dayTime
-        let prompts = selectedPrompts ?? dayTime.defaultPrompts
-        self.promptsEntry = PromptsEntry(promptEntryDate: .today, prompts: prompts, type: dayTime)
+        self.promptsEntry = promptsEntry
     }
 
     func playButtonTapped() {
@@ -40,6 +40,7 @@ class StartPromptsEntryCardViewModel: ObservableObject {
             onCompletion: { [weak self] in
                 guard let self else { return }
                 self.coordinator.dismissFullScreenCover()
+                self.promptsEntry.set(completionDate: Date())
                 self.promptsEntryManager.save(entry: promptsEntry)
             }
         )

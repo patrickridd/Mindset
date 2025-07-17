@@ -60,9 +60,11 @@ enum Mood: String, CaseIterable {
 }
 
 struct MoodEmojiPickerView: View {
-    let emojis = ["😭", "😞", "🙁", "😐", "🙂", "😀", "🤩"]
-    @Binding var selectedIndex: Int?
+    
     @State private var pulse = false
+    @Binding var selectedIndex: Int?
+
+    let emojis = ["😭", "😞", "🙁", "😐", "🙂", "😀", "🤩"]
 
     var body: some View {
         GroupBox(content: {
@@ -88,8 +90,7 @@ struct MoodEmojiPickerView: View {
         }, label: {
             Label("How Are you feeling today?", systemImage: "sunrise.fill")
         })
-        .padding()
-        
+        .padding(12)
     }
 }
 

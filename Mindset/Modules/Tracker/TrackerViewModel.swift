@@ -26,8 +26,8 @@ class TrackerViewModel: ObservableObject {
         self.coordinator = coordinator
     }
 
-    var entry: PromptsEntry? {
-        promptsEntryManager.promptEntry(for: selectedDate)
+    var morningEntry: PromptsEntry? {
+        promptsEntryManager.promptEntry(for: selectedDate, dayTime: .morning)
     }
 
 }

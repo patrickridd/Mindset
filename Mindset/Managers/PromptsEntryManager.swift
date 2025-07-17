@@ -45,12 +45,17 @@ class PromptsEntryManager: ObservableObject {
         return newEntry
     }
 
-    func promptEntry(for date: Date) -> PromptsEntry? {
-        entries[Calendar.current.startOfDay(for: date.startOfDay)]
+    func promptEntry(for date: Date, dayTime: DayTime) -> PromptsEntry? {
+        switch dayTime {
+        case .morning:
+            return entries[Calendar.current.startOfDay(for: date)]
+        case .night:
+            return entries[date.endOfDay]
+        }
     }
 
     func save(entry: PromptsEntry) {
-        entries[entry.promptEntryDate.startOfDay] = entry
+        entries[entry.promptEntryDate] = entry
         promptsEntryPersistence.save([entry])
     }
 

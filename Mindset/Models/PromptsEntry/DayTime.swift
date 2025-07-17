@@ -27,4 +27,13 @@ enum DayTime: String, Codable, CaseIterable {
         case .night: return "🌙"
         }
     }
+
+    var date: Date {
+        switch self {
+        case .morning:
+            return Date().startOfDay
+        case .night:
+            return Date().endOfDay
+        }
+    }
 }

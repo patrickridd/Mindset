@@ -17,7 +17,7 @@ struct DayTimePicker: View {
             ForEach(DayTime.allCases, id: \.self) { type in
                 if #available(iOS 26.0, *) {
                     button(for: type)
-                        .glassEffect()
+//                        .glassEffect()
                 } else {
                     // Fallback on earlier versions
                     button(for: type)

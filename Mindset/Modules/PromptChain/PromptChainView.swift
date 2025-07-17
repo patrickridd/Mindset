@@ -24,7 +24,7 @@ struct PromptChainView: View {
                         flowCoordinator.view(for: prompt)
                     }
                     .navigationDestination(for: PromptCompletionStep.self) { completionStep in
-                        PromptChainCompletionView(viewModel: .init(completionPrompt: completionStep, coordinator: viewModel.parentCoordinator))
+                        PromptChainCompletionView(viewModel: .init(completionPrompt: completionStep, coordinator: viewModel.parentCoordinator, onCompletion: flowCoordinator.onCompletion))
                     }
             }
         }

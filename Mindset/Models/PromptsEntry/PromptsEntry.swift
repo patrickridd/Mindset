@@ -22,6 +22,10 @@ struct PromptsEntry: PromptsEntryContent {
         self.type = type
         self.moodValue = moodValue
     }
+
+    mutating func set(completionDate: Date) {
+        dateCompleted = completionDate
+    }
 }
 
 extension PromptsEntry: Equatable {
@@ -100,4 +104,9 @@ extension PromptsEntry: Codable {
         self.type = try container.decode(DayTime.self, forKey: .type)
         self.moodValue = try container.decodeIfPresent(Double.self, forKey: .moodValue)
     }
+}
+
+class Mocks {
+    static var morningMindSet = PromptsEntry(promptEntryDate: .today, prompts: DayTime.morning.defaultPrompts, type: .morning)
+    static var nightMindSet = PromptsEntry(promptEntryDate: .today, prompts: DayTime.night.defaultPrompts, type: .night)
 }
