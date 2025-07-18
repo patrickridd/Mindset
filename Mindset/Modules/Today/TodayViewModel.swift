@@ -46,12 +46,10 @@ class TodayViewModel: ObservableObject {
     var currentStep: Int {
         if moodValue == nil {
             return 0
-        } else if morningPromptsEntry.completed {
+        } else if !morningPromptsEntry.completed {
             return 1
-        } else if nightPromptsEntry.completed {
-            return 2
         } else {
-            return todoCardItems.count-1
+            return 2
         }
     }
 
@@ -100,11 +98,13 @@ class TodayViewModel: ObservableObject {
     }
 
     var morningMindsetCardProgress: ProgressStatus {
-        guard promptsEntryManager.promptEntry(for: .today, dayTime: .morning)?.completed == nil else {
-            return .completed
+        guard let promptEntry = promptsEntryManager.promptEntry(for: .today, dayTime: .morning) else {
+            return .notStarted
         }
 
-        if currentStep == 0 {
+        if promptEntry.completed {
+            return .completed
+        } else if currentStep == 0 {
             return .notStarted
         } else {
             return .inProgress
@@ -112,11 +112,13 @@ class TodayViewModel: ObservableObject {
     }
 
     var nightMindsetCardProgress: ProgressStatus {
-        guard promptsEntryManager.promptEntry(for: .today, dayTime: .night)?.completed == nil else {
-            return .completed
+        guard let promptEntry = promptsEntryManager.promptEntry(for: .today, dayTime: .night) else {
+            return .notStarted
         }
 
-        if currentStep == 2 {
+        if promptEntry.completed {
+            return .completed
+        } else if currentStep == 2 {
             return .inProgress
         } else {
             return .notStarted
