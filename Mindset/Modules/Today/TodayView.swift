@@ -1,5 +1,5 @@
 //
-//  HomeView.swift
+//  TodayView.swift
 //  Mindset
 //
 //  Created by patrick ridd on 6/26/25.
@@ -7,11 +7,11 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct TodayView: View {
     
-    @StateObject private var viewModel: HomeViewModel
+    @StateObject private var viewModel: TodayViewModel
 
-    init(viewModel: HomeViewModel) {
+    init(viewModel: TodayViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -22,6 +22,7 @@ struct HomeView: View {
                 VStack(spacing: 25) {
                     VStack(spacing: 12) {
                         quoteView
+                            .padding(.top)
                             .fontWeight(.light)
                             .padding(.leading, 2)
                     }
@@ -35,14 +36,13 @@ struct HomeView: View {
                     )
                 }
             }
-            .padding(.top)
         }
     }
 }
 
 #Preview {
-    HomeView(
-        viewModel: HomeViewModel(
+    TodayView(
+        viewModel: TodayViewModel(
             coordinator: Coordinator(viewFactory: ViewFactory()),
             promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()),
             dayTime: .morning
@@ -51,8 +51,8 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView(
-        viewModel: HomeViewModel(
+    TodayView(
+        viewModel: TodayViewModel(
             coordinator: Coordinator(viewFactory: ViewFactory()),
             promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()),
             dayTime: .night
@@ -60,35 +60,25 @@ struct HomeView: View {
     )
 }
 
-extension HomeView {
+extension TodayView {
     var topBar: some View {
         VStack {
             HStack(alignment: .center) {
-                VStack(alignment: .leading, spacing: 8) {
+                HStack(alignment: .center, spacing: 16) {
                     navTitle
-                    HStack {
-                        DayTimePicker(
-                            dayTime: $viewModel.dayTime
-                        )
-                        .padding(.leading, 3)
-                        Spacer()
-                        HStack(alignment: .top, spacing: 16) {
-                            StreakTracker()
-                            profileButton
-                        }
-                    }
+                    StreakTracker()
+                    profileButton
                 }
             }
             .padding(.top)
             .padding(.horizontal, 16)
-
-//            Divider()
+            Divider()
         }
     }
 
     var navTitle: some View {
         Text("Daily Mindset")
-            .font(.title2)
+            .font(.title)
             .fontWeight(.bold)
             .frame(maxWidth: .infinity,
                    alignment: .leading)

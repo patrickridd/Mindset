@@ -7,8 +7,8 @@ final class ViewFactory {
     @ViewBuilder
     func makeView(for screen: CoordinatedView, coordinator: Coordinator) -> some View {
         switch screen {
-        case .homeView(let promptsEntryManager, let dayTime):
-            HomeView(viewModel: HomeViewModel(
+        case .todayView(let promptsEntryManager, let dayTime):
+            TodayView(viewModel: TodayViewModel(
                 coordinator: coordinator,
                 promptsEntryManager: promptsEntryManager,
                 dayTime: dayTime

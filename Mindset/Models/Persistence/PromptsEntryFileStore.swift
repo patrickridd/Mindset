@@ -26,7 +26,8 @@ struct PromptsEntryFileStore: PromptsEntryPersistence {
     }
 
     func saveEntries(_ entries: [PromptsEntry], for dayTime: DayTime) throws {
-        if let data = try? JSONEncoder().encode(entries) {
+        let filteredEntries = entries.filter { $0.dayTime == dayTime }
+        if let data = try? JSONEncoder().encode(filteredEntries) {
             do {
                 try data.write(to: fileURL(path: dayTime.urlPath))
             } catch {

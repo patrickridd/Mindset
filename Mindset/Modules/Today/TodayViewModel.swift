@@ -1,5 +1,5 @@
 //
-//  HomeViewModel.swift
+//  TodayViewModel.swift
 //  Mindset
 //
 //  Created by patrick ridd on 6/26/25.
@@ -9,7 +9,7 @@ import SwiftUI
 
 @MainActor
 
-class HomeViewModel: ObservableObject {
+class TodayViewModel: ObservableObject {
 
     @Published var presentingPromptChainFlow: Bool = false
     @Published var selectedDate: Date
@@ -46,10 +46,12 @@ class HomeViewModel: ObservableObject {
     var currentStep: Int {
         if moodValue == nil {
             return 0
-        } else if morningPromptsEntry.completed != nil {
+        } else if morningPromptsEntry.completed {
             return 1
-        } else {
+        } else if nightPromptsEntry.completed {
             return 2
+        } else {
+            return todoCardItems.count-1
         }
     }
 

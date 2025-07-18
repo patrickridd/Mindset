@@ -16,7 +16,7 @@ struct MainTabView: View {
     var body: some View {
         TabView {
             coordinator.build(
-                .homeView(
+                .todayView(
                     promptsEntryManager: promptsEntryManager,
                     dayTime: getDayTime
                 )
