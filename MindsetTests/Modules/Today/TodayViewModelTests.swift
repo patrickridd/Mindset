@@ -25,7 +25,7 @@ final class TodayViewModelTests: XCTestCase {
         XCTAssertEqual(sut.todoCardItems.count, 3)
     }
 
-    func test_todoCardItems_order {
+    func test_todoCardItems_order() {
 //        for (index, todo) in sut.todoCardItems.enumerated() {
 //            switch index {
 //            case 0:
@@ -38,7 +38,5 @@ final class TodayViewModelTests: XCTestCase {
 //            }
 //        }
     }
-
-    func 
 
 }

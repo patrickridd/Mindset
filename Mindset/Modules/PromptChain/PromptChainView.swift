@@ -32,9 +32,16 @@ struct PromptChainView: View {
 }
 
 #Preview {
-    PromptChainView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntry: PromptsEntry(entryDate: Date(), prompts: [Prompt.gratitude], dayTime: .morning), flowCoordinator: PromptChainFlowCoordinator(steps: [], onCompletion: {
-    }), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()))
+    let flowCoordinator = PromptChainFlowCoordinator(steps: [], onCompletion: { })
+    return PromptChainView(
+        viewModel: .init(
+            coordinator: Coordinator(viewFactory: ViewFactory()),
+            promptsEntry: PromptsEntry(entryDate: Date(), prompts: [Prompt.gratitude], dayTime: .morning),
+            flowCoordinator: flowCoordinator,
+            promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore())
+        )
     )
+    .environmentObject(flowCoordinator)
 }
 
 extension PromptChainView {
@@ -55,6 +62,7 @@ extension PromptChainView {
             }
         }
         .padding(.vertical)
+        .background(Color(uiColor: .systemBackground))
     }
 
     var closeButton: some View {
