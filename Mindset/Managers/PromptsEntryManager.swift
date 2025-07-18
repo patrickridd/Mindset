@@ -57,9 +57,9 @@ class PromptsEntryManager: ObservableObject {
     func promptEntry(for date: Date, dayTime: DayTime) -> PromptsEntry? {
         switch dayTime {
         case .morning:
-            return morningEntries[Calendar.current.startOfDay(for: date)]
+            return morningEntries[date.startOfDay]
         case .night:
-            return morningEntries[date.endOfDay]
+            return nightEntries[date.startOfDay]
         }
     }
 
