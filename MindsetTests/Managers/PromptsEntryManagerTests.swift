@@ -86,7 +86,7 @@ final class PromptsEntryManagerTests: XCTestCase {
 
     // MARK: saveEntry tests
 
-    func test_saveEntry_saves_to_morningEntries_set() {
+    func test_saveEntry_inserts_into_morningEntries_set() {
         // Arrange
         sut.morningEntries = []
         // Act
@@ -95,7 +95,7 @@ final class PromptsEntryManagerTests: XCTestCase {
         XCTAssertTrue(sut.morningEntries.contains(morningEntry))
     }
 
-    func test_saveEntry_saves_to_nightEntries_set() {
+    func test_saveEntry_inserts_into_nightEntries_set() {
         // Arrange
         sut.nightEntries = []
         // Act
