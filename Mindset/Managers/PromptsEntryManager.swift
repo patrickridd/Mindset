@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol PromptsEntryManagerProtocol {
-    
-}
-
 @MainActor
 class PromptsEntryManager: ObservableObject {
     
@@ -32,23 +28,23 @@ class PromptsEntryManager: ObservableObject {
     private func loadMorningEntries() {
         let morningEntries = promptsEntryPersistence.loadPrompts(for: .morning)
         for entry in morningEntries {
-            self.morningEntries[Calendar.current.startOfDay(for: entry.date)] = entry
+            self.morningEntries[entry.date.startOfDay] = entry
         }
     }
     
     private func loadNightEntries() {
         let nightEntries = promptsEntryPersistence.loadPrompts(for: .night)
         for entry in nightEntries {
-            self.nightEntries[Calendar.current.startOfDay(for: entry.date)] = entry
+            self.nightEntries[entry.date.startOfDay] = entry
         }
     }
 
-    func createEntry(moodValue: Double, promptsEntryType: DayTime, prompts: [Prompt]) -> PromptsEntry {
+    func createEntry(promptsEntryType: DayTime, prompts: [Prompt]) -> PromptsEntry {
         let newEntry = PromptsEntry(
             prompts: prompts,
             dayTime: promptsEntryType
         )
-        let key = Calendar.current.startOfDay(for: newEntry.date)
+        let key = newEntry.date.startOfDay
         switch promptsEntryType {
         case .morning:
             morningEntries[key] = newEntry
@@ -59,8 +55,8 @@ class PromptsEntryManager: ObservableObject {
         return newEntry
     }
 
-    func promptEntry(for date: Date, dayTime: DayTime) -> PromptsEntry? {
-        let key = Calendar.current.startOfDay(for: date)
+    func getPromptsEntry(for date: Date, dayTime: DayTime) -> PromptsEntry? {
+        let key = date.startOfDay
         switch dayTime {
         case .morning:
             return morningEntries[key]
@@ -70,7 +66,7 @@ class PromptsEntryManager: ObservableObject {
     }
 
     func save(entry: PromptsEntry) {
-        let key = Calendar.current.startOfDay(for: entry.date)
+        let key = entry.date.startOfDay
         switch entry.dayTime {
         case .morning:
             morningEntries[key] = entry
@@ -81,7 +77,7 @@ class PromptsEntryManager: ObservableObject {
     }
 
     func delete(entry: PromptsEntry) {
-        let key = Calendar.current.startOfDay(for: entry.date)
+        let key = entry.date.startOfDay
         switch entry.dayTime {
         case .morning:
             morningEntries.removeValue(forKey: key)

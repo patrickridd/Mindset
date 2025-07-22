@@ -54,7 +54,7 @@ class TodayViewModel: ObservableObject {
     }
 
     var morningPromptsEntry: PromptsEntry {
-        promptsEntryManager.promptEntry(for: .startOfToday, dayTime: .morning)
+        promptsEntryManager.getPromptsEntry(for: .startOfToday, dayTime: .morning)
         ??
         PromptsEntry(prompts: morningSelectedPrompts
                      ??
@@ -62,7 +62,7 @@ class TodayViewModel: ObservableObject {
     }
 
     var nightPromptsEntry: PromptsEntry {
-        promptsEntryManager.promptEntry(for: .startOfToday, dayTime: .night)
+        promptsEntryManager.getPromptsEntry(for: .startOfToday, dayTime: .night)
         ??
         PromptsEntry(prompts: nightSelectedPrompts
                      ??
@@ -98,7 +98,7 @@ class TodayViewModel: ObservableObject {
     }
 
     var morningMindsetCardProgress: ProgressStatus {
-        guard let promptEntry = promptsEntryManager.promptEntry(for: .today, dayTime: .morning) else {
+        guard let promptEntry = promptsEntryManager.getPromptsEntry(for: .today, dayTime: .morning) else {
             return .notStarted
         }
 
@@ -112,7 +112,7 @@ class TodayViewModel: ObservableObject {
     }
 
     var nightMindsetCardProgress: ProgressStatus {
-        guard let promptEntry = promptsEntryManager.promptEntry(for: .today, dayTime: .night) else {
+        guard let promptEntry = promptsEntryManager.getPromptsEntry(for: .today, dayTime: .night) else {
             return .notStarted
         }
 

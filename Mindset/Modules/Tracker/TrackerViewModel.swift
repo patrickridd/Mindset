@@ -27,7 +27,7 @@ class TrackerViewModel: ObservableObject {
     }
 
     var morningEntry: PromptsEntry? {
-        promptsEntryManager.promptEntry(for: selectedDate, dayTime: .morning)
+        promptsEntryManager.getPromptsEntry(for: selectedDate, dayTime: .morning)
     }
 
 }

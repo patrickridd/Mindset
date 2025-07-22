@@ -23,7 +23,7 @@ class MockPromptsEntryManager: PromptsEntryManager {
         }
     }
     
-    override func promptEntry(for date: Date, dayTime: DayTime) -> PromptsEntry? {
+    override func getPromptsEntry(for date: Date, dayTime: DayTime) -> PromptsEntry? {
         switch dayTime {
         case .morning:
             return self.morningEntries[date]

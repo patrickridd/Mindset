@@ -8,8 +8,9 @@
 import Foundation
 @testable import Mindset
 
-struct MockPromptsEntryFileStore: PromptsEntryPersistence {
+class MockPromptsEntryFileStore: PromptsEntryPersistence {
     
+    var savedEntries: [PromptsEntry] = []
 
     func fileURL(path: String) -> URL {
         let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
@@ -21,12 +22,15 @@ struct MockPromptsEntryFileStore: PromptsEntryPersistence {
     }
     
     func saveEntries(_ entries: [Mindset.PromptsEntry], for dayTime: Mindset.DayTime) throws {
+        savedEntries.append(contentsOf: entries)
     }
     
     func saveEntry(_ entry: Mindset.PromptsEntry) {
+        savedEntries.append(entry)
     }
     
     func delete(_ entry: Mindset.PromptsEntry) {
+        
     }
     
     
