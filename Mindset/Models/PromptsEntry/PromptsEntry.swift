@@ -14,9 +14,9 @@ struct PromptsEntry: PromptsEntryContent {
     let dayTime: DayTime
     private(set) var completed: Bool = false
 
-    init(id: UUID = UUID(), entryDate: Date = .startOfToday, prompts: [any PromptContent], dayTime: DayTime) {
+    init(id: UUID = UUID(), prompts: [any PromptContent], dayTime: DayTime) {
         self.id = id
-        self.date = entryDate
+        self.date = Date().startOfDay
         self.prompts = prompts
         self.dayTime = dayTime
     }
@@ -103,6 +103,6 @@ extension PromptsEntry: Codable {
 }
 
 class Mocks {
-    static var morningMindSet = PromptsEntry(entryDate: .today, prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
-    static var nightMindSet = PromptsEntry(entryDate: .today, prompts: DayTime.night.defaultPrompts, dayTime: .night)
+    static var morningMindSet = PromptsEntry(prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
+    static var nightMindSet = PromptsEntry(prompts: DayTime.night.defaultPrompts, dayTime: .night)
 }

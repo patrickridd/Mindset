@@ -76,7 +76,7 @@ final class PromptsEntryFileStoreTests: XCTestCase {
     }
 
     func test_saveEntries_only_saves_morning_matches() throws {
-        let morningEntry = PromptsEntry(entryDate: .today, prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
+        let morningEntry = PromptsEntry(prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
         let nightEntry = PromptsEntry(prompts: DayTime.night.defaultPrompts, dayTime: .night)
         try sut.saveEntries([morningEntry, nightEntry], for: .morning)
         XCTAssertTrue(sut.loadPrompts(for: .morning).count == 1)
@@ -84,7 +84,7 @@ final class PromptsEntryFileStoreTests: XCTestCase {
     }
     
     func test_saveEntries_only_saves_night_matches() throws {
-        let morningEntry = PromptsEntry(entryDate: .today, prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
+        let morningEntry = PromptsEntry(prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
         let nightEntry = PromptsEntry(prompts: DayTime.night.defaultPrompts, dayTime: .night)
         try sut.saveEntries([morningEntry, nightEntry], for: .night)
         XCTAssertTrue(sut.loadPrompts(for: .morning).count == 0)
@@ -92,7 +92,7 @@ final class PromptsEntryFileStoreTests: XCTestCase {
     }
     
     func test_delete_entry() throws {
-        let morningEntry = PromptsEntry(entryDate: .today, prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
+        let morningEntry = PromptsEntry(prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
         try sut.saveEntries(
             [morningEntry],
             for: .morning
@@ -103,9 +103,8 @@ final class PromptsEntryFileStoreTests: XCTestCase {
     }
 
     func test_saveEntry_success() {
-        let morningEntry = PromptsEntry(entryDate: .today, prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
+        let morningEntry = PromptsEntry(prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
         sut.saveEntry(morningEntry)
         XCTAssertTrue(sut.loadPrompts(for: .morning).count == 1)
     }
-
 }

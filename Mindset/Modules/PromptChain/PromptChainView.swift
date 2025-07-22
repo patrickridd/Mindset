@@ -36,7 +36,7 @@ struct PromptChainView: View {
     return PromptChainView(
         viewModel: .init(
             coordinator: Coordinator(viewFactory: ViewFactory()),
-            promptsEntry: PromptsEntry(entryDate: Date(), prompts: [Prompt.gratitude], dayTime: .morning),
+            promptsEntry: PromptsEntry(prompts: [Prompt.gratitude], dayTime: .morning),
             flowCoordinator: flowCoordinator,
             promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore())
         )

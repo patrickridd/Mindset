@@ -39,47 +39,55 @@ class PromptsEntryManager: ObservableObject {
     private func loadNightEntries() {
         let nightEntries = promptsEntryPersistence.loadPrompts(for: .night)
         for entry in nightEntries {
-            self.morningEntries[Calendar.current.startOfDay(for: entry.date)] = entry
+            self.nightEntries[Calendar.current.startOfDay(for: entry.date)] = entry
         }
     }
 
-    func createEntry(for selectedDate: Date, moodValue: Double, promptsEntryType: DayTime, prompts: [Prompt]) -> PromptsEntry {
+    func createEntry(moodValue: Double, promptsEntryType: DayTime, prompts: [Prompt]) -> PromptsEntry {
         let newEntry = PromptsEntry(
-            entryDate: selectedDate.startOfDay,
             prompts: prompts,
             dayTime: promptsEntryType
         )
-        morningEntries[selectedDate.startOfDay] = newEntry
+        let key = Calendar.current.startOfDay(for: newEntry.date)
+        switch promptsEntryType {
+        case .morning:
+            morningEntries[key] = newEntry
+        case .night:
+            nightEntries[key] = newEntry
+        }
         promptsEntryPersistence.saveEntry(newEntry)
         return newEntry
     }
 
     func promptEntry(for date: Date, dayTime: DayTime) -> PromptsEntry? {
+        let key = Calendar.current.startOfDay(for: date)
         switch dayTime {
         case .morning:
-            return morningEntries[date.startOfDay]
+            return morningEntries[key]
         case .night:
-            return nightEntries[date.startOfDay]
+            return nightEntries[key]
         }
     }
 
     func save(entry: PromptsEntry) {
+        let key = Calendar.current.startOfDay(for: entry.date)
         switch entry.dayTime {
         case .morning:
-            morningEntries[entry.date] = entry
+            morningEntries[key] = entry
         case .night:
-            nightEntries[entry.date] = entry
+            nightEntries[key] = entry
         }
         promptsEntryPersistence.saveEntry(entry)
     }
 
     func delete(entry: PromptsEntry) {
-        guard
-            let index = morningEntries.values.firstIndex(of: entry)
-        else {
-            return
+        let key = Calendar.current.startOfDay(for: entry.date)
+        switch entry.dayTime {
+        case .morning:
+            morningEntries.removeValue(forKey: key)
+        case .night:
+            nightEntries.removeValue(forKey: key)
         }
-        morningEntries.remove(at: index)
         promptsEntryPersistence.delete(entry)
     }
 

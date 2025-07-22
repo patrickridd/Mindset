@@ -56,15 +56,15 @@ class TodayViewModel: ObservableObject {
     var morningPromptsEntry: PromptsEntry {
         promptsEntryManager.promptEntry(for: .startOfToday, dayTime: .morning)
         ??
-        PromptsEntry(entryDate: .startOfToday, prompts: morningSelectedPrompts
+        PromptsEntry(prompts: morningSelectedPrompts
                      ??
                      DayTime.morning.defaultPrompts, dayTime: .morning)
     }
 
     var nightPromptsEntry: PromptsEntry {
-        promptsEntryManager.promptEntry(for: .endOfToday, dayTime: .night)
+        promptsEntryManager.promptEntry(for: .startOfToday, dayTime: .night)
         ??
-        PromptsEntry(entryDate: .endOfToday, prompts: nightSelectedPrompts
+        PromptsEntry(prompts: nightSelectedPrompts
                      ??
                      DayTime.night.defaultPrompts, dayTime: .night)
     }
