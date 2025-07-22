@@ -17,18 +17,18 @@ class MockPromptsEntryManager: PromptsEntryManager {
     override func save(entry: PromptsEntry) {
         switch entry.dayTime {
         case .morning:
-            self.morningEntries[entry.date] = entry
+            self.morningEntries.insert(entry)
         case .night:
-            self.nightEntries[entry.date] = entry
+            self.nightEntries.insert(entry)
         }
     }
     
     override func getPromptsEntry(for date: Date, dayTime: DayTime) -> PromptsEntry? {
         switch dayTime {
         case .morning:
-            return self.morningEntries[date]
+            return self.morningEntries.first { $0.date.inSameDayAs(date: date) }
         case .night:
-            return self.nightEntries[date]
+            return self.nightEntries.first { $0.date.inSameDayAs(date: date) }
         }
     }
 }

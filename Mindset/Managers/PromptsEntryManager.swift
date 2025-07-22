@@ -10,14 +10,10 @@ import Foundation
 @MainActor
 class PromptsEntryManager: ObservableObject {
     
-    @Published var morningEntries: [Date: PromptsEntry] = [:]
-    @Published var nightEntries: [Date: PromptsEntry] = [:]
+    @Published var morningEntries: Set<PromptsEntry> = []
+    @Published var nightEntries: Set<PromptsEntry> = []
 
     private let promptsEntryPersistence: PromptsEntryPersistence
-
-    public static let shared = PromptsEntryManager(
-        promptsEntryPersistence: PromptsEntryFileStore()
-    )
     
     init(promptsEntryPersistence: PromptsEntryPersistence) {
         self.promptsEntryPersistence = promptsEntryPersistence
@@ -28,14 +24,14 @@ class PromptsEntryManager: ObservableObject {
     private func loadMorningEntries() {
         let morningEntries = promptsEntryPersistence.loadPrompts(for: .morning)
         for entry in morningEntries {
-            self.morningEntries[entry.date.startOfDay] = entry
+            self.morningEntries.insert(entry)
         }
     }
     
     private func loadNightEntries() {
         let nightEntries = promptsEntryPersistence.loadPrompts(for: .night)
         for entry in nightEntries {
-            self.nightEntries[entry.date.startOfDay] = entry
+            self.nightEntries.insert(entry)
         }
     }
 
@@ -44,45 +40,43 @@ class PromptsEntryManager: ObservableObject {
             prompts: prompts,
             dayTime: promptsEntryType
         )
-        let key = newEntry.date.startOfDay
         switch promptsEntryType {
         case .morning:
-            morningEntries[key] = newEntry
+            morningEntries.insert(newEntry)
         case .night:
-            nightEntries[key] = newEntry
+            nightEntries.insert(newEntry)
         }
         promptsEntryPersistence.saveEntry(newEntry)
         return newEntry
     }
 
     func getPromptsEntry(for date: Date, dayTime: DayTime) -> PromptsEntry? {
-        let key = date.startOfDay
         switch dayTime {
         case .morning:
-            return morningEntries[key]
+            return morningEntries.first { $0.date.inSameDayAs(date: date) }
         case .night:
-            return nightEntries[key]
+            return nightEntries.first { $0.date.inSameDayAs(date: date) }
         }
     }
 
     func save(entry: PromptsEntry) {
-        let key = entry.date.startOfDay
         switch entry.dayTime {
         case .morning:
-            morningEntries[key] = entry
+            morningEntries.remove(entry)
+            morningEntries.insert(entry)
         case .night:
-            nightEntries[key] = entry
+            nightEntries.remove(entry)
+            nightEntries.insert(entry)
         }
         promptsEntryPersistence.saveEntry(entry)
     }
 
     func delete(entry: PromptsEntry) {
-        let key = entry.date.startOfDay
         switch entry.dayTime {
         case .morning:
-            morningEntries.removeValue(forKey: key)
+            morningEntries.remove(entry)
         case .night:
-            nightEntries.removeValue(forKey: key)
+            nightEntries.remove(entry)
         }
         promptsEntryPersistence.delete(entry)
     }

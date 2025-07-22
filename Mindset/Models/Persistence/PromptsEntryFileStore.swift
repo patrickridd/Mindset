@@ -9,7 +9,7 @@ import Foundation
 
 struct PromptsEntryFileStore: PromptsEntryPersistence {
 
-    let fileManager: FileManager
+    private let fileManager: FileManager
 
     init(fileManager: FileManager = FileManager.default) {
         self.fileManager = fileManager
@@ -20,14 +20,18 @@ struct PromptsEntryFileStore: PromptsEntryPersistence {
         return folder.appendingPathComponent(path)
     }
 
-    func loadPrompts(for dayTime: DayTime) -> [PromptsEntry] {
-        guard let data = try? Data(contentsOf: fileURL(path: dayTime.urlPath)) else { return [] }
-        return (try? JSONDecoder().decode([PromptsEntry].self, from: data)) ?? []
+    func loadPrompts(for dayTime: DayTime) -> Set<PromptsEntry> {
+        guard let data = try? Data(contentsOf: fileURL(path: dayTime.urlPath)),
+              let decoded = try? JSONDecoder().decode([PromptsEntry].self, from: data) else {
+            return []
+        }
+        return Set(decoded)
     }
 
-    func saveEntries(_ entries: [PromptsEntry], for dayTime: DayTime) throws {
+    func saveEntries(_ entries: Set<PromptsEntry>, for dayTime: DayTime) throws {
         let filteredEntries = entries.filter { $0.dayTime == dayTime }
-        if let data = try? JSONEncoder().encode(filteredEntries) {
+        let filteredArray = Array(filteredEntries)
+        if let data = try? JSONEncoder().encode(filteredArray) {
             do {
                 try data.write(to: fileURL(path: dayTime.urlPath))
             } catch {
@@ -38,16 +42,15 @@ struct PromptsEntryFileStore: PromptsEntryPersistence {
     
     func saveEntry(_ entry: PromptsEntry) {
         var existing = loadPrompts(for: entry.dayTime)
-        existing.append(entry)
+        existing.remove(entry)
+        existing.insert(entry)
         try? saveEntries(existing, for: entry.dayTime)
     }
 
     func delete(_ entry: PromptsEntry) {
         var existing = loadPrompts(for: entry.dayTime)
-        if let index = existing.firstIndex(of: entry) {
-            existing.remove(at: index)
-            try? saveEntries(existing, for: entry.dayTime)
-        }
+        existing.remove(entry)
+        try? saveEntries(existing, for: entry.dayTime)
     }
 
 }

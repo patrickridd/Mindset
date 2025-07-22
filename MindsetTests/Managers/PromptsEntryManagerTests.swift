@@ -32,8 +32,8 @@ final class PromptsEntryManagerTests: XCTestCase {
  
     func test_getPromptsEntry_gets_morningPrompt() {
         // Arrange
-        sut.morningEntries[Date().startOfDay] = morningEntry
-        sut.nightEntries[Date().startOfDay] = nightEntry
+        sut.morningEntries.insert(morningEntry)
+        sut.nightEntries.insert(nightEntry)
 
         // Act
         let fetchedEntry = sut.getPromptsEntry(for: .today, dayTime: .morning)
@@ -44,8 +44,8 @@ final class PromptsEntryManagerTests: XCTestCase {
 
     func test_getPromptsEntry_gets_nightPrompt() {
         // Arrange
-        sut.morningEntries[Date().startOfDay] = morningEntry
-        sut.nightEntries[Date().startOfDay] = nightEntry
+        sut.morningEntries.insert(morningEntry)
+        sut.nightEntries.insert(nightEntry)
 
         // Act
         let fetchedEntry = sut.getPromptsEntry(for: .today, dayTime: .night)
@@ -53,7 +53,7 @@ final class PromptsEntryManagerTests: XCTestCase {
         // Assert
         XCTAssertEqual(fetchedEntry, nightEntry)
     }
-    
+
     // MARK: createEntry method tests
 
     func test_createEntry_inserts_into_morningEntries() {
@@ -62,7 +62,7 @@ final class PromptsEntryManagerTests: XCTestCase {
         // Act
         let createdEntry = sut.createEntry(promptsEntryType: .morning, prompts: prompts)
         // Assert
-        XCTAssertEqual(sut.morningEntries.first!.value, createdEntry)
+        XCTAssertTrue(sut.morningEntries.contains(createdEntry))
     }
 
     func test_createEntry_inserts_into_nightEntries() {
@@ -71,7 +71,7 @@ final class PromptsEntryManagerTests: XCTestCase {
         // Act
         let createdEntry = sut.createEntry(promptsEntryType: .night, prompts: prompts)
         // Assert
-        XCTAssertEqual(sut.nightEntries.first!.value, createdEntry)
+        XCTAssertTrue(sut.nightEntries.contains(createdEntry))
     }
 
     func test_createEntry_saves_entry_into_persistence() {
@@ -84,34 +84,46 @@ final class PromptsEntryManagerTests: XCTestCase {
         XCTAssertEqual(mockPromptsEntryFileStore.savedEntries.first!, createdEntry)
     }
 
-    // MARK: morningEntries data source tests
+    // MARK: saveEntry tests
 
-    func test_morningEntry_keys_are_startOfDate() {
+    func test_saveEntry_saves_to_morningEntries_set() {
         // Arrange
-        let prompts: [Prompt] = [.gratitude, .affirmation, .goalSetting]
-        let createdEntry = sut.createEntry(promptsEntryType: .morning, prompts: prompts)
-       
+        sut.morningEntries = []
         // Act
-        let startOfDateKey = createdEntry.date.startOfDay
-        let startOfDateEntryValue = sut.morningEntries[startOfDateKey]
-        
+        sut.save(entry: morningEntry)
         // Assert
-        XCTAssertEqual(startOfDateEntryValue, createdEntry)
+        XCTAssertTrue(sut.morningEntries.contains(morningEntry))
     }
 
-    // MARK: nightEntries data source tests
-
-    func test_nightEntry_keys_are_startOfDate() {
+    func test_saveEntry_saves_to_nightEntries_set() {
         // Arrange
-        let prompts: [Prompt] = [.gratitude, .affirmation, .goalSetting]
-        let createdEntry = sut.createEntry(promptsEntryType: .night, prompts: prompts)
-       
+        sut.nightEntries = []
         // Act
-        let startOfDateKey = createdEntry.date.startOfDay
-        let startOfDateEntryValue = sut.nightEntries[startOfDateKey]
-        
+        sut.save(entry: nightEntry)
         // Assert
-        XCTAssertEqual(startOfDateEntryValue, createdEntry)
+        XCTAssertTrue(sut.nightEntries.contains(nightEntry))
+    }
+
+    func test_saveEntry_saves_mutated_entry() {
+        // Arrange
+        XCTAssertFalse(nightEntry.completed)
+        sut.nightEntries = [nightEntry]
+        // Act
+        nightEntry.setEntryCompleted()
+        sut.save(entry: nightEntry)
+        // Assert
+        let modifiedNightEntry = sut.nightEntries.first(where: { $0.id == nightEntry.id })!
+        XCTAssertTrue(modifiedNightEntry.completed)
+    }
+
+    func test_saveEntry_saves_to_persistence() {
+        // Arrange
+        mockPromptsEntryFileStore.savedEntries = []
+        
+        // Act
+        sut.save(entry: morningEntry)
+        // Assert
+        XCTAssertTrue(mockPromptsEntryFileStore.savedEntries.contains(morningEntry))
     }
 
 }

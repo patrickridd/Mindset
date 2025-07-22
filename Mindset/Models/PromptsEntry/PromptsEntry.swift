@@ -32,6 +32,12 @@ extension PromptsEntry: Equatable {
     }
 }
 
+extension PromptsEntry: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
 extension PromptsEntry {
     enum CodingKeys: String, CodingKey {
         case id

@@ -10,27 +10,27 @@ import Foundation
 
 class MockPromptsEntryFileStore: PromptsEntryPersistence {
     
-    var savedEntries: [PromptsEntry] = []
+    var savedEntries: Set<PromptsEntry> = []
 
     func fileURL(path: String) -> URL {
         let cacheURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
         return URL(fileURLWithPath: path, relativeTo: cacheURL)
     }
 
-    func loadPrompts(for dayTime: Mindset.DayTime) -> [Mindset.PromptsEntry] {
+    func loadPrompts(for dayTime: DayTime) -> Set<PromptsEntry> {
         []
     }
     
-    func saveEntries(_ entries: [Mindset.PromptsEntry], for dayTime: Mindset.DayTime) throws {
-        savedEntries.append(contentsOf: entries)
+    func saveEntries(_ entries: Set<PromptsEntry>, for dayTime: DayTime) throws {
+        savedEntries = entries
     }
     
-    func saveEntry(_ entry: Mindset.PromptsEntry) {
-        savedEntries.append(entry)
+    func saveEntry(_ entry: PromptsEntry) {
+        savedEntries.insert(entry)
     }
     
-    func delete(_ entry: Mindset.PromptsEntry) {
-        
+    func delete(_ entry: PromptsEntry) {
+        savedEntries.remove(entry)
     }
     
     
