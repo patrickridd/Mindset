@@ -56,36 +56,32 @@ class TodayViewModel: ObservableObject {
     var morningPromptsEntry: PromptsEntry {
         promptsEntryManager.getPromptsEntry(for: .startOfToday, dayTime: .morning)
         ??
-        PromptsEntry(prompts: morningSelectedPrompts
-                     ??
-                     DayTime.morning.defaultPrompts, dayTime: .morning)
+        promptsEntryManager.createEntry(promptsEntryType: .morning, prompts: DayTime.morning.defaultPrompts)
     }
 
     var nightPromptsEntry: PromptsEntry {
         promptsEntryManager.getPromptsEntry(for: .startOfToday, dayTime: .night)
         ??
-        PromptsEntry(prompts: nightSelectedPrompts
-                     ??
-                     DayTime.night.defaultPrompts, dayTime: .night)
+        promptsEntryManager.createEntry(promptsEntryType: .night, prompts: DayTime.night.defaultPrompts)
     }
 
     var morningMindsetCard: StartPromptsEntryCardView {
         StartPromptsEntryCardView(
             viewModel: .init(
-                coordinator: coordinator,
-                promptsEntryManager: promptsEntryManager,
+                coordinator: self.coordinator,
+                promptsEntryManager: self.promptsEntryManager,
                 dayTime: .morning,
-                promptsEntry: morningPromptsEntry)
+                promptsEntry: self.morningPromptsEntry)
         )
     }
 
     var nightMindsetCard: StartPromptsEntryCardView {
         StartPromptsEntryCardView(
             viewModel: .init(
-                coordinator: coordinator,
-                promptsEntryManager: promptsEntryManager,
+                coordinator: self.coordinator,
+                promptsEntryManager: self.promptsEntryManager,
                 dayTime: .night,
-                promptsEntry: nightPromptsEntry)
+                promptsEntry: self.nightPromptsEntry)
         )
     }
 

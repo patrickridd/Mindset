@@ -9,7 +9,7 @@ import SwiftUI
 
 struct StartPromptsEntryCardView: View {
     
-    @ObservedObject var viewModel: StartPromptsEntryCardViewModel
+    @StateObject var viewModel: StartPromptsEntryCardViewModel
 
     var body: some View {
         VStack(spacing: 10) {

@@ -22,6 +22,8 @@ final class PromptsEntryFileStoreTests: XCTestCase {
         mockFileManager.clearAppCache()
     }
 
+    // MARK: fileURL(path: DayTime) tests
+
     func test_fileURL_returns_URL() {
         // Write your test here and use APIs like `#expect(...)` to check expected conditions.
         let url = sut.fileURL(path: DayTime.morning.urlPath)
@@ -29,6 +31,8 @@ final class PromptsEntryFileStoreTests: XCTestCase {
         XCTAssertTrue(url.path.contains("MorningMindset.json"))
     }
 
+    // MARK: loadPrompts tests
+    
     func test_load_morning_promptsEntries() throws {
         let morningEntry = PromptsEntry(prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
         let nightEntry = PromptsEntry(prompts: DayTime.night.defaultPrompts, dayTime: .night)
@@ -46,7 +50,7 @@ final class PromptsEntryFileStoreTests: XCTestCase {
         XCTAssertEqual(sut.loadPrompts(for: .morning).count, 1)
         XCTAssertEqual(sut.loadPrompts(for: .night).count, 1)
     }
-    
+
     func test_load_night_promptsEntries() throws {
         let nightEntry = PromptsEntry(prompts: DayTime.night.defaultPrompts, dayTime: .night)
         try sut.saveEntries(
@@ -75,6 +79,8 @@ final class PromptsEntryFileStoreTests: XCTestCase {
         XCTAssertEqual(sut.loadPrompts(for: .night).count, 1)
     }
 
+    // MARK: saveEntries tests
+
     func test_saveEntries_only_saves_morning_matches() throws {
         let morningEntry = PromptsEntry(prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
         let nightEntry = PromptsEntry(prompts: DayTime.night.defaultPrompts, dayTime: .night)
@@ -91,6 +97,30 @@ final class PromptsEntryFileStoreTests: XCTestCase {
         XCTAssertTrue(sut.loadPrompts(for: .night).count == 1)
     }
     
+    // MARK: saveEntry tests
+
+    func test_saveEntry_success() {
+        let morningEntry = PromptsEntry(prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
+        sut.saveEntry(morningEntry)
+        XCTAssertTrue(sut.loadPrompts(for: .morning).count == 1)
+    }
+
+    func test_saveEntry_saves_modified_entry() {
+        // Arrange
+        var morningEntry = PromptsEntry(prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
+        sut.saveEntry(morningEntry)
+        XCTAssertFalse(morningEntry.completed)
+        // Act
+        morningEntry.setEntryCompleted()
+        sut.saveEntry(morningEntry)
+        
+        //Assert
+        let modifiedEntry = sut.loadPrompts(for: .morning).first(where: { $0.id == morningEntry.id })!
+        XCTAssertTrue(modifiedEntry.completed)
+    }
+    
+    // MARK: delete tests
+
     func test_delete_entry() throws {
         let morningEntry = PromptsEntry(prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
         try sut.saveEntries(
@@ -102,9 +132,4 @@ final class PromptsEntryFileStoreTests: XCTestCase {
         XCTAssertTrue(sut.loadPrompts(for: .morning).count == 0)
     }
 
-    func test_saveEntry_success() {
-        let morningEntry = PromptsEntry(prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
-        sut.saveEntry(morningEntry)
-        XCTAssertTrue(sut.loadPrompts(for: .morning).count == 1)
-    }
 }

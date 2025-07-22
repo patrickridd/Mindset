@@ -50,6 +50,7 @@ class PromptChainFlowCoordinator: FlowCoordinator {
             let step = steps[currentIndex]
             path.append(step)
         } else {
+            onCompletion()
             path.append(PromptCompletionStep())
         }
     }
