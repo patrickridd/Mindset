@@ -1,0 +1,38 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache Swift packages
+        uses: actions/cache@v4
+        with:
+          path: .build
+          key: $-spm-$
+          restore-keys: |
+            $-spm-
+
+      - name: Select Xcode
+        run: sudo xcode-select -switch /Applications/Xcode.app
+
+      - name: Build
+        run: xcodebuild clean build -project Mindset.xcodeproj -scheme Mindset -destination 'platform=iOS Simulator,name=iPhone 12'
+
+      - name: Run tests
+        run: xcodebuild test -project Mindset.xcodeproj -scheme Mindset -destination 'platform=iOS Simulator,name=iPhone 12'
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: test-results
+          path: path/to/test/results
