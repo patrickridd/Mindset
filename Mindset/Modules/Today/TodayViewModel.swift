@@ -8,7 +8,6 @@
 import SwiftUI
 
 @MainActor
-
 class TodayViewModel: ObservableObject {
 
     @Published var presentingPromptChainFlow: Bool = false
@@ -16,16 +15,24 @@ class TodayViewModel: ObservableObject {
     @Published var promptsEntryManager: PromptsEntryManager
     @Published var dayTime: DayTime
     @Published var moodValue: Int?
-    @Published var morningSelectedPrompts: [Prompt]?
-    @Published var nightSelectedPrompts: [Prompt]?
+    @Published var morningPromptsEntry: PromptsEntry
+    @Published var nightPromptsEntry: PromptsEntry
 
     private(set) var coordinator: any Coordinated
-
+    
     init(coordinator: any Coordinated, promptsEntryManager: PromptsEntryManager, dayTime: DayTime? = nil) {
         self.selectedDate = Calendar.current.startOfDay(for: Date())
         self.promptsEntryManager = promptsEntryManager
         self.coordinator = coordinator
         self.dayTime = dayTime ?? .morning
+
+        self.morningPromptsEntry = promptsEntryManager.getPromptsEntry(for: .startOfToday, dayTime: .morning)
+        ??
+        promptsEntryManager.createEntry(promptsEntryType: .morning, prompts: DayTime.morning.defaultPrompts)
+
+        self.nightPromptsEntry = promptsEntryManager.getPromptsEntry(for: .startOfToday, dayTime: .night)
+        ??
+        promptsEntryManager.createEntry(promptsEntryType: .night, prompts: DayTime.night.defaultPrompts)
     }
 
     var moodValueBinding: Binding<Int?> {
@@ -37,9 +44,15 @@ class TodayViewModel: ObservableObject {
 
     var todoCardItems: [TodoCardItem] {
         [
-            TodoCardItem(view: AnyView(MoodEmojiPickerView(selectedIndex: moodValueBinding)), progressStatus: moodProgressStatus),
-            TodoCardItem(view: AnyView(morningMindsetCard), progressStatus: morningMindsetCardProgress),
-            TodoCardItem(view: AnyView(nightMindsetCard), progressStatus: nightMindsetCardProgress)
+            TodoCardItem(
+                view: AnyView(MoodEmojiPickerView(selectedIndex: moodValueBinding)), progressStatus: moodProgressStatus
+            ),
+            TodoCardItem(
+                view: AnyView(morningMindsetCard), progressStatus: morningMindsetCardProgress
+            ),
+            TodoCardItem(
+                view: AnyView(nightMindsetCard), progressStatus: nightMindsetCardProgress
+            )
         ]
     }
 
@@ -51,18 +64,6 @@ class TodayViewModel: ObservableObject {
         } else {
             return 2
         }
-    }
-
-    var morningPromptsEntry: PromptsEntry {
-        promptsEntryManager.getPromptsEntry(for: .startOfToday, dayTime: .morning)
-        ??
-        promptsEntryManager.createEntry(promptsEntryType: .morning, prompts: DayTime.morning.defaultPrompts)
-    }
-
-    var nightPromptsEntry: PromptsEntry {
-        promptsEntryManager.getPromptsEntry(for: .startOfToday, dayTime: .night)
-        ??
-        promptsEntryManager.createEntry(promptsEntryType: .night, prompts: DayTime.night.defaultPrompts)
     }
 
     var morningMindsetCard: StartPromptsEntryCardView {

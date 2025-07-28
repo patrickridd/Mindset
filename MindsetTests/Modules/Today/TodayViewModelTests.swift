@@ -89,4 +89,11 @@ final class TodayViewModelTests: XCTestCase {
         XCTAssertEqual(sut.currentStep, 2)
     }
 
+    func test_morningPromptsEntry_not_nil() {
+        XCTAssertNotNil(sut.morningPromptsEntry)
+    }
+
+    func test_nightPromptsEntry_not_nil() {
+        XCTAssertNotNil(sut.nightPromptsEntry)
+    }
 }
