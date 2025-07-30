@@ -22,13 +22,13 @@ struct MainTabView: View {
                 )
             )
             .tabItem {
-                Label("", systemImage: "brain.filled.head.profile")
+                Label("Today", systemImage: "brain.filled.head.profile")
             }
             coordinator.build(
                 .trackerView(promptsEntryManager: promptsEntryManager)
             )
             .tabItem {
-                Label("", systemImage: "chart.bar.xaxis.ascending")
+                Label("Progress", systemImage: "chart.bar.xaxis.ascending")
             }
         }
         .tint(.indigo)

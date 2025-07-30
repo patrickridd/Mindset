@@ -30,12 +30,14 @@ struct TodayView: View {
                         .easeInOut(duration: 0.5),
                         value: viewModel.dayTime
                     )
-                    VerticalProgressBarView(
-                        todoCardItems: viewModel.todoCardItems,
-                        currentStep: viewModel.currentStep
-                    )
+                    
+                    ForEach(viewModel.todaysEntries) { entry in
+                        getPromptsEntryCard(for: entry)
+                    }
                 }
             }
+        }.task {
+            viewModel.loadTodayEntries()
         }
     }
 }
@@ -112,5 +114,18 @@ extension TodayView {
         .font(.caption)
         .italic()
         .foregroundStyle(.secondary)
+    }
+
+    
+    func getPromptsEntryCard(for entry: PromptsEntry) -> some View {
+        MindsetEntryCardView(
+            viewModel: .init(
+                coordinator: viewModel.coordinator,
+                promptsEntryManager: viewModel.promptsEntryManager,
+                dayTime: entry.dayTime,
+                promptsEntry: entry,
+                progressStatus: viewModel.progressStatus(for: entry)
+            )
+        )
     }
 }

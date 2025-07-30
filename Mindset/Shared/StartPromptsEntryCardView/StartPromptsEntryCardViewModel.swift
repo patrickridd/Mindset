@@ -10,29 +10,35 @@ import SwiftUI
 @MainActor
 class StartPromptsEntryCardViewModel: ObservableObject {
 
-    @Published var moodValue: Int?
     @Published var hasInteractedWithMoodSlider: Bool = false
     @Published var startButtonPlayed: Bool = false
-
+    @Published var error: Bool = false
     private(set) var promptsEntry: PromptsEntry
     
     let coordinator: any Coordinated
     let promptsEntryManager: PromptsEntryManager
     let dayTime: DayTime
+    let progressStatus: ProgressStatus
 
     init(
         coordinator: any Coordinated,
         promptsEntryManager: PromptsEntryManager,
         dayTime: DayTime,
-        promptsEntry: PromptsEntry
+        promptsEntry: PromptsEntry,
+        progressStatus: ProgressStatus
     ) {
         self.coordinator = coordinator
         self.promptsEntryManager = promptsEntryManager
         self.dayTime = dayTime
         self.promptsEntry = promptsEntry
+        self.progressStatus = progressStatus
     }
 
     func playButtonTapped() {
+        if progressStatus == .locked {
+            error.toggle()
+            return
+        }
         startButtonPlayed.toggle()
         SoundPlayer().entryStarted()
         let flowCoordinator = PromptChainFlowCoordinator(
@@ -59,13 +65,42 @@ class StartPromptsEntryCardViewModel: ObservableObject {
             return "Evening Reflection 🌝"
         }
     }
-    
+
     var titleForegroundColor: Color {
         dayTime == .morning ? .white : .white
     }
     
-    func editButtonTapped() {
-        print("editButtonTapped")
+    var buttonImage: Image {
+        switch progressStatus {
+        case .locked:
+            return Image(systemName: "lock.circle.fill")
+        case .inProgress:
+            return Image(systemName: "square.and.pencil.circle.fill")
+        case .completed:
+            return Image(systemName: "checkmark.circle")
+        }
+    }
+
+    var buttonForegroundColor: Color {
+        switch progressStatus {
+        case .inProgress:
+            return .white
+        case .locked:
+            return .white
+        case .completed:
+            return .green
+        }
+    }
+
+    var buttonBackgroundColor: Color {
+        switch progressStatus {
+        case .inProgress:
+            return .clear
+        case .locked:
+            return .gray
+        case .completed:
+            return .white
+        }
     }
 
     var backgroundColor: LinearGradient {
@@ -73,6 +108,33 @@ class StartPromptsEntryCardViewModel: ObservableObject {
         case .morning:
             LinearGradient(colors: [Color.orange, Color.purple], startPoint: .topLeading, endPoint: .bottomTrailing)        case .night:
             LinearGradient(colors: [Color.purple, Color.blue], startPoint: .topLeading, endPoint: .bottomTrailing)
+        }
+    }
+
+    var sensoryFeedback: SensoryFeedback {
+        switch progressStatus {
+        case .locked:
+            return .error
+        case .inProgress, .completed:
+            return .selection
+        }
+    }
+
+    var sensoryFeedbackTrigger: Bool {
+        switch progressStatus {
+        case .locked:
+            return error
+        case .inProgress, .completed:
+            return startButtonPlayed
+        }
+    }
+
+    var rewindColor: Color {
+        switch dayTime {
+        case .morning:
+            return .white
+        case .night:
+            return .white
         }
     }
 }

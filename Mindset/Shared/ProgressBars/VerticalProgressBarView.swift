@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum ProgressStatus {
-    case notStarted
+    case locked
     case inProgress
     case completed
 }
@@ -38,12 +38,12 @@ struct VerticalProgressBarView: View {
 
     func getProgressImage(todoItem: TodoCardItem) -> String {
         switch todoItem.progressStatus {
-        case .notStarted:
+        case .locked:
             return "circle.dashed"
         case .inProgress:
             return "circle.fill"
         case .completed:
-            return "checkmark.circle.fill"
+            return "checkmark.square.fill"
         }
     }
 
@@ -51,7 +51,7 @@ struct VerticalProgressBarView: View {
         if isFirst(index: index) { return .clear }
         
         switch todoCardItems[index-1].progressStatus {
-        case .notStarted, .inProgress:
+        case .locked, .inProgress:
             return .gray
         case .completed:
             return .indigo
@@ -63,7 +63,7 @@ struct VerticalProgressBarView: View {
             return .clear
         }
         switch todoCardItems[index].progressStatus {
-        case .notStarted, .inProgress:
+        case .locked, .inProgress:
             return .gray
         case .completed:
             return .indigo
@@ -72,7 +72,7 @@ struct VerticalProgressBarView: View {
 
     func getProgressImageColor(todoItem: TodoCardItem) -> Color {
         switch todoItem.progressStatus {
-        case .notStarted:
+        case .locked:
             return .gray
         case .inProgress:
             return .indigo
@@ -194,29 +194,31 @@ struct CustomRowView: View {
         ),
         TodoCardItem(
             view: AnyView(
-                StartPromptsEntryCardView(
+                MindsetEntryCardView(
                     viewModel: .init(
                         coordinator: Coordinator(viewFactory: ViewFactory()),
                         promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()),
                         dayTime: .morning,
-                        promptsEntry: Mocks.morningMindSet
+                        promptsEntry: Mocks.morningMindSet,
+                        progressStatus: .completed
                     )
                 )
             ),
-            progressStatus: .notStarted
+            progressStatus: .locked
         ),
         TodoCardItem(
             view: AnyView(
-                StartPromptsEntryCardView(
+                MindsetEntryCardView(
                     viewModel: .init(
                         coordinator: Coordinator(viewFactory: ViewFactory()),
                         promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()),
                         dayTime: .night,
-                        promptsEntry: Mocks.nightMindSet
+                        promptsEntry: Mocks.nightMindSet,
+                        progressStatus: .inProgress
                     )
                 )
             ),
-            progressStatus: .notStarted
+            progressStatus: .locked
         )
     ], currentStep: 1)
 }

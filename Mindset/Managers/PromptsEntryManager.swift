@@ -23,15 +23,31 @@ class PromptsEntryManager: ObservableObject {
 
     private func loadMorningEntries() {
         let morningEntries = promptsEntryPersistence.loadPrompts(for: .morning)
-        for entry in morningEntries {
-            self.morningEntries.insert(entry)
-        }
+        self.morningEntries = Set(morningEntries)
     }
     
     private func loadNightEntries() {
         let nightEntries = promptsEntryPersistence.loadPrompts(for: .night)
-        for entry in nightEntries {
-            self.nightEntries.insert(entry)
+        self.nightEntries = Set(nightEntries)
+    }
+
+    func loadDailyMindsetEntries() -> [PromptsEntry] {
+       [getTodaysMorningEntry(), getTodaysNightEntry()]
+    }
+
+    private func getTodaysMorningEntry() -> PromptsEntry {
+        if let savedMorningEntry = getPromptsEntry(for: .today, dayTime: .morning) {
+            return savedMorningEntry
+        } else {
+            return createEntry(promptsEntryType: .morning, prompts: DayTime.morning.defaultPrompts)
+        }
+    }
+
+    private func getTodaysNightEntry() -> PromptsEntry {
+        if let savedMorningEntry = getPromptsEntry(for: .today, dayTime: .night) {
+            return savedMorningEntry
+        } else {
+            return createEntry(promptsEntryType: .night, prompts: DayTime.night.defaultPrompts)
         }
     }
 
@@ -46,7 +62,6 @@ class PromptsEntryManager: ObservableObject {
         case .night:
             nightEntries.insert(newEntry)
         }
-        promptsEntryPersistence.saveEntry(newEntry)
         return newEntry
     }
 

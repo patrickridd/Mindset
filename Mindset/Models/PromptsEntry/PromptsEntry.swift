@@ -7,21 +7,39 @@
 
 import Foundation
 
-struct PromptsEntry: PromptsEntryContent {
+class PromptsEntry: PromptsEntryContent {
     let id: UUID
     let prompts: [any PromptContent]
     let date: Date
     let dayTime: DayTime
-    private(set) var completed: Bool = false
+    @Published private(set) var completed: Bool = false
 
-    init(id: UUID = UUID(), prompts: [any PromptContent], dayTime: DayTime) {
+    init(
+        id: UUID = UUID(),
+        date: Date = Date().startOfDay,
+        prompts: [any PromptContent],
+        dayTime: DayTime,
+        completed: Bool = false
+    ) {
         self.id = id
-        self.date = Date().startOfDay
+        self.date = date
         self.prompts = prompts
         self.dayTime = dayTime
+        self.completed = completed
     }
 
-    mutating func setEntryCompleted() {
+    required public convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let id = try container.decode(UUID.self, forKey: .id)
+        let promptWrappers = try container.decode([AnyPromptContentWrapper].self, forKey: .prompts)
+        let prompts = promptWrappers.map { $0.prompt }
+        let completed = try container.decodeIfPresent(Bool.self, forKey: .completed) ?? false
+        let date = try container.decode(Date.self, forKey: .promptEntryDate)
+        let dayTime = try container.decode(DayTime.self, forKey: .type)
+        self.init(id: id, date: date, prompts: prompts, dayTime: dayTime, completed: completed)
+    }
+
+    func setEntryCompleted() {
         completed = true
     }
 }
@@ -96,19 +114,10 @@ extension PromptsEntry: Codable {
         try container.encode(date, forKey: .promptEntryDate)
         try container.encode(dayTime, forKey: .type)
     }
-
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.id = try container.decode(UUID.self, forKey: .id)
-        let promptWrappers = try container.decode([AnyPromptContentWrapper].self, forKey: .prompts)
-        self.prompts = promptWrappers.map { $0.prompt }
-        self.completed = try container.decodeIfPresent(Bool.self, forKey: .completed) ?? false
-        self.date = try container.decode(Date.self, forKey: .promptEntryDate)
-        self.dayTime = try container.decode(DayTime.self, forKey: .type)
-    }
 }
 
 class Mocks {
     static var morningMindSet = PromptsEntry(prompts: DayTime.morning.defaultPrompts, dayTime: .morning)
     static var nightMindSet = PromptsEntry(prompts: DayTime.night.defaultPrompts, dayTime: .night)
 }
+

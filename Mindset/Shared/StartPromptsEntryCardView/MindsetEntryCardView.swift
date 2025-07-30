@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MindsetEntryCardView: View {
+struct StartPromptsEntryCardView: View {
     
     @ObservedObject var viewModel: StartPromptsEntryCardViewModel
 
@@ -43,14 +43,14 @@ struct MindsetEntryCardView: View {
 }
 
 #Preview {
-    MindsetEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .morning, promptsEntry: Mocks.morningMindSet, progressStatus: .inProgress))
+    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .morning, promptsEntry: Mocks.morningMindSet, progressStatus: .inProgress))
     
-    MindsetEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .locked))
+    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .locked))
 
-    MindsetEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .completed))
+    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .completed))
 }
 
-extension MindsetEntryCardView {
+extension StartPromptsEntryCardView {
     
     var headlineView: some View {
         HStack(alignment: .center) {
@@ -76,8 +76,7 @@ extension MindsetEntryCardView {
                 viewModel.buttonImage
                     .resizable()
                     .frame(width: 50, height: 50)
-                    .foregroundStyle(viewModel.buttonForegroundColor.opacity(0.9)
-                    )
+                    .foregroundStyle(viewModel.buttonForegroundColor.opacity(0.9))
             }
             
         }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 @MainActor
 class TodayViewModel: ObservableObject {
@@ -15,24 +16,33 @@ class TodayViewModel: ObservableObject {
     @Published var promptsEntryManager: PromptsEntryManager
     @Published var dayTime: DayTime
     @Published var moodValue: Int?
-    @Published var morningPromptsEntry: PromptsEntry
-    @Published var nightPromptsEntry: PromptsEntry
+    @Published var todaysEntries: [PromptsEntry] = []
+    
+    private var entryCancellables: [AnyCancellable] = []
 
     private(set) var coordinator: any Coordinated
     
-    init(coordinator: any Coordinated, promptsEntryManager: PromptsEntryManager, dayTime: DayTime? = nil) {
+    init(
+        coordinator: any Coordinated,
+        promptsEntryManager: PromptsEntryManager,
+        dayTime: DayTime? = nil
+    ) {
         self.selectedDate = Calendar.current.startOfDay(for: Date())
         self.promptsEntryManager = promptsEntryManager
         self.coordinator = coordinator
         self.dayTime = dayTime ?? .morning
+    }
 
-        self.morningPromptsEntry = promptsEntryManager.getPromptsEntry(for: .startOfToday, dayTime: .morning)
-        ??
-        promptsEntryManager.createEntry(promptsEntryType: .morning, prompts: DayTime.morning.defaultPrompts)
-
-        self.nightPromptsEntry = promptsEntryManager.getPromptsEntry(for: .startOfToday, dayTime: .night)
-        ??
-        promptsEntryManager.createEntry(promptsEntryType: .night, prompts: DayTime.night.defaultPrompts)
+    func loadTodayEntries() {
+        self.todaysEntries = promptsEntryManager.loadDailyMindsetEntries()
+        
+        entryCancellables = []
+        for entry in todaysEntries {
+            let cancellable = entry.$completed.sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
+            entryCancellables.append(cancellable)
+        }
     }
 
     var moodValueBinding: Binding<Int?> {
@@ -42,48 +52,9 @@ class TodayViewModel: ObservableObject {
         )
     }
 
-    var todoCardItems: [TodoCardItem] {
-        [
-            TodoCardItem(
-                view: AnyView(MoodEmojiPickerView(selectedIndex: moodValueBinding)), progressStatus: moodProgressStatus
-            ),
-            TodoCardItem(
-                view: AnyView(morningMindsetCard), progressStatus: morningMindsetCardProgress
-            ),
-            TodoCardItem(
-                view: AnyView(nightMindsetCard), progressStatus: nightMindsetCardProgress
-            )
-        ]
-    }
-
     var currentStep: Int {
-        if moodValue == nil {
-            return 0
-        } else if !morningPromptsEntry.completed {
-            return 1
-        } else {
-            return 2
-        }
-    }
-
-    var morningMindsetCard: StartPromptsEntryCardView {
-        StartPromptsEntryCardView(
-            viewModel: .init(
-                coordinator: self.coordinator,
-                promptsEntryManager: self.promptsEntryManager,
-                dayTime: .morning,
-                promptsEntry: self.morningPromptsEntry)
-        )
-    }
-
-    var nightMindsetCard: StartPromptsEntryCardView {
-        StartPromptsEntryCardView(
-            viewModel: .init(
-                coordinator: self.coordinator,
-                promptsEntryManager: self.promptsEntryManager,
-                dayTime: .night,
-                promptsEntry: self.nightPromptsEntry)
-        )
+        let index = todaysEntries.firstIndex(where: { !$0.completed })
+        return index ?? 0
     }
 
     var moodProgressStatus: ProgressStatus {
@@ -94,15 +65,36 @@ class TodayViewModel: ObservableObject {
         }
     }
 
+    func progressStatus(for entry: PromptsEntry) -> ProgressStatus {
+        switch entry.dayTime {
+        case .morning:
+            if entry.completed {
+                return .completed
+            } else {
+                return .inProgress
+            }
+        case .night:
+            if entry.completed {
+                return .completed
+            } else {
+                guard let morningEntry = promptsEntryManager.getPromptsEntry(for: .today, dayTime: .morning) else {
+                    return .locked
+                }
+                if morningEntry.completed {
+                    return .inProgress
+                } else {
+                    return .locked
+                }
+            }
+        }
+    }
+
     var morningMindsetCardProgress: ProgressStatus {
         guard let promptEntry = promptsEntryManager.getPromptsEntry(for: .today, dayTime: .morning) else {
-            return .notStarted
+            return .inProgress
         }
-
         if promptEntry.completed {
             return .completed
-        } else if currentStep == 0 {
-            return .notStarted
         } else {
             return .inProgress
         }
@@ -110,15 +102,17 @@ class TodayViewModel: ObservableObject {
 
     var nightMindsetCardProgress: ProgressStatus {
         guard let promptEntry = promptsEntryManager.getPromptsEntry(for: .today, dayTime: .night) else {
-            return .notStarted
+            return .locked
         }
-
+        
         if promptEntry.completed {
             return .completed
-        } else if currentStep == 2 {
+        }
+        switch morningMindsetCardProgress {
+        case .inProgress, .locked:
+            return .locked
+        case .completed:
             return .inProgress
-        } else {
-            return .notStarted
         }
     }
     

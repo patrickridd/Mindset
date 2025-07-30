@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol PromptsEntryContent: Identifiable, Codable {
+protocol PromptsEntryContent: Identifiable, Codable, ObservableObject {
     var id: UUID { get }
     var dayTime: DayTime { get }
     var date: Date { get }
