@@ -43,11 +43,11 @@ struct MindsetEntryCardView: View {
 }
 
 #Preview {
-    MindsetEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .morning, promptsEntry: Mocks.morningMindSet, progressStatus: .inProgress))
+    MindsetEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .morning, promptsEntry: Mocks.morningMindSet, progressStatus: .inProgress, onDelete: nil))
     
-    MindsetEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .locked))
+    MindsetEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .locked, onDelete: nil))
 
-    MindsetEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .completed))
+    MindsetEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .completed, onDelete: nil))
 }
 
 extension MindsetEntryCardView {
@@ -60,7 +60,7 @@ extension MindsetEntryCardView {
                 .multilineTextAlignment(.leading)
                 .foregroundStyle(viewModel.titleForegroundColor)
             Spacer()
-            editButtonView
+            resetButtonView
                 .padding(.bottom)
         }
     }
@@ -83,9 +83,9 @@ extension MindsetEntryCardView {
         }
     }
     
-    var editButtonView: some View {
+    var resetButtonView: some View {
         Button {
-            
+            viewModel.resetButtonTapped()
         } label: {
             Image(systemName: "arrow.counterclockwise.circle")
                 .resizable()

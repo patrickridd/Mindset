@@ -19,19 +19,22 @@ class StartPromptsEntryCardViewModel: ObservableObject {
     let promptsEntryManager: PromptsEntryManager
     let dayTime: DayTime
     let progressStatus: ProgressStatus
+    var onDelete: (() -> Void)? // Add this property
 
     init(
         coordinator: any Coordinated,
         promptsEntryManager: PromptsEntryManager,
         dayTime: DayTime,
         promptsEntry: PromptsEntry,
-        progressStatus: ProgressStatus
+        progressStatus: ProgressStatus,
+        onDelete: (() -> Void)?
     ) {
         self.coordinator = coordinator
         self.promptsEntryManager = promptsEntryManager
         self.dayTime = dayTime
         self.promptsEntry = promptsEntry
         self.progressStatus = progressStatus
+        self.onDelete = onDelete
     }
 
     func playButtonTapped() {
@@ -136,6 +139,11 @@ class StartPromptsEntryCardViewModel: ObservableObject {
         case .night:
             return .white
         }
+    }
+    
+    func resetButtonTapped() {
+        promptsEntryManager.delete(entry: promptsEntry)
+        onDelete?() // Call the closure after deletion
     }
 }
 

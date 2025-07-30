@@ -200,7 +200,8 @@ struct CustomRowView: View {
                         promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()),
                         dayTime: .morning,
                         promptsEntry: Mocks.morningMindSet,
-                        progressStatus: .completed
+                        progressStatus: .completed,
+                        onDelete: nil
                     )
                 )
             ),
@@ -214,7 +215,8 @@ struct CustomRowView: View {
                         promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()),
                         dayTime: .night,
                         promptsEntry: Mocks.nightMindSet,
-                        progressStatus: .inProgress
+                        progressStatus: .inProgress,
+                        onDelete: nil
                     )
                 )
             ),

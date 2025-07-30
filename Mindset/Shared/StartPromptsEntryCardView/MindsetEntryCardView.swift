@@ -43,11 +43,11 @@ struct StartPromptsEntryCardView: View {
 }
 
 #Preview {
-    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .morning, promptsEntry: Mocks.morningMindSet, progressStatus: .inProgress))
+    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .morning, promptsEntry: Mocks.morningMindSet, progressStatus: .inProgress, onDelete: nil))
     
-    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .locked))
+    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .locked, onDelete: nil))
 
-    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .completed))
+    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .completed, onDelete: nil))
 }
 
 extension StartPromptsEntryCardView {

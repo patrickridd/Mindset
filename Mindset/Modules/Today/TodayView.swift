@@ -124,7 +124,8 @@ extension TodayView {
                 promptsEntryManager: viewModel.promptsEntryManager,
                 dayTime: entry.dayTime,
                 promptsEntry: entry,
-                progressStatus: viewModel.progressStatus(for: entry)
+                progressStatus: viewModel.progressStatus(for: entry),
+                onDelete: viewModel.loadTodayEntries
             )
         )
     }

@@ -35,7 +35,6 @@ class TodayViewModel: ObservableObject {
 
     func loadTodayEntries() {
         self.todaysEntries = promptsEntryManager.loadDailyMindsetEntries()
-        
         entryCancellables = []
         for entry in todaysEntries {
             let cancellable = entry.$completed.sink { [weak self] _ in
