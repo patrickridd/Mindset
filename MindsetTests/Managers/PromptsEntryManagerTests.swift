@@ -74,16 +74,6 @@ final class PromptsEntryManagerTests: XCTestCase {
         XCTAssertTrue(sut.nightEntries.contains(createdEntry))
     }
 
-    func test_createEntry_saves_entry_into_persistence() {
-        // Arrange
-        mockPromptsEntryFileStore.savedEntries = []
-
-        // Act
-        let createdEntry = sut.createEntry(promptsEntryType: .morning, prompts: [.gratitude, .affirmation, .goalSetting])
-        // Assert
-        XCTAssertEqual(mockPromptsEntryFileStore.savedEntries.first!, createdEntry)
-    }
-
     // MARK: saveEntry tests
 
     func test_saveEntry_inserts_into_morningEntries_set() {

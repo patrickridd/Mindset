@@ -19,7 +19,6 @@ class TodayViewModel: ObservableObject {
     @Published var todaysEntries: [PromptsEntry] = []
     
     private var entryCancellables: [AnyCancellable] = []
-
     private(set) var coordinator: any Coordinated
     
     init(
@@ -41,26 +40,6 @@ class TodayViewModel: ObservableObject {
                 self?.objectWillChange.send()
             }
             entryCancellables.append(cancellable)
-        }
-    }
-
-    var moodValueBinding: Binding<Int?> {
-        Binding<Int?>(
-            get: { self.moodValue },
-            set: { self.moodValue = $0 }
-        )
-    }
-
-    var currentStep: Int {
-        let index = todaysEntries.firstIndex(where: { !$0.completed })
-        return index ?? 0
-    }
-
-    var moodProgressStatus: ProgressStatus {
-        if currentStep == 0 || moodValue == nil {
-            return .inProgress
-        } else {
-            return .completed
         }
     }
 
@@ -88,39 +67,12 @@ class TodayViewModel: ObservableObject {
         }
     }
 
-    var morningMindsetCardProgress: ProgressStatus {
-        guard let promptEntry = promptsEntryManager.getPromptsEntry(for: .today, dayTime: .morning) else {
-            return .inProgress
-        }
-        if promptEntry.completed {
-            return .completed
-        } else {
-            return .inProgress
-        }
-    }
-
-    var nightMindsetCardProgress: ProgressStatus {
-        guard let promptEntry = promptsEntryManager.getPromptsEntry(for: .today, dayTime: .night) else {
-            return .locked
-        }
-        
-        if promptEntry.completed {
-            return .completed
-        }
-        switch morningMindsetCardProgress {
-        case .inProgress, .locked:
-            return .locked
-        case .completed:
-            return .inProgress
-        }
-    }
-    
     var title: String {
-        dayTime == .morning ? "Morning, Patrick!" : "Evening, Patrick!"
+        dayTime == .morning ? "Good Morning!" : "Evening wind down..."
     }
     
     var subtitle: String {
-        dayTime == .morning ? "Start your day off right!" : "Reflect on your day."
+        dayTime == .morning ? "Start your day off right!" : "Lets put this day to bed."
     }
 
 }

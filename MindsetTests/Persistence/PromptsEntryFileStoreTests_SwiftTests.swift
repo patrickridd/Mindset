@@ -8,7 +8,7 @@ import Foundation
 @testable import Mindset
 import Testing
 
-
+@Suite(.serialized)
 class PromptsEntryFileStoreTests_SwiftTests {
 
     let mockFileManager: MockFileManager
