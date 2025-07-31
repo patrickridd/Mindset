@@ -34,6 +34,7 @@ struct TodayView: View {
                     ForEach(viewModel.todaysEntries) { entry in
                         getPromptsEntryCard(for: entry)
                     }
+                    .padding(.leading)
                 }
             }
         }.task {
@@ -118,15 +119,22 @@ extension TodayView {
 
     
     func getPromptsEntryCard(for entry: PromptsEntry) -> some View {
-        MindsetEntryCardView(
-            viewModel: .init(
-                coordinator: viewModel.coordinator,
-                promptsEntryManager: viewModel.promptsEntryManager,
-                dayTime: entry.dayTime,
-                promptsEntry: entry,
-                progressStatus: viewModel.progressStatus(for: entry),
-                onDelete: viewModel.loadTodayEntries
+        HStack(alignment: .center, spacing: -10) {
+            Image(systemName: viewModel.entryCardIconSystemName(for: entry))
+                .resizable()
+                .frame(width: 24, height: 24)
+                .aspectRatio(contentMode: .fit)
+                .foregroundStyle(viewModel.entryCardIconColor(for: entry))
+            MindsetEntryCardView(
+                viewModel: .init(
+                    coordinator: viewModel.coordinator,
+                    promptsEntryManager: viewModel.promptsEntryManager,
+                    dayTime: entry.dayTime,
+                    promptsEntry: entry,
+                    progressStatus: viewModel.progressStatus(for: entry),
+                    onDelete: viewModel.loadTodayEntries
+                )
             )
-        )
+        }
     }
 }

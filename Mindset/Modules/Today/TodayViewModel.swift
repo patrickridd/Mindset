@@ -32,6 +32,14 @@ class TodayViewModel: ObservableObject {
         self.dayTime = dayTime ?? .morning
     }
 
+    var title: String {
+        dayTime == .morning ? "Good Morning!" : "Evening wind down..."
+    }
+    
+    var subtitle: String {
+        dayTime == .morning ? "Start your day off right!" : "Lets put this day to bed."
+    }
+
     func loadTodayEntries() {
         self.todaysEntries = promptsEntryManager.loadDailyMindsetEntries()
         entryCancellables = []
@@ -67,12 +75,26 @@ class TodayViewModel: ObservableObject {
         }
     }
 
-    var title: String {
-        dayTime == .morning ? "Good Morning!" : "Evening wind down..."
-    }
-    
-    var subtitle: String {
-        dayTime == .morning ? "Start your day off right!" : "Lets put this day to bed."
+    func entryCardIconSystemName(for entry: PromptsEntry) -> String {
+        switch progressStatus(for: entry) {
+        case .completed:
+            return "checkmark.circle.fill"
+        case .inProgress:
+            return "circle"
+        case .locked:
+            return "circle.dashed"
+        }
     }
 
+    func entryCardIconColor(for entry: PromptsEntry) -> Color {
+        switch progressStatus(for: entry) {
+        case .completed:
+            return .green
+        case .inProgress:
+            return .indigo
+        case .locked:
+            return .gray
+        }
+    }
+    
 }
