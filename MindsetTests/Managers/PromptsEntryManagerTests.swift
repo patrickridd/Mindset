@@ -116,4 +116,79 @@ final class PromptsEntryManagerTests: XCTestCase {
         XCTAssertTrue(mockPromptsEntryFileStore.savedEntries.contains(morningEntry))
     }
 
+    // MARK: getTodaysMorningEntry tests
+    
+    func test_getTodaysMorningEntry_returns_morningEntry() {
+        // Arrange
+        sut.morningEntries = [morningEntry]
+        
+        // Act
+        let savedEntry = sut.getTodaysMorningEntry()
+        
+        // Assert
+        XCTAssertEqual(savedEntry, morningEntry)
+    }
+
+    func test_getTodaysMorningEntry_returns_newMorningEntry() {
+        // Arrange
+        sut.morningEntries = [] // no entries
+        
+        // Act
+        let savedEntry = sut.getTodaysMorningEntry() // creates new entry
+        
+        // Assert
+        XCTAssertNotEqual(savedEntry, morningEntry)
+        XCTAssertFalse(sut.morningEntries.isEmpty)
+    }
+    
+    func test_getTodaysNightEntry_returns_nightEntry() {
+        // Arrange
+        sut.nightEntries = [nightEntry]
+        
+        // Act
+        let savedEntry = sut.getTodaysNightEntry()
+        
+        // Assert
+        XCTAssertEqual(savedEntry, nightEntry)
+    }
+
+    func test_getTodaysNightEntry_returns_newNightEntry() {
+        // Arrange
+        sut.nightEntries = [] // empty
+        
+        // Act
+        let savedEntry = sut.getTodaysNightEntry() // creates new entry
+        
+        // Assert
+        XCTAssertNotEqual(savedEntry, nightEntry)
+        XCTAssertFalse(sut.nightEntries.isEmpty)
+    }
+
+    // MARK: delete(entry: PromptsEntry) tests
+
+    func test_delete_morningEntry_removes_entry_from_morningEntries_and_persistence() {
+        // Arrange
+        sut.morningEntries = [morningEntry]
+        mockPromptsEntryFileStore.savedEntries = [morningEntry]
+        
+        // Act
+        sut.delete(entry: morningEntry)
+        
+        // Assert
+        XCTAssertFalse(sut.morningEntries.contains(morningEntry))
+        XCTAssertFalse(mockPromptsEntryFileStore.savedEntries.contains(morningEntry))
+    }
+
+    func test_delete_nightEntry_removes_entry_from_nightEntries_and_persistence() {
+        // Arrange
+        sut.nightEntries = [nightEntry]
+        mockPromptsEntryFileStore.savedEntries = [nightEntry]
+        
+        // Act
+        sut.delete(entry: nightEntry)
+        
+        // Assert
+        XCTAssertFalse(sut.nightEntries.contains(nightEntry))
+        XCTAssertFalse(mockPromptsEntryFileStore.savedEntries.contains(nightEntry))
+    }
 }

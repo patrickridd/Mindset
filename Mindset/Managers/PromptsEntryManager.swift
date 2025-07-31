@@ -35,7 +35,7 @@ class PromptsEntryManager: ObservableObject {
        [getTodaysMorningEntry(), getTodaysNightEntry()]
     }
 
-    private func getTodaysMorningEntry() -> PromptsEntry {
+    func getTodaysMorningEntry() -> PromptsEntry {
         if let savedMorningEntry = getPromptsEntry(for: .today, dayTime: .morning) {
             return savedMorningEntry
         } else {
@@ -43,7 +43,7 @@ class PromptsEntryManager: ObservableObject {
         }
     }
 
-    private func getTodaysNightEntry() -> PromptsEntry {
+    func getTodaysNightEntry() -> PromptsEntry {
         if let savedMorningEntry = getPromptsEntry(for: .today, dayTime: .night) {
             return savedMorningEntry
         } else {
