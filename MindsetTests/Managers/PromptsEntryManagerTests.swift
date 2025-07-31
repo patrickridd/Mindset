@@ -28,7 +28,7 @@ final class PromptsEntryManagerTests: XCTestCase {
         self.mockPromptsEntryFileStore = nil
     }
     
-    // MARK: promptEntry method tests
+    // MARK: getPromptsEntry method tests
  
     func test_getPromptsEntry_gets_morningPrompt() {
         // Arrange
@@ -52,6 +52,11 @@ final class PromptsEntryManagerTests: XCTestCase {
         
         // Assert
         XCTAssertEqual(fetchedEntry, nightEntry)
+    }
+
+    func test_getPromptsEntry_returns_nil_if_entry_not_found() {
+        let fetchedEntry = sut.getPromptsEntry(for: .today, dayTime: .morning)
+        XCTAssertNil(fetchedEntry)
     }
 
     // MARK: createEntry method tests
@@ -162,6 +167,36 @@ final class PromptsEntryManagerTests: XCTestCase {
         // Assert
         XCTAssertNotEqual(savedEntry, nightEntry)
         XCTAssertFalse(sut.nightEntries.isEmpty)
+    }
+
+    func test_getTodaysNightEntry_returns_new_nightEntry_when_nightEntries_does_not_have_entry_for_today() {
+        // Arrange
+        let yesterday = Date().addingTimeInterval((-1) * 24 * 60 * 60)
+        let yesterdayNightEntry = PromptsEntry(date: yesterday, prompts: [], dayTime: .night)
+
+        sut.nightEntries = [yesterdayNightEntry] // empty
+        
+        // Act
+        let savedEntry = sut.getTodaysNightEntry() // creates new entry night Entry
+        
+        // Assert
+        XCTAssertNotEqual(savedEntry, yesterdayNightEntry)
+        XCTAssertFalse(savedEntry.date.inSameDayAs(date: yesterday))
+    }
+
+    func test_getTodaysMorningEntry_returns_new_morningEntry_when_morningEntries_does_not_have_entry_for_today() {
+        // Arrange
+        let yesterday = Date().addingTimeInterval((-1) * 24 * 60 * 60)
+        let yesterdayMorningEntry = PromptsEntry(date: yesterday, prompts: [], dayTime: .morning)
+
+        sut.morningEntries = [yesterdayMorningEntry] // empty
+        
+        // Act
+        let savedEntry = sut.getTodaysNightEntry() // creates new entry night Entry
+        
+        // Assert
+        XCTAssertNotEqual(savedEntry, yesterdayMorningEntry)
+        XCTAssertFalse(savedEntry.date.inSameDayAs(date: yesterday))
     }
 
     // MARK: delete(entry: PromptsEntry) tests
