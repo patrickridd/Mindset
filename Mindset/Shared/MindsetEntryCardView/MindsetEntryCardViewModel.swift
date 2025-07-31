@@ -8,7 +8,7 @@
 import SwiftUI
 
 @MainActor
-class StartPromptsEntryCardViewModel: ObservableObject {
+class MindsetEntryCardViewModel: ObservableObject {
 
     @Published var hasInteractedWithMoodSlider: Bool = false
     @Published var startButtonPlayed: Bool = false
@@ -77,10 +77,8 @@ class StartPromptsEntryCardViewModel: ObservableObject {
         switch progressStatus {
         case .locked:
             return Image(systemName: "lock.circle.fill")
-        case .inProgress:
+        case .inProgress, .completed:
             return Image(systemName: "square.and.pencil.circle.fill")
-        case .completed:
-            return Image(systemName: "checkmark.circle")
         }
     }
 
@@ -91,7 +89,7 @@ class StartPromptsEntryCardViewModel: ObservableObject {
         case .locked:
             return .white
         case .completed:
-            return .green
+            return .white
         }
     }
 

@@ -80,7 +80,7 @@ class TodayViewModel: ObservableObject {
         case .completed:
             return "checkmark.circle.fill"
         case .inProgress:
-            return "circle"
+            return "circle.fill"
         case .locked:
             return "circle.dashed"
         }
@@ -91,10 +91,37 @@ class TodayViewModel: ObservableObject {
         case .completed:
             return .green
         case .inProgress:
-            return .indigo
+            switch entry.dayTime {
+            case .morning:
+                return .yellow
+            case .night:
+                return .yellow.opacity(0.8)
+            }
         case .locked:
             return .gray
         }
     }
     
+    func entryCardIconBorderColor(for entry: PromptsEntry) -> Color {
+        switch progressStatus(for: entry) {
+        case .completed, .locked:
+            return .clear
+        case .inProgress:
+            switch entry.dayTime {
+            case .morning:
+                return .orange
+            case .night:
+                return .indigo
+            }
+        }
+    }
+
+    func pulsatingIconSize(for entry: PromptsEntry) -> CGFloat {
+        switch progressStatus(for: entry) {
+        case .completed, .locked:
+            return 24
+        case .inProgress:
+            return 18
+        }
+    }
 }

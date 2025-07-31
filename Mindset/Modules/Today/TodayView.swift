@@ -119,22 +119,34 @@ extension TodayView {
 
     
     func getPromptsEntryCard(for entry: PromptsEntry) -> some View {
-        HStack(alignment: .center, spacing: -10) {
-            Image(systemName: viewModel.entryCardIconSystemName(for: entry))
-                .resizable()
-                .frame(width: 24, height: 24)
-                .aspectRatio(contentMode: .fit)
-                .foregroundStyle(viewModel.entryCardIconColor(for: entry))
-            MindsetEntryCardView(
-                viewModel: .init(
-                    coordinator: viewModel.coordinator,
-                    promptsEntryManager: viewModel.promptsEntryManager,
-                    dayTime: entry.dayTime,
-                    promptsEntry: entry,
-                    progressStatus: viewModel.progressStatus(for: entry),
-                    onDelete: viewModel.loadTodayEntries
+        VStack(alignment: .leading) {
+//            Text(viewModel.title)
+//                .font(.title2)
+//                .padding(8)
+            HStack(alignment: .center, spacing: -10) {
+                imageIcon(for: entry)
+                MindsetEntryCardView(
+                    viewModel: .init(
+                        coordinator: viewModel.coordinator,
+                        promptsEntryManager: viewModel.promptsEntryManager,
+                        dayTime: entry.dayTime,
+                        promptsEntry: entry,
+                        progressStatus: viewModel.progressStatus(for: entry),
+                        onDelete: viewModel.loadTodayEntries
+                    )
                 )
-            )
+            }
         }
+    }
+    
+    func imageIcon(for entry: PromptsEntry) -> some View {
+        let isInProgress = viewModel.progressStatus(for: entry) == .inProgress
+        return PulsingIcon(
+            systemName: viewModel.entryCardIconSystemName(for: entry),
+            foregroundColor: viewModel.entryCardIconColor(for: entry),
+            borderColor: viewModel.entryCardIconBorderColor(for: entry),
+            isInProgress: isInProgress,
+            imageSize: viewModel.pulsatingIconSize(for: entry)
+        )
     }
 }

@@ -1,5 +1,5 @@
 //
-//  StartPromptsEntryCardView.swift
+//  MindsetEntryCardView.swift
 //  Mindset
 //
 //  Created by patrick ridd on 6/29/25.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct StartPromptsEntryCardView: View {
+struct MindsetEntryCardView: View {
     
-    @ObservedObject var viewModel: StartPromptsEntryCardViewModel
+    @ObservedObject var viewModel: MindsetEntryCardViewModel
 
     var body: some View {
         VStack(spacing: 10) {
@@ -43,14 +43,14 @@ struct StartPromptsEntryCardView: View {
 }
 
 #Preview {
-    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .morning, promptsEntry: Mocks.morningMindSet, progressStatus: .inProgress, onDelete: nil))
+    MindsetEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .morning, promptsEntry: Mocks.morningMindSet, progressStatus: .inProgress, onDelete: nil))
     
-    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .locked, onDelete: nil))
+    MindsetEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .locked, onDelete: nil))
 
-    StartPromptsEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .completed, onDelete: nil))
+    MindsetEntryCardView(viewModel: .init(coordinator: Coordinator(viewFactory: ViewFactory()), promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), dayTime: .night, promptsEntry: Mocks.nightMindSet, progressStatus: .completed, onDelete: nil))
 }
 
-extension StartPromptsEntryCardView {
+extension MindsetEntryCardView {
     
     var headlineView: some View {
         HStack(alignment: .center) {
@@ -60,7 +60,7 @@ extension StartPromptsEntryCardView {
                 .multilineTextAlignment(.leading)
                 .foregroundStyle(viewModel.titleForegroundColor)
             Spacer()
-            editButtonView
+            resetButtonView
                 .padding(.bottom)
         }
     }
@@ -69,22 +69,17 @@ extension StartPromptsEntryCardView {
         Button {
             viewModel.playButtonTapped()
         } label: {
-            ZStack {
-                Circle()
-                    .frame(width: 40, height: 40)
-                    .foregroundStyle(viewModel.buttonBackgroundColor)
-                viewModel.buttonImage
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .foregroundStyle(viewModel.buttonForegroundColor.opacity(0.9))
-            }
-            
+            viewModel.buttonImage
+                .resizable()
+                .frame(width: 50, height: 50)
+                .foregroundStyle(viewModel.buttonForegroundColor.opacity(0.9)
+                )
         }
     }
-    
-    var editButtonView: some View {
+
+    var resetButtonView: some View {
         Button {
-            
+            viewModel.resetButtonTapped()
         } label: {
             Image(systemName: "arrow.counterclockwise.circle")
                 .resizable()
