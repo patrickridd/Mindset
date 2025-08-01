@@ -73,12 +73,12 @@ class MindsetEntryCardViewModel: ObservableObject {
         dayTime == .morning ? .white : .white
     }
     
-    var buttonImage: Image {
+    var buttonImageName: String {
         switch progressStatus {
         case .locked:
-            return Image(systemName: "lock.circle.fill")
+            return "lock.circle.fill"
         case .inProgress, .completed:
-            return Image(systemName: "square.and.pencil.circle.fill")
+            return "square.and.pencil.circle.fill"
         }
     }
 
@@ -90,6 +90,20 @@ class MindsetEntryCardViewModel: ObservableObject {
             return .white
         case .completed:
             return .white
+        }
+    }
+
+    var buttonBorderColor: Color {
+        switch progressStatus {
+        case .inProgress:
+            switch dayTime {
+            case .morning:
+                return .orange
+            case .night:
+                return .indigo
+            }
+        case .locked, .completed:
+            return .clear
         }
     }
 

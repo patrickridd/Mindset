@@ -70,7 +70,6 @@ extension TodayView {
                 HStack(alignment: .center, spacing: 16) {
                     navTitle
                     StreakTracker()
-                    profileButton
                 }
             }
             .padding(.top)
@@ -140,13 +139,19 @@ extension TodayView {
     }
     
     func imageIcon(for entry: PromptsEntry) -> some View {
-        let isInProgress = viewModel.progressStatus(for: entry) == .inProgress
-        return PulsingIcon(
-            systemName: viewModel.entryCardIconSystemName(for: entry),
-            foregroundColor: viewModel.entryCardIconColor(for: entry),
-            borderColor: viewModel.entryCardIconBorderColor(for: entry),
-            isInProgress: isInProgress,
-            imageSize: viewModel.pulsatingIconSize(for: entry)
-        )
+        Image(systemName: viewModel.entryCardIconSystemName(for: entry))
+            .resizable()
+            .frame(
+                width: viewModel.entryCardIconSize(for: entry),
+                height: viewModel.entryCardIconSize(for: entry)
+            )
+            .foregroundStyle(viewModel.entryCardIconColor(for: entry))
+            .clipShape(Circle())
+            .overlay(
+                Circle().stroke(
+                    viewModel.entryCardIconColor(for: entry),
+                    lineWidth: viewModel.entryCardBorderWidth(for: entry)
+                )
+            )
     }
 }

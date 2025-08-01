@@ -69,11 +69,13 @@ extension MindsetEntryCardView {
         Button {
             viewModel.playButtonTapped()
         } label: {
-            viewModel.buttonImage
-                .resizable()
-                .frame(width: 50, height: 50)
-                .foregroundStyle(viewModel.buttonForegroundColor.opacity(0.9)
-                )
+            PulsingIcon(
+                systemName: viewModel.buttonImageName,
+                foregroundColor: viewModel.buttonForegroundColor.opacity(0.9),
+                borderColor: viewModel.buttonBorderColor,
+                isInProgress: viewModel.progressStatus == .inProgress,
+                imageSize: 50
+            )
         }
     }
 

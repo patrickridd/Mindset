@@ -26,7 +26,7 @@ struct PulsingIcon: View {
             .overlay(
                 Circle().stroke(borderColor, lineWidth: 2)
             )
-            .scaleEffect(isInProgress && pulse ? 1.2 : 1.0)
+            .scaleEffect(isInProgress && pulse ? 0.8 : 1.0)
             .animation(
                 isInProgress ? Animation.easeInOut(duration: 0.8).repeatForever(autoreverses: true) : .default,
                 value: pulse
