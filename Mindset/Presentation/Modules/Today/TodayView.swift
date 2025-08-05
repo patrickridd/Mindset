@@ -21,6 +21,9 @@ struct TodayView: View {
             ScrollView(showsIndicators: false) {
                 VStack(spacing: 25) {
                     VStack(spacing: 12) {
+                        Text(viewModel.title)
+                            .font(.largeTitle)
+                            .padding(.top)
                         quoteView
                             .padding(.top)
                             .fontWeight(.light)
@@ -47,7 +50,7 @@ struct TodayView: View {
     TodayView(
         viewModel: TodayViewModel(
             coordinator: Coordinator(viewFactory: ViewFactory()),
-            promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()),
+            promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), profilePersistence: ProfilePersistence(),
             dayTime: .morning
         )
     )
@@ -57,7 +60,7 @@ struct TodayView: View {
     TodayView(
         viewModel: TodayViewModel(
             coordinator: Coordinator(viewFactory: ViewFactory()),
-            promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()),
+            promptsEntryManager: PromptsEntryManager(promptsEntryPersistence: PromptsEntryFileStore()), profilePersistence: ProfilePersistence(),
             dayTime: .night
         )
     )

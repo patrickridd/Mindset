@@ -11,6 +11,7 @@ final class ViewFactory {
             TodayView(viewModel: TodayViewModel(
                 coordinator: coordinator,
                 promptsEntryManager: promptsEntryManager,
+                profilePersistence: ProfilePersistence(),
                 dayTime: dayTime
             ))
         case .trackerView(let promptsEntryManager):

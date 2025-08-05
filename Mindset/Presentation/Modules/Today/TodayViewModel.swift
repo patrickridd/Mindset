@@ -20,20 +20,30 @@ class TodayViewModel: ObservableObject {
     
     private var entryCancellables: [AnyCancellable] = []
     private(set) var coordinator: any Coordinated
-    
+    private let profilePersistence: ProfilePersistence
+
     init(
         coordinator: any Coordinated,
         promptsEntryManager: PromptsEntryManager,
+        profilePersistence: ProfilePersistence,
         dayTime: DayTime? = nil
     ) {
         self.selectedDate = Calendar.current.startOfDay(for: Date())
         self.promptsEntryManager = promptsEntryManager
         self.coordinator = coordinator
+        self.profilePersistence = profilePersistence
+        
         self.dayTime = dayTime ?? .morning
     }
 
     var title: String {
-        dayTime == .morning ? "Good Morning!" : "Evening wind down..."
+        let postFix: String
+        if let name = profilePersistence.getUserName() {
+            postFix = ", \(name)"
+        } else {
+            postFix = ""
+        }
+        return dayTime == .morning ? "Good Morning\(postFix)!" : "Evening wind down..."
     }
     
     var subtitle: String {

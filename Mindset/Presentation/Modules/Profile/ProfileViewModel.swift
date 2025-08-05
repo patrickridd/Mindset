@@ -8,11 +8,24 @@
 import Foundation
 
 class ProfileViewModel: ObservableObject {
-    @Published var name: String = ""
-    @Published var notificationsEnabled: Bool = false
+   
+    @Published var name: String = "" {
+        didSet {
+            profilePersistence.saveUser(name: name)
+        }
+    }
 
-//    init(name: String = "", notificationsEnabled: Bool = false) {
-//        self.name = name
-//        self.notificationsEnabled = notificationsEnabled
-//    }
+    @Published var notificationsEnabled: Bool = false {
+        didSet {
+            profilePersistence.saveUserNotificationsEnabled(notificationsEnabled)
+        }
+    }
+    
+    let profilePersistence: ProfilePersistence
+    
+    init (userPersistence: ProfilePersistence = ProfilePersistence()) {
+        self.profilePersistence = userPersistence
+        self.name = userPersistence.getUserName() ?? ""
+        self.notificationsEnabled = userPersistence.getUserNotificationsEnabled()
+    }
 }
