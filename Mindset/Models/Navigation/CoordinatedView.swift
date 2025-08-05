@@ -12,6 +12,7 @@ enum CoordinatedView: Hashable, Identifiable {
     case trackerView(promptsEntryManager: PromptsEntryManager)
     case promptView(promptEntry: any PromptContent, flowCoordinator: PromptChainFlowCoordinator, promptsEntryManager: PromptsEntryManager)
     case promptsChainView(promptsEntry: PromptsEntry, flowCoordinator: PromptChainFlowCoordinator, promptsEntryManager: PromptsEntryManager)
+    case profileView
     
     public var id: Self { self }
     

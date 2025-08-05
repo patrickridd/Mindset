@@ -30,6 +30,12 @@ struct MainTabView: View {
             .tabItem {
                 Label("Progress", systemImage: "chart.bar.xaxis.ascending")
             }
+            coordinator.build(
+                .profileView
+            )
+            .tabItem {
+                Label("Profile", systemImage: "person.crop.circle")
+            }
         }
         .tint(.indigo)
     }

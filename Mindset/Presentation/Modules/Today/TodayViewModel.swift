@@ -89,9 +89,9 @@ class TodayViewModel: ObservableObject {
     func entryCardBorderWidth(for entry: PromptsEntry) -> CGFloat {
         switch progressStatus(for: entry) {
         case .completed, .locked:
-            return 1
+            return 0
         case .inProgress:
-            return 2
+            return 0
         }
     }
 
@@ -102,9 +102,9 @@ class TodayViewModel: ObservableObject {
         case .inProgress:
             switch entry.dayTime {
             case .morning:
-                return .orange
+                return .secondary
             case .night:
-                return .indigo
+                return .secondary
             }
         case .locked:
             return .secondary

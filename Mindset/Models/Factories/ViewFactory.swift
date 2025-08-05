@@ -28,6 +28,8 @@ final class ViewFactory {
         case .promptsChainView(let promptEntry, let flowCoordinator, let promptsEntryManager):
             PromptChainView(viewModel: PromptChainViewModel(coordinator: coordinator, promptsEntry: promptEntry, flowCoordinator: flowCoordinator, promptsEntryManager: promptsEntryManager))
                 .environmentObject(flowCoordinator)
+        case .profileView:
+            ProfileView(viewModel: ProfileViewModel())
         }
     }
 }

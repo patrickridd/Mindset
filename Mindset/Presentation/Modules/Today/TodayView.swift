@@ -37,7 +37,7 @@ struct TodayView: View {
                     .padding(.leading)
                 }
             }
-        }.task {
+        }.onAppear {
             viewModel.loadTodayEntries()
         }
     }
